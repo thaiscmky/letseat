@@ -15,10 +15,20 @@
 <body>
 
 <!--testing that knockout.js is working; this is the view-->
-<h2>Data from tutorial</h2>
+<div id="dummy-data">
+    <p>First name: <strong data-bind="text: firstName">Foo</strong></p>
+    <p>Last name: <strong data-bind="text: lastName">Bar</strong></p>
+</div>
 
-<p>First name: <strong data-bind="text: firstName">Foo</strong></p>
-<p>Last name: <strong data-bind="text: lastName">Bar</strong></p>
-    
+<!--example of loading a page part via KnockoutJS component-->
+<h2>Suggestion List</h2>
+<div id="list">
+    <ul data-bind="foreach: suggestions">
+        <li class="product">
+            <suggestion-widget params="value: name"></suggestion-widget>
+        </li>
+    </ul>
+</div>
+<script src="./assets/javascript/ko-components.js"></script>
 </body>
 </html>
