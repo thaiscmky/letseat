@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-debug.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="./assets/javascript/cors-anywhere.js"></script>
+    <script src="./assets/javascript/script.js"></script>
     <script src="./assets/javascript/tests.js"></script>
 </head>
 <body>
+
+<!--testing that knockout.js is working; this is the view-->
+<h2>Data from tutorial</h2>
+
+<p>First name: <strong data-bind="text: firstName">Foo</strong></p>
+<p>Last name: <strong data-bind="text: lastName">Bar</strong></p>
     
 </body>
 </html>
