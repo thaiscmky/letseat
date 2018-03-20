@@ -55,11 +55,11 @@
         <div id="main-content">
             <div class="row">
                 <div id="entry-content" class="col-8">
-                    <form id="form-content">
+                    <form id="form-content" data-bind="submit: submitSearch">
                         <div class="form-row">
                             <div class="form-group col-6">
                                 <label for="searchTerm">Search Term</label>
-                                <input type="text" class="form-control" id="searchTerm">
+                                <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
                             </div>
                             <div class="form-group col-6">
                                 <label for="zipCode">Zip Code:
@@ -76,8 +76,8 @@
                     <label id="suggestion-header" class="d-flex justify-content-center">Suggestions</label>
 
                     <ul id="suggestion-list" class="list-group">
-                        <li class="list-group-item">Example 1</li>
-                        <li class="list-group-item">Example 2</li>
+                        <li class="list-group-item">Suggestion 1</li>
+                        <li class="list-group-item">Suggestion 2</li>
                     </ul>
 
                 </div>
