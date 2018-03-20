@@ -1,27 +1,13 @@
-function MyFirstModelView() {
-    this.firstName = "Thais";
-    this.lastName = "Cailet";
-}
-
-function Suggestion(name) {
-    this.name = name;
-}
-
-function SuggestionsViewModel() {
-    this.suggestions = [
-        new Suggestion('Fried Chicken'),
-        new Suggestion('Burger'),
-        new Suggestion('Pizza'),
-        new Suggestion('Pasta'),
-        new Suggestion('Hamburgers'),
-        new Suggestion('Food 1'),
-        new Suggestion('Food 2'),
-        new Suggestion('Food 3'),
-        new Suggestion('Food 4')
-    ];
-}
-
-$(document).ready(function(){
-    ko.applyBindings(new MyFirstModelView(), document.getElementById("dummy-data"));
-    ko.applyBindings(new SuggestionsViewModel(), document.getElementById("list"));
+//JavaScript Path Configuration
+requirejs.config({
+    "baseUrl": "./assets/javascript/lib",
+    "paths": {
+        "script": "../script",
+        "jquery": "//code.jquery.com/jquery-3.3.1.min",
+        "corsanywhere": "cors-anywhere",
+        "ko": '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min',
+        "koDebug": '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-debug',
+    }
 });
+
+requirejs(["script/main", "script/tests", "script/ko-components"]);
