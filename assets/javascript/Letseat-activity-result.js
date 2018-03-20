@@ -22,6 +22,11 @@ var userObj = {
 }
 
 eventDatabase.on("value", function (eventSnapshot) {
+
+    if (typeof Object.keys(eventSnapshot) === 'undefined' || Object.keys(eventSnapshot).length === 0 || eventSnapshot === null) {
+
+        return;
+    }
     var eventkeys = Object.keys(eventSnapshot);
     eventkeys.forEach(key => {
 
@@ -34,6 +39,10 @@ eventDatabase.on("value", function (eventSnapshot) {
     console.log(listOfEvent);
 })
 userDatabase.on("value", function (uesrSnapshot) {
+    if (typeof Object.keys(uesrSnapshot) === 'undefined' || Object.keys(uesrSnapshot).length === 0 || uesrSnapshot === null) {
+
+        return;
+    }
     var userKey = Object.keys(uesrSnapshot);
     userKey.forEach(key => {
 
@@ -54,17 +63,28 @@ userDatabase.on("value", function (uesrSnapshot) {
 
 function displayEvent() {
 
+    if (typeof Object.keys(eventSnapshot) === 'undefined' || Object.keys(eventSnapshot).length === 0 || eventSnapshot === null) {
+
+        //TODO: display  creat event button on the page .
+        return;
+    }
+
+    if (listOfUsere.length === 0 ) {
+
+        return;
+    }
+
     var groupedByEventKey = _.groupBy(listOfUsere, function (e) {
         return e.eventKey;
         console.log(groupedByEventKey);
     });
 
-    
+
     var eventKey = Object.keys(groupedByEventKey);
     eventKey.forEach(key => {
 
-    //TODO : create HTML element dynamically  and display list of event member with event name 
-        
+        //TODO : create and append HTML element dynamically  with the  list of  members name and  event name 
+
     })
 
 
