@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="./assets/javascript/cors-anywhere.js"></script>
-    <script src="./assets/javascript/tests.js"></script>
+    <title>Let's Eat!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script data-main="./assets/javascript/script" src="./assets/javascript/lib/require.js"></script>
 </head>
 <body>
-    
+
+<div id="list">
+    <h2>Suggestion List</h2>
+    <ul data-bind="foreach: suggestions">
+        <suggestion-widget params="value: name"></suggestion-widget>
+    </ul>
+</div>
 </body>
 </html>
