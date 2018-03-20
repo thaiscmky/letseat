@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Let's Eat!</title>
+    <!-- Load jQuery/JQuery UI/Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!--  -->
+    <script src="./assets/javascript/cors-anywhere.js"></script>
+    <script src="./assets/javascript/tests.js"></script>
+
+    <!-- Load reset.css & style.css -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+
+    <!-- Load script.js -->
+    <script src="./assets/javascript/script.js"></script>
+
+    <!-- Load  -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <header>
+        <div class="main-wrapper">
+            <div id="page-header">
+                <div id="banner">
+                    <img id="banner-image" class="float-left" src="http://via.placeholder.com/150x150" alt="logo" />
+                    <div id="banner-text-group" class="float-left">
+                        <div id="banner-text-main">Let's Eat!</div>
+                        <div id="banner-text-sub">yummy.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="main-wrapper">
+        <div id="main-content-header">So... What are you hungry for?</div>
+        <div id="main-content">
+            <div class="row">
+                <div id="entry-content" class="col-8">
+                    <form id="form-content">
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label for="searchTerm">Search Term</label>
+                                <input type="text" class="form-control" id="searchTerm">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="zipCode">Zip Code</label>
+                                <input type="text" class="form-control" id="zipCode">
+                            </div>
+                        </div>
+                        <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <img id="entry-img" src="http://via.placeholder.com/600x350" alt="entry-img">
+                </div>
+                <div id="suggestion-content" class="col-4">
+                    <label id="suggestion-header" class="d-flex justify-content-center">Suggestions</label>
+
+                    <ul id="suggestion-list" class="list-group">
+                        <li class="list-group-item">Example 1</li>
+                        <li class="list-group-item">Example 2</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
