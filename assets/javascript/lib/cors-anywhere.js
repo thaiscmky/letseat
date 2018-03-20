@@ -4,7 +4,7 @@
  */
 let secureApiRequest = {
     responseObject: null,
-    fetchResponse: function(options, token){
+    fetchResponse: function (options, token) {
         let callHeaders = new Headers();
         callHeaders.append("Authorization", "Bearer " + token);
         //TODO add API to own server and change herokuapp's url
@@ -17,3 +17,13 @@ let secureApiRequest = {
         });
     }
 };
+
+
+
+
+
+
+
+
+
+
