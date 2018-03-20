@@ -10,4 +10,8 @@ requirejs.config({
     }
 });
 
-requirejs(["script/main", "script/tests", "script/ko-components"]);
+requirejs([
+    "script/main",
+    "script/activity-seach-result",
+    "script/tests",
+    "script/ko-components"]);

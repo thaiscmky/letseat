@@ -5,10 +5,10 @@
 var searchTerm = localStorage.getItem("searchTerm");
 var zipcode = localStorage.getItem("zipcode");
 //we also have a firebases ref()
-var eventDatabase = firbase.database.ref("event");
-var userDatabase = firbase.database.ref("user");
+var eventDatabase = firebase.database.ref("event");
+var userDatabase = firebase.database.ref("user");
 var listOfEvent = [];
-var listOfUsere = [];
+var listOfUsers = [];
 
 var eventObj = {
     eventKey: null,
@@ -52,12 +52,12 @@ userDatabase.on("value", function (uesrSnapshot) {
                 userObj.memberName = uesrSnapshot[key].userName;
                 userObj.eventName = listOfEvent[i].eventName;
                 userObj.eventKey = listOfEvent[i].eventKey;
-                listOfUsere.push(userObj);
+                listOfUsers.push(userObj);
 
             }
         }
     })
-    console.log(listOfUsere);
+    console.log(listOfUsers);
 
 })
 
@@ -69,12 +69,12 @@ function displayEvent() {
         return;
     }
 
-    if (listOfUsere.length === 0 ) {
+    if (listOfUsers.length === 0 ) {
 
         return;
     }
 
-    var groupedByEventKey = _.groupBy(listOfUsere, function (e) {
+    var groupedByEventKey = _.groupBy(listOfUsers, function (e) {
         return e.eventKey;
         console.log(groupedByEventKey);
     });
