@@ -32,6 +32,8 @@
     <!-- Load Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script data-main="./assets/javascript/script" src="./assets/javascript/lib/require.js"></script>
 
 </head>
 
@@ -72,12 +74,11 @@
                     </form>
                     <img id="entry-img" src="http://via.placeholder.com/600x350" alt="entry-img">
                 </div>
-                <div id="suggestion-content" class="col-4">
+                <div id="list" class="col-4">
                     <label id="suggestion-header" class="d-flex justify-content-center">Suggestions</label>
 
-                    <ul id="suggestion-list" class="list-group">
-                        <li class="list-group-item">Suggestion 1</li>
-                        <li class="list-group-item">Suggestion 2</li>
+                    <ul id="suggestion-list" class="list-group" data-bind="foreach: suggestions">
+                        <suggestion-widget params="value: name"></suggestion-widget>
                     </ul>
 
                 </div>
