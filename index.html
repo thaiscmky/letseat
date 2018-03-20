@@ -15,6 +15,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
+    <!-- Load Knockout.js -->
+    <script type="text/javascript" src="./assets/javascript/knockout.js"></script>
+
     <!--  -->
     <script src="./assets/javascript/cors-anywhere.js"></script>
     <script src="./assets/javascript/tests.js"></script>
@@ -26,7 +29,7 @@
     <!-- Load script.js -->
     <script src="./assets/javascript/script.js"></script>
 
-    <!-- Load  -->
+    <!-- Load Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 
@@ -59,8 +62,10 @@
                                 <input type="text" class="form-control" id="searchTerm">
                             </div>
                             <div class="form-group col-6">
-                                <label for="zipCode">Zip Code</label>
-                                <input type="text" class="form-control" id="zipCode">
+                                <label for="zipCode">Zip Code:
+                                    <span data-bind="text: zipInfo"></span>
+                                </label>
+                                <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
                             </div>
                         </div>
                         <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
