@@ -1,15 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script src="./assets/javascript/cors-anywhere.js"></script>
     <script src="./assets/javascript/tests.js"></script>
+    <script src="./assets/javascript/activity.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
 </head>
+
 <body>
-    
+
+
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Lets Eat!</h1>
+            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content
+                or information.</p>
+            <hr class="my-4">
+            <!-- serach keywork and zipcode section -->
+          
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Zip code" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            
+        </div>
+
+
+        <!-- Activity Result -->
+        <div class="row" id="activityContainer">
+
+        </div>
+
+        <!-- New Activity Result -->
+        <div class="row" id="NewActivityContainer">
+            <table>
+                <tbody>
+                    <tr data-bind="foreach: availableEvents">
+                        <td>
+                            <span>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title" data-bind="text: eventName"></h5>
+                                                <a href="#" class="btn btn-primary">Create</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
 </body>
+
 </html>

@@ -34,4 +34,6 @@ function getDbStructure() {
             "zipcode" : 77002
         }
     };
+
+    
 }
