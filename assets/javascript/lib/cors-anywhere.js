@@ -8,7 +8,7 @@ let secureApiRequest = {
         let callHeaders = new Headers();
         callHeaders.append("Authorization", "Bearer " + token);
         //TODO add API to own server and change herokuapp's url
-        return fetch("https://cors-anywhere.herokuapp.com/" + options.url + options.type + $.param(options.query), {
+        return fetch("https://yummyeatsearch.herokuapp.com/" + options.url + options.type + $.param(options.query), {
             headers: callHeaders
         }).then((res) => {
             return res.json();
