@@ -1,4 +1,5 @@
-
+var searchViewModel;
+var activityViewModel
 $(document).ready(function () {
 
     function CreateActivity(name, email, eventObj) {
@@ -29,8 +30,41 @@ $(document).ready(function () {
 
         ]);
 
+        self.showActivity = ko.computed(function(){
+
+
+        },self)
+
 
     }
-    ko.applyBindings(new ActivityViewModel());
+
+    $("#search").on("click",function(){
+
+        var args = {
+            url: 'https://api.yelp.com/v3/businesses/',
+            type: 'search?',
+            query: {
+                categories: 'chicken',
+                limit: 10, //number of results to return
+                location: '77077'
+            }
+        };
+
+        //console.log(searchViewModel.searchKey());
+        //console.log(searchViewModel.zipcode());
+
+    })
+
+    function SearchViewModel(searchKey,zipcode){
+
+        var self = this;
+        self.searchKey = ko.observable(searchKey);
+        self.zipcode = ko.observable(zipcode);
+    }
+
+    searchViewModel = new SearchViewModel("pizza","77077");
+    activityViewModel = new ActivityViewModel();
+    ko.applyBindings(activityViewModel,document.getElementById("NewActivityContainer"));
+    ko.applyBindings(searchViewModel,document.getElementById("searchContainer"));
 
 })
