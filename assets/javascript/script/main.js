@@ -1,4 +1,4 @@
-define(["jquery", "popper", "corsanywhere", "ko", "koDebug"], function($, cors, ko, kob) {
+define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, bootstrap, cors, ko, kob) {
     function LandingViewModel() {
         var self = this;
 
@@ -12,13 +12,15 @@ define(["jquery", "popper", "corsanywhere", "ko", "koDebug"], function($, cors, 
         self.zipRequest = ko.computed(function () {
             // TODO: VALIDATOR: Below ajax call should only run when "self.zipInfo() === valid Zip Code
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
-            $.ajax({
-                url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
-                method: "GET"
-            }).done(function (res) {
-                var info = res.results[0].formatted_address;
-                self.zipInfo(info);
-            });
+            if(self.zipCode() !== null || typeof self.zipCode() !== 'undefined'){
+                $.ajax({
+                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                    method: "GET"
+                }).done(function (res) {
+                    var info = res.results[0].formatted_address;
+                    self.zipInfo(info);
+                });
+            }
         });
 
         self.submitSearch = function () {
@@ -27,13 +29,14 @@ define(["jquery", "popper", "corsanywhere", "ko", "koDebug"], function($, cors, 
             // When user clicks submit this is the code that runs...
             // FYI this prevent default submit functionality because we're using KO.js
             console.log('TEST: Look in console');
-            console.log('Search: ' + searchTerm)
+            console.log('Search: ' + searchTerm);
             console.log('zipCode: ' + zipCode)
         }
     }
+
     // The's landing page code
     $(document).ready(function () {
-        ko.applyBindings(new LandingViewModel());
+        ko.applyBindings(new LandingViewModel(), document.getElementById("form-content"));
     });
 
 });
