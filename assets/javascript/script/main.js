@@ -2,6 +2,39 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, boo
     function LandingViewModel() {
         var self = this;
 
+            self.landingVisible = ko.observable(true);
+            self.resultVisible = ko.observable(false);
+            self.createEventVisible = ko.observable(false);
+            self.createUserVisible = ko.observable(false);
+
+            self.seats = ko.observableArray([
+                { name: 'bob', value: 'meat' },
+                {name: 'chris', value: 'coren'}
+            ]);
+
+            self.display = {
+                hideDisplays() {
+                    self.landingVisible(false);
+                    self.resultVisible(false);
+                    self.createEventVisible(false);
+                    self.createUserVisible(false);
+                },
+
+                showResults(searchTerm, zipCode) {
+                    // Hides current visible window and shows result window
+                    self.display.hideDisplays();
+                    self.resultVisible(true);
+
+                    // Dynamically create events
+
+                },
+            }
+
+            self.results = ko.observableArray([
+                { name: 'one', value: '1' },
+                { name: 'two', value: '2' }
+            ]);
+
         self.searchTerm = ko.observable('');
 
         self.zipCode = ko.observable('');
@@ -29,14 +62,44 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, boo
             // When user clicks submit this is the code that runs...
             // FYI this prevent default submit functionality because we're using KO.js
             console.log('TEST: Look in console');
-            console.log('Search: ' + searchTerm);
+            console.log('Search: ' + searchTerm)
             console.log('zipCode: ' + zipCode)
+
+            console.log(self.results());
+
+            //This empties the main content and shows results!
+            self.display.showResults(searchTerm, zipCode);
         }
+
+        
+    
+        
+            // self.suggestions = [
+            //     new Suggestion('Fried Chicken'),
+            //     new Suggestion('Burger'),
+            //     new Suggestion('Pizza'),
+            //     new Suggestion('Pasta'),
+            //     new Suggestion('Hamburgers'),
+            //     new Suggestion('Food 1'),
+            //     new Suggestion('Food 2'),
+            //     new Suggestion('Food 3'),
+            //     new Suggestion('Food 4')
+            // ];
+
     }
+
+//  function Suggestion(name) {
+//         this.name = name;
+//         this.copyToSearchBox = function(){
+//             console.log(this);
+//         }
+//     }
+
+    
 
     // The's landing page code
     $(document).ready(function () {
-        ko.applyBindings(new LandingViewModel(), document.getElementById("form-content"));
+        ko.applyBindings(new LandingViewModel());
     });
 
 });
