@@ -21,6 +21,6 @@ define(["jquery", "ko"], function($, ko) {
     }
 
     $(document).ready(function(){
-        ko.applyBindings(new SuggestionsViewModel(), document.getElementById("list"));
+        ko.applyBindings(new SuggestionsViewModel(), document.getElementById("suggestion-content"));
     });
 });
