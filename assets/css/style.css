@@ -1,0 +1,65 @@
+html {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #eee;
+}
+
+body {
+    background-color: transparent;
+}
+
+header {
+    margin: 1.618em 0;    
+}
+
+.main-wrapper {
+    width: 960px;
+    margin: auto;
+}
+
+#banner {    
+    height: 150px; /* This is same height as #banner-image */
+}
+
+#banner-image {
+    margin-right: 10px;
+}
+
+#banner-text-group {
+    height: inherit;    
+}
+
+#banner-text-main {    
+    height: 50%;
+    font-size: 4.236em;
+    line-height: calc(150px - 1em);    
+}
+
+#banner-text-sub {    
+    font-size: 1.618em;
+}
+
+#main-content-header {
+    font-size: 1.618em;
+}
+
+#main-content {    
+    padding: 1em;
+    border: 4px solid #444;
+    background-color: #fff;
+}
+
+label {
+    margin-bottom: 8px;
+}
+
+#form-content {
+    margin-bottom: 16px;
+}
+
+#entry-img {
+    width: 100%;
+}
+
+#suggestion-content {
+    border-left: 4px solid #444;
+}
