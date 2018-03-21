@@ -2,7 +2,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, boo
     function LandingViewModel() {
         var self = this;
 
-            self.landingVisible = ko.observable(true);
+            self.landingVisible = ko.observable(false);
             self.resultVisible = ko.observable(false);
             self.createEventVisible = ko.observable(false);
             self.createUserVisible = ko.observable(false);
@@ -98,9 +98,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, boo
     
 
     // The's landing page code
-    $(document).ready(function () {
+    // $(document).ready(function () {
         ko.applyBindings(new LandingViewModel());
-    });
+    // });
 
 });
 
