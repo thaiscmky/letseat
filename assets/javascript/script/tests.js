@@ -24,7 +24,7 @@ function getDbStructure() {
             "categories" : "chicken",
             "eventName" : "Mexicos Deli",
             "location" : {
-              "addess1" : "2374 S Dairy Ashford Rd",
+              "address" : "2374 S Dairy Ashford Rd",
               "city" : "houston",
               "zipCode" : 77077
             },
@@ -34,7 +34,7 @@ function getDbStructure() {
               "lastName" : "David"
             }, {
               "email" : "me@you.com",
-              "fistName" : "me",
+              "firstName" : "me",
               "lastName" : "you"
             } ]
           },
@@ -42,11 +42,11 @@ function getDbStructure() {
             "categories" : "chicken",
             "eventName" : "Ramen Bar Ichi",
             "location" : {
-              "address1" : "2374 S Dairy Ashford Rd",
+              "address" : "2374 S Dairy Ashford Rd",
               "city" : "houston",
-              "zipcode" : "77077"
+              "zipcode" : 77077
             },
-            "user" : [ {
+            "users" : [ {
               "email" : "Ali@gmail.com",
               "firstName" : "Ali",
               "lastName" : "Ali"
