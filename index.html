@@ -16,6 +16,9 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script data-main="./assets/javascript/script" src="./assets/javascript/lib/require.js"></script>
 
 </head>
@@ -54,52 +57,47 @@
                             </div>
                         </div>
                         <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
-                       
+
                     </form>
                     <img id="entry-img" src="http://via.placeholder.com/600x350" alt="entry-img">
                 </div>
-                <div id="suggestion-content" class="col-4">
-                    <label id="suggestion-header" class="d-flex justify-content-center">Suggestions</label>
-                    <ul id="suggestion-list" class="list-group" data-bind="foreach: suggestions">
-                        <suggestion-widget params="value: name"></suggestion-widget>
-                    </ul>
 
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Passenger name</th>
-                            <th>Meal</th>
-                            <th>Surcharge</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <!-- Todo: Generate table body -->
-                    <tbody data-bind="foreach: seats">
-                        <tr>
-                            <td data-bind="text: name"></td>
-                            <td data-bind="text: value"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
+
+
 
             </div>
 
-            <div id="result-display" class="row" data-bind="visible: resultVisible">
-                <div id="result-content">
-                    <div id="result-header">
-                        <p>Any of these activities interest you?</p>
+            <div id="result-display" class="container" data-bind="visible: resultsVisible">
+                <div class="row">
+                    <div id="result-header" class="col-12">
+                        <p class = "text-center">Any of these activities interest you?</p>
                     </div>
-                    <!-- <div id="result-container" data-bind="foreach: results">
-                        <span data-bind="text: name">this should not display</span>
-                        <span data-bind="text: value">this shouldnt either</span>
-                        <div>a;sdjkf</div>
-                    </div> -->
+                </div>
+
+                <div id="result-container" data-bind="foreach: results">
+                    <div class="row" data-bind="foreach: $data">
+
+                        <div class="col-4 resultColumn">
+                            <div class="card">
+                                <p data-bind="text: restaurant"></p>
+                                <img class="resultImage" data-bind="attr:{'src': image}">
+                                <div data-bind="foreach: people">
+
+                                    <p data-bind="text: name"></p>
+                                </div>
+                                <button class="joinButton">Join</button>
+                                <button class="infoButton">Info</button>
+
+
+                            </div>
+                        </div>
+
+                    </div>
                     
+
+
                 </div>
             </div>
-        </div>
     </section>
 </body>
 

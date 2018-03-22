@@ -1,39 +1,10 @@
-define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, bootstrap, cors, ko, kob) {
-    function LandingViewModel() {
+define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
+    
+    //the display function was removed and its functionality is in the submitSearch. Seemed like an extra step we didn't need.
+    //Also there are no binding errors now and that's the only thing I didn't add when I recoded this, so...
+    
+    function LetsEatViewModel() {
         var self = this;
-
-            self.landingVisible = ko.observable(false);
-            self.resultVisible = ko.observable(false);
-            self.createEventVisible = ko.observable(false);
-            self.createUserVisible = ko.observable(false);
-
-            self.seats = ko.observableArray([
-                { name: 'bob', value: 'meat' },
-                {name: 'chris', value: 'coren'}
-            ]);
-
-            self.display = {
-                hideDisplays() {
-                    self.landingVisible(false);
-                    self.resultVisible(false);
-                    self.createEventVisible(false);
-                    self.createUserVisible(false);
-                },
-
-                showResults(searchTerm, zipCode) {
-                    // Hides current visible window and shows result window
-                    self.display.hideDisplays();
-                    self.resultVisible(true);
-
-                    // Dynamically create events
-
-                },
-            }
-
-            self.results = ko.observableArray([
-                { name: 'one', value: '1' },
-                { name: 'two', value: '2' }
-            ]);
 
         self.searchTerm = ko.observable('');
 
@@ -41,67 +12,85 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function($, boo
 
         self.zipInfo = ko.observable('');
 
-        // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
-        self.zipRequest = ko.computed(function () {
-            // TODO: VALIDATOR: Below ajax call should only run when "self.zipInfo() === valid Zip Code
-            // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
-            if(self.zipCode() !== null || typeof self.zipCode() !== 'undefined'){
-                $.ajax({
-                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
-                    method: "GET"
-                }).done(function (res) {
-                    var info = res.results[0].formatted_address;
-                    self.zipInfo(info);
-                });
-            }
-        });
-
-        self.submitSearch = function () {
-            var searchTerm = self.searchTerm();
-            var zipCode = self.zipCode();
-            // When user clicks submit this is the code that runs...
-            // FYI this prevent default submit functionality because we're using KO.js
-            console.log('TEST: Look in console');
-            console.log('Search: ' + searchTerm)
-            console.log('zipCode: ' + zipCode)
-
-            console.log(self.results());
-
-            //This empties the main content and shows results!
-            self.display.showResults(searchTerm, zipCode);
-        }
-
-        
     
-        
-            // self.suggestions = [
-            //     new Suggestion('Fried Chicken'),
-            //     new Suggestion('Burger'),
-            //     new Suggestion('Pizza'),
-            //     new Suggestion('Pasta'),
-            //     new Suggestion('Hamburgers'),
-            //     new Suggestion('Food 1'),
-            //     new Suggestion('Food 2'),
-            //     new Suggestion('Food 3'),
-            //     new Suggestion('Food 4')
-            // ];
+                self.landingVisible = ko.observable(true);
+                self.resultsVisible = ko.observable(false);
+    
+
+
+                //this an array of arrays representing our bootstrap grid. Each item is an array of 3 objects representing
+                // a row. When we receive the events array from our database we will need to configure it this way using a function.
+                self.results = ko.observableArray([[{
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}, {name: "Yellow"}, {name: "Johnny"}]
+                },
+                {
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}]
+                },
+                {
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}]
+                }],[{
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}]
+                },
+                {
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}]
+                },
+                {
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}]
+                }],[  {
+                    restaurant: "Killen's BBQ",
+                    image: "./assets/Killens-Line.jpg",
+                    people: [{name: 'Bubba'}]
+                }]
+                ]);
+    
+
+            // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
+            self.zipRequest = ko.computed(function () {
+                // TODO: VALIDATOR: Below ajax call should only run when "self.zipInfo() === valid Zip Code
+                // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
+                if(self.zipCode() !== null || typeof self.zipCode() !== 'undefined'){
+                    $.ajax({
+                        url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                        method: "GET"
+                    }).done(function (res) {
+                        var info = res.results[0].formatted_address;
+                        self.zipInfo(info);
+                    });
+                }
+            });
+
+            self.submitSearch = function () {
+                // var searchTerm = self.searchTerm();
+                // var zipCode = self.zipCode();
+                // When user clicks submit this is the code that runs...
+                // FYI this prevent default submit functionality because we're using KO.js
+                // console.log('TEST: Look in console');
+                // console.log('Search: ' + searchTerm);
+                // console.log('zipCode: ' + zipCode)
+                self.landingVisible(false);
+                self.resultsVisible(true);
+            }
+       
+
+      
+
 
     }
 
-//  function Suggestion(name) {
-//         this.name = name;
-//         this.copyToSearchBox = function(){
-//             console.log(this);
-//         }
-//     }
 
-    
-
-    // The's landing page code
-    // $(document).ready(function () {
-        ko.applyBindings(new LandingViewModel());
-    // });
-
+    ko.applyBindings(new LetsEatViewModel);
 });
 
 

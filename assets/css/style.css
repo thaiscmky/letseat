@@ -63,3 +63,20 @@ label {
 #suggestion-content {
     border-left: 4px solid #444;
 }
+
+
+#result-header{
+    font-size: 40px;
+    padding: 10px 0px 10px 0px;
+    border-bottom: solid 5px #000000;
+    margin-bottom: 30px;
+
+}
+
+.resultColumn{
+    overflow: hidden;
+}
+
+.resultImage{
+    height: 200px;
+}
