@@ -24,6 +24,7 @@
 </head>
 
 <body>
+    <!-- Header and Logo HTML -->
     <header>
         <div class="main-wrapper">
             <div id="page-header">
@@ -41,63 +42,141 @@
     <section id="main-container" class="main-wrapper">
         <div id="main-content-header">So... What are you hungry for?</div>
         <div id="main-content">
-            <div id="landing-page" class="row" data-bind="visible: landingVisible">
-                <div id="entry-content" class="col-8">
-                    <form id="form-content" data-bind="submit: submitSearch">
-                        <div class="form-row">
-                            <div class="form-group col-6">
-                                <label for="searchTerm">Search Term</label>
-                                <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
+
+            <!-- This is the HTML for Landing Display-->
+            <div id="landing-display" class="container" data-bind="visible: landingVisible">
+                <div class="row">
+
+                    <div id="entry-content" class="col-8">
+                        <form id="form-content" data-bind="submit: submitSearch">
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="searchTerm">Search Term</label>
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="zipCode">Zip Code:
+                                        <span data-bind="text: zipInfo"></span>
+                                    </label>
+                                    <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
+                                </div>
                             </div>
-                            <div class="form-group col-6">
-                                <label for="zipCode">Zip Code:
-                                    <span data-bind="text: zipInfo"></span>
-                                </label>
-                                <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
+
+                            <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                        <div class="text-center">
+                            <img id="entry-img" class="img-fluid" src="http://via.placeholder.com/600x350" alt="entry-img">
+                        </div>
+                    </div>
+
+                    <div id="suggestion-content" class="col 4">
+                        <div class="row">
+                            <div id="suggestion-header">
+                                Suggestions
                             </div>
                         </div>
-                        <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
 
-                    </form>
-                    <img id="entry-img" src="http://via.placeholder.com/600x350" alt="entry-img">
+                        <div id="suggestion-list">
+                            Lol where did the code for this go? RIP IN PEACE
+                        </div>
+                    </div>
                 </div>
-
-
-
 
             </div>
 
-            <div id="result-display" class="container" data-bind="visible: resultsVisible">
+            <!-- This is the HTML for Result Display -->
+            <div id="result-display" class="container" data-bind="visible: resultsVisible" style="display: none;">
+
                 <div class="row">
                     <div id="result-header" class="col-12">
-                        <p class = "text-center">Any of these activities interest you?</p>
+                        <p class="text-center">Any of these activities interest you?</p>
                     </div>
                 </div>
 
                 <div id="result-container" data-bind="foreach: results">
                     <div class="row" data-bind="foreach: $data">
-
-                        <div class="col-4 resultColumn">
+                        <div class="col-4 column">
                             <div class="card">
-                                <p data-bind="text: restaurant"></p>
-                                <img class="resultImage" data-bind="attr:{'src': image}">
-                                <div data-bind="foreach: people">
-
-                                    <p data-bind="text: name"></p>
+                                <p class="card-header" data-bind="text: restaurant"></p>
+                                <div class="card-info container">
+                                    <div class="row">
+                                        <img class="card-image" data-bind="attr:{'src': image}">
+                                        <div class="card-list col" data-bind="foreach: people">
+                                            <p class="card-name" data-bind="text: ($index() + 1) + '. ' + name"></p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button class="joinButton">Join</button>
-                                <button class="infoButton" data-bind="attr:{'index':$index(), 'parentIndex': $parentContext.$index()}">Info</button>
-
-
+                                <button class="btn join-button" data-bind="click: $root.joinEvent">Join</button>
+                                <button class="btn info-button" data-toggle="modal" data-target="#createModal" data-bind="attr:{'index':$index(), 'parentIndex': $parentContext.$index()}">Info</button>
                             </div>
                         </div>
-
                     </div>
-                    
+                </div>
 
+                <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
+                <div id="result-footer" class="row">
+                    <div class="col-12"></div>
+                    <p id="result-footer-text" class="text-center"> None of these interest me... Create an Event</p>
+                </div>
 
+            </div>
+
+            <!-- This is the HTML for the Modal that pops up when you click INFO in results-display -->
+            <div id="createModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">Restaurant name goes here...</div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL! -->
+                            THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL!
+                            <div>This is a test to make sure we can call data from our results observable</div>
+                            <div data-bind="results()["></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal" aria-label="close">Exit</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- This is the HTML for Create Display -->
+            <div id="create-display" class="container" data-bind="visible: createVisible" style="display: none;">
+                <div id="create-container" data-bind="foreach: results">
+                    <div class="row" data-bind="foreach: $data">
+                        <div class="col-4 column">
+                            <div class="card">
+                                <p class="card-header" data-bind="text: restaurant"></p>
+                                <div class="card-info container">
+                                    <div class="row">
+                                        <img class="card-image" data-bind="attr:{'src': image}">
+                                        <form class="col d-flex align-items-center">
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Seats</div>
+                                                </div>
+                                                <input type="number" class="form-control" class="seat-input" value="0">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <button class="btn create-button" data-bind="attr:{'index':$index(), 'parentIndex': $parentContext.$index()}">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- This is the HTML for User Display -->
+            <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
+                You're looking at our User Info page. It's going to be the form entries... Refer to US-5 to see what it will look like.-ish
+            </div>
+
+        </div>
     </section>
 </body>
 
