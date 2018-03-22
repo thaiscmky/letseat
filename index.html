@@ -86,7 +86,7 @@
                                     <p data-bind="text: name"></p>
                                 </div>
                                 <button class="joinButton">Join</button>
-                                <button class="infoButton" data-bind="attr:{'index',$index()}">Info</button>
+                                <button class="infoButton" data-bind="attr:{'index':$index(), 'parentIndex': $parentContext.$index()}">Info</button>
 
 
                             </div>
