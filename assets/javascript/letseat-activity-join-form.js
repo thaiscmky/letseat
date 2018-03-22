@@ -1,6 +1,16 @@
+var config = {
+    apiKey: "AIzaSyDQvxT4o1IGoIDsnXpBko6SnrPEI9NA1DU",
+    authDomain: "lets-eat-be2d8.firebaseapp.com",
+    databaseURL: "https://lets-eat-be2d8.firebaseio.com",
+    projectId: "lets-eat-be2d8",
+    storageBucket: "lets-eat-be2d8.appspot.com",
+    messagingSenderId: "844468448918"
+};
 
+firebase.initializeApp(config);
 
-var userDatabase = firbase.database.ref("user");
+var eventDb = firebase.database().ref('events');
+
 
 var validInput = true;
 function inputValidation() {
@@ -16,40 +26,42 @@ function inputValidation() {
     }
 }
 //load user data 
-userDatabase.on("value", function (uesrSnapshot) {
-    if (typeof Object.keys(uesrSnapshot) === 'undefined' || Object.keys(uesrSnapshot).length === 0 || uesrSnapshot === null) {
-
-        return;
-    }
-});
 
 var userInfoObj = {
     firstName: null,
     lastName: null,
     email: null,
 }
-//this function return true if the user exist else its return false. 
+//this function return true if the user exist ,else its return false. 
 function isUserExistValidation() {
-
+    var isUserExis = false;
+    let eventsArray = [];
     userInfoObj.firstName = $("#firstName").val();
     userInfoObj.lastName = $("#lasttName").val();
     userInfoObj.email = $("#email").val();
 
-    var isUserExis = false;
-    var userKey = Object.keys(uesrSnapshot);
-    userKey.forEach(key => {
-
-
-        if (uesrSnapshot[key].firstName === userInfoObj.firstName 
-            && uesrSnapshot[key].lastName === userInfoObj.lastName 
-            && uesrSnapshot[key].email === userInfoObj.email) {
-            
-            isUserExis=true;
-            return isUserExis;
+    eventDb.on('value', function (eventSnapshot) {
+        let events = eventSnapshot.val();
+        var eventkeys = Object.keys(events);
         
-        }
+        /**
+        * Massaging the events to array , needed to use methods like 
+        * find , filter ...
+        */
+       
+        eventkeys.map((item, i) => {
+            events[item].key = eventkeys[i];
+            eventsArray.push(events[item]);
+        });
 
-    })
+        eventsArray.filter(function (event) {
+            return (event.users.firstName == userInfoObj.firstName  && event.users.lastName == userInfoObj.lastName  && event.users.email ==userInfoObj.email )
+        });
+    
+    });
+    if(eventsArray.length >0){
+        isUserExis = true;
+    }
     return isUserExis;
 
 
