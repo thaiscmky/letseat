@@ -225,9 +225,14 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         }
 
         self.navToCreate = function () {
-            
+            self.resultsVisible(false);
+            self.createVisible(true);
         }
         
+        self.navToResult = function () {
+            self.createVisible(false);
+            self.resultsVisible(true);
+        }
     }
 
     ko.applyBindings(new LetsEatViewModel);
