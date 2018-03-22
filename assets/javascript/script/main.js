@@ -14,41 +14,167 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createVisible = ko.observable(false);
         self.userVisible = ko.observable(false);
 
-
         //this an array of arrays representing our bootstrap grid. Each item is an array of 3 objects representing
         // a row. When we receive the events array from our database we will need to configure it this way using a function.
         self.results = ko.observableArray([[{
-            restaurant: "Killen's BBQ-1",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }, { name: "Yellow" }, { name: "Johnny" }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }, { name: "Yellow" }, { name: "Johnny" }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
+
         },
         {
-            restaurant: "Killen's BBQ-2",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
         },
         {
-            restaurant: "Killen's BBQ-3",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
         }], [{
-            restaurant: "Killen's BBQ-4",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
         },
         {
-            restaurant: "Killen's BBQ-5",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
         },
         {
-            restaurant: "Killen's BBQ-6",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
         }], [{
-            restaurant: "Killen's BBQ-7",
-            image: "http://via.placeholder.com/100x100",
-            people: [{ name: 'Bubba' }]
+            restaurant: "Killen's BBQ",
+            image: "./assets/Killens-Line.jpg",
+            people: [{ name: 'Bubba' }],
+            location: {
+                city: "San Francisco",
+                country: "US",
+                address2: "",
+                address3: "",
+                state: "CA",
+                address1: "375 Valencia St",
+                zip_code: "94103"
+            },
+            categories: [
+                {
+                    alias: "coffee",
+                    title: "Coffee & Tea"
+                }
+            ],
+            rating: 4,
+            price: "$",
+            phone: "+14152520800"
         }]
         ]);
 
