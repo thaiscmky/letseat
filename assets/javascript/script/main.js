@@ -213,11 +213,21 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         }
 
         self.joinEvent = function () {
+            console.log("Joined Event");
             self.resultsVisible(false);
             self.userVisible(true);
         }
-        
 
+        self.submitUserInfo = function () {
+            console.log("Submitted user Info");
+            self.userVisible(false);
+            self.resultsVisible(true);
+        }
+
+        self.navToCreate = function () {
+            
+        }
+        
     }
 
     ko.applyBindings(new LetsEatViewModel);

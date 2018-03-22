@@ -62,7 +62,7 @@
                                 </div>
                             </div>
 
-                            <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
+                            <button id="submitSearch" type="submit" class="btn btn-primary">Submit</button>
                         </form>
                         <div class="text-center">
                             <img id="entry-img" class="img-fluid" src="http://via.placeholder.com/600x350" alt="entry-img">
@@ -173,7 +173,22 @@
 
             <!-- This is the HTML for User Display -->
             <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
-                You're looking at our User Info page. It's going to be the form entries... Refer to US-5 to see what it will look like.-ish
+                Please enter in your info *NOTE YEA THIS MESSAGE AIN'T FINAL CHANGE IT TO SOMETHING NICER SOUNDING*
+                <form id="user-form" data-bind="submit: submitUserInfo">
+                    <div class="form-group">
+                        <label for="firstNameInput">First Name</label>
+                        <input type="text" class="form-control" id="firstNameInput" placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastNameInput">Last Name</label>
+                        <input type="text" class="form-control" id="lastNameInput" placeholder="Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailInput">Email</label>
+                        <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com">
+                    </div>
+                    <button id="submitInfo" type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
 
         </div>
