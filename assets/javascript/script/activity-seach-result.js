@@ -1,92 +1,50 @@
-// let say to transfer a variable(searchingkey) page to page we stored it in localstorage 
-// and now we can get a searching key from local storage 
+var config = {
+    apiKey: "AIzaSyDQvxT4o1IGoIDsnXpBko6SnrPEI9NA1DU",
+    authDomain: "lets-eat-be2d8.firebaseapp.com",
+    databaseURL: "https://lets-eat-be2d8.firebaseio.com",
+    projectId: "lets-eat-be2d8",
+    storageBucket: "lets-eat-be2d8.appspot.com",
+    messagingSenderId: "844468448918"
+};
+events = [];
+firebase.initializeApp(config);
 
-var searchTerm = localStorage.getItem("searchTerm");
-var zipcode = localStorage.getItem("zipcode");
-//we also have a firebases ref()
-var eventDatabase = firebase.database.ref("event");
-var userDatabase = firebase.database.ref("user");
-var listOfEvent = [];
-var listOfUsers = [];
+var eventDb = firebase.database().ref('events');
 
-var eventObj = {
-    eventKey: null,
-    eventName: null,
+//return list of user grouped by event from database based on search key.
+function getEventByCatagory(category, zipCode) {
 
-}
-var userObj = {
-    memberName: null,
-    eventName: null,
-    eventKey: null,
-}
+    eventDb.on('value', function (eventSnapshot) {
+        let events = eventSnapshot.val();
+        var eventkeys = Object.keys(events);
+        let eventsArray = [];
+        /**
+        * Massaging the events to array , needed to use methods like 
+        * find , filter ...
+        */
 
-eventDatabase.on("value", function (eventSnapshot) {
+        eventkeys.map((item, i) => {
+            events[item].key = eventkeys[i];
+            eventsArray.push(events[item]);
+        });
 
-    if (typeof Object.keys(eventSnapshot) === 'undefined' || Object.keys(eventSnapshot).length === 0 || eventSnapshot === null) {
+        eventsArray.filter(function (event) {
+            return (event.categories == category && event.location.zipCode == zipCode)
+        });
 
-        return;
-    }
-    var eventkeys = Object.keys(eventSnapshot);
-    eventkeys.forEach(key => {
-
-        if (eventSnapshot[key].zipcode === zipcode && eventSnapshot[key].searchTerm === searchTerm) {
-            eventObj.eventKey = key;
-            eventObj.eventName = eventSnapshot[key].eventName;
-            listOfEvent.push(eventObj);
-        }
-    });
-    console.log(listOfEvent);
-})
-userDatabase.on("value", function (uesrSnapshot) {
-    if (typeof Object.keys(uesrSnapshot) === 'undefined' || Object.keys(uesrSnapshot).length === 0 || uesrSnapshot === null) {
-
-        return;
-    }
-    var userKey = Object.keys(uesrSnapshot);
-    userKey.forEach(key => {
-
-        for (var i = 0; i < listOfEvent.length; i++) {
-            if (listOfEvent[i].eventKey === uesrSnapshot[key].eventkey) {
-
-                userObj.memberName = uesrSnapshot[key].userName;
-                userObj.eventName = listOfEvent[i].eventName;
-                userObj.eventKey = listOfEvent[i].eventKey;
-                listOfUsers.push(userObj);
-
+        eventsArray.map((event, key) => {
+            $('.container').append("<div id='" + key + "' class='col-lg-4 event-holder mt-2'> " + event.eventName + "</div>")
+            if (event.users !== undefined) {
+                $('#' + key).append("<ol id='list-" + key + "'></ol>");
+                for (let user of event.users) {
+                    $("#list-" + key).append("<li>" + user.firstName + "  " + user.lastName + "</li>");
+                }
+                //$('#'+key).append("<button  class='col-lg-2'>Info</button>");
+                //appended event key as data ,that will help us to identify which event the usr will join .
+                $('#' + key).append("<button  class='col-lg-2' data-event-key='" + event.key + "'> Join</button>");
             }
-        }
-    })
-    console.log(listOfUsers);
-
-})
-
-function displayEvent() {
-
-    if (typeof Object.keys(eventSnapshot) === 'undefined' || Object.keys(eventSnapshot).length === 0 || eventSnapshot === null) {
-
-        //TODO: display  creat event button on the page .
-        return;
-    }
-
-    if (listOfUsers.length === 0 ) {
-
-        return;
-    }
-
-    var groupedByEventKey = _.groupBy(listOfUsers, function (e) {
-        return e.eventKey;
-        console.log(groupedByEventKey);
+        });
     });
 
-
-    var eventKey = Object.keys(groupedByEventKey);
-    eventKey.forEach(key => {
-
-        //TODO : create and append HTML element dynamically  with the  list of  members name and  event name 
-
-    })
-
-
-
-
 }
+
