@@ -43,4 +43,4 @@ var suggestionLoop = setInterval(function() {
     animation.loopSuggestions()
 }, 3000);
 
-// $("#")
+$("#")
