@@ -19,44 +19,19 @@ function testApiCall(options, apitoken){
 
 function getDbStructure() {
     return {
-        "events" : {
-          "mexicos-deli-houston" : {
-            "categories" : "chicken",
-            "eventName" : "Mexicos Deli",
-            "location" : {
-              "address" : "2374 S Dairy Ashford Rd",
-              "city" : "houston",
-              "zipCode" : 77077
-            },
-            "users" : [ {
-              "email" : "tom@gmail.com",
-              "firstName" : "Tom",
-              "lastName" : "David"
-            }, {
-              "email" : "me@you.com",
-              "firstName" : "me",
-              "lastName" : "you"
-            } ]
-          },
-          "ramen-bar-ichi-houston" : {
-            "categories" : "chicken",
-            "eventName" : "Ramen Bar Ichi",
-            "location" : {
-              "address" : "2374 S Dairy Ashford Rd",
-              "city" : "houston",
-              "zipcode" : 77077
-            },
-            "users" : [ {
-              "email" : "Ali@gmail.com",
-              "firstName" : "Ali",
-              "lastName" : "Ali"
-            }, {
-              "email" : "letseat@yahoo.com",
-              "firstName" : "lets",
-              "lastName" : "eat"
-            } ]
-          }
+        "event" : {
+            "date" : "today(march 18)",
+            "eventKey" : "2nub33ne7b4b4734bbeus(unique id) ",
+            "eventName" : "eating pizza ",
+            "location" : "downtown",
+            "time" : "10:00" //optional
+        },
+        "user" : {
+            "email" : "tom@gmail.com",
+            "eventKey" : "2nub33ne7b4b4734bbeus", //It's same with eventkey; this will enable us to easily get the group which a user belongs to.
+            "name " : "Tom",
+            "time" : "10:00",
+            "zipcode" : 77002
         }
-      };
-      
+    };
 }
