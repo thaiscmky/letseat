@@ -34,23 +34,23 @@
                         <form id="form-content" data-bind="submit: submitSearch">
                             <div class="row">
                                 <div class="col-6 landing-label">
-                                    <label for="searchTerm">What are you craving?</label>
-                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
-                                </div>
-                                <div class="col-6 landing-label">
                                     <label for="zipCode">What is your Zip Code?</label>
                                     <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
                                 </div>
+                                <div class="col-6 landing-label">
+                                    <label for="searchTerm">What are you craving?</label>
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
+                                </div>
                             </div>
                             <div class="row">
-                                <label class="col-6 form-sub">How about some
-                                    <label id="suggestions-1"></label>
-                                    <label id="suggestions-2"></label>
-                                    <label id="suggestions-3" style="white-space: nowrap;"></label>
-                                    <label id="suggestions-4" style="white-space: nowrap;"></label>
+                                <label class="col-6 zip-sub" data-bind="text: zipInfo"></label>
+                                <label class="col-6 search-sub" style="white-space: nowrap">How about some&nbsp;
+                                    <label id="suggestions-1" class="suggestion">pizza?</label>
+                                    <label id="suggestions-2" class="suggestion">rib-eye steak?</label>
+                                    <label id="suggestions-3" class="suggestion">ice cream?</label>
+                                    <label id="suggestions-4" class="suggestion">fried chicken?</label>
+                                    <label id="suggestions-5" class="suggestion">texas bbq?</label>
                                 </label>
-                                <label class="col-6 form-sub" data-bind="text: zipInfo"></label>
-
                             </div>
                             <button id="submitSearch" type="submit" class="btn btn-primary">Let's Eat!</button>
                         </form>

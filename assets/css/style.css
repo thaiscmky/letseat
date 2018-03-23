@@ -31,9 +31,10 @@ header {
 #landing-content {
     position: relative;
     top: -6.854em; /* Set this is negative font-size of #landing-header*/
+    text-align: center;
 }
 
-#landing-header, .landing-label {
+#form-content {
     text-align: center;
 }
 
@@ -45,8 +46,7 @@ header {
 #landing-header {
     font-size: 6.854em;
     color: #fff;
-    font-weight: 900;
-    /* text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; */   
+    font-weight: 900;    
 }
 
 #search-container {
@@ -56,13 +56,33 @@ header {
     color: #fff;
 }
 
-.form-sub {
+.zip-sub, .search-sub {    
     margin: 5px 0;
     font-size: .618em;
 }
 
-.term-sub {
-    
+.suggestion {
+    position: absolute;    
+}
+
+#suggestions-2 {
+    top: 1em;
+    opacity: .75;
+}
+
+#suggestions-3 {
+    top: 2em;
+    opacity: .50;
+}
+
+#suggestions-4 {
+    top: 3em;
+    opacity: .25;
+}
+
+#suggestions-5 {
+    top: 4em;
+    opacity: 0;
 }
 
 
