@@ -16,3 +16,5 @@ requirejs.config({
 });
 
 requirejs(["script/main", "script/tests", "script/ko-components-registration"]);
+
+
