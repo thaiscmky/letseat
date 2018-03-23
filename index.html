@@ -12,6 +12,22 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 
+    <!-- firebase config -->
+
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDQvxT4o1IGoIDsnXpBko6SnrPEI9NA1DU",
+            authDomain: "lets-eat-be2d8.firebaseapp.com",
+            databaseURL: "https://lets-eat-be2d8.firebaseio.com",
+            projectId: "lets-eat-be2d8",
+            storageBucket: "lets-eat-be2d8.appspot.com",
+            messagingSenderId: "844468448918"
+        };
+        firebase.initializeApp(config);
+    </script>
+
     <!-- Load Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
@@ -39,10 +55,9 @@
         </div>
     </header>
 
-    <section class="main-wrapper">
+    <section id="main-container" class="main-wrapper">
         <div id="main-content-header">So... What are you hungry for?</div>
         <div id="main-content">
-
 
             <!-- This is the HTML for Landing Display-->
             <div id="landing-display" class="container" data-bind="visible: landingVisible">
@@ -69,7 +84,7 @@
                             <img id="entry-img" class="img-fluid" src="http://via.placeholder.com/600x350" alt="entry-img">
                         </div>
                     </div>
-<!-- Commented out, broken. Please refer to issue #78 -->
+
                     <div id="suggestion-content" class="col 4">
                         <div class="row">
                             <div id="suggestion-header">
@@ -84,7 +99,6 @@
                 </div>
 
             </div>
-<!-- End of Commented out, broken. Please refer to issue #78 -->
 
             <!-- This is the HTML for Result Display -->
             <div id="result-display" class="container" data-bind="visible: resultsVisible" style="display: none;">
@@ -94,25 +108,27 @@
                         <p class="text-center">Any of these activities interest you?</p>
                     </div>
                 </div>
-
-                <div id="result-container" data-bind="foreach: results">
-                    <div class="row" data-bind="foreach: $data">
+              
+                <div id="result-container">
+                    <div class="row"  data-bind="foreach: currentEvents">
                         <div class="col-4 column">
                             <div class="card">
-                                <p class="card-header" data-bind="text: restaurant"></p>
+                                <p class="card-header" data-bind="text: name"></p>
                                 <div class="card-info container">
                                     <div class="row">
-                                        <img class="card-image" data-bind="attr:{'src': image}">
-                                        <div class="card-list col" data-bind="foreach: people">
-                                            <p class="card-name" data-bind="text: ($index() + 1) + '. ' + name"></p>
+                                        <img class="card-image" data-bind="attr:{'src': image_url}">
+                                        <div class="card-list col" data-bind="foreach: users">
+                                            <p class="card-name" data-bind="text: ($index() + 1) + '. ' + firstName+' ' + lastName"></p>
                                         </div>
+
                                     </div>
                                 </div>
                                 <button class="btn join-button" data-bind="click: $root.joinEvent">Join</button>
-                                <button class="btn info-button" data-toggle="modal" data-target="#createModal" data-bind="attr:{'index':$index(), 'parentIndex': $parentContext.$index()}">Info</button>
+                                <button class="btn info-button" data-toggle="modal" data-target="#createModal">Info</button>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
@@ -147,15 +163,16 @@
             </div>
 
             <!-- This is the HTML for Create Display -->
+
             <div id="create-display" class="container" data-bind="visible: createVisible" style="display: none;">
-                <div id="create-container" data-bind="foreach: results">
-                    <div class="row" data-bind="foreach: $data">
+                <div id="create-container">
+                    <div class="row"  data-bind="foreach: createEventList">
                         <div class="col-4 column">
                             <div class="card">
-                                <p class="card-header" data-bind="text: restaurant"></p>
+                                <p class="card-header" data-bind="text: name"></p>
                                 <div class="card-info container">
                                     <div class="row">
-                                        <img class="card-image" data-bind="attr:{'src': image}">
+                                        <img class="card-image" data-bind="attr:{'src': image_url}">
                                         <form class="col d-flex align-items-center">
                                             <div class="input-group mb-2">
                                                 <div class="input-group-prepend">
@@ -166,10 +183,18 @@
                                         </form>
                                     </div>
                                 </div>
-                                <button class="btn create-button" data-bind="attr:{'index':$index(), 'parentIndex': $parentContext.$index()}">Create</button>
+                                <button class="btn create-button">Create</button>
                             </div>
                         </div>
                     </div>
+                </div>
+
+
+
+                <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
+                <div id="create-footer" class="row">
+                    <div class="col-12"></div>
+                    <button id="create-footer-text" class="col-12 btn" data-bind="click: navToResult"> Go back to browsing results</button>
                 </div>
 
                 <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
@@ -186,17 +211,17 @@
                 <form id="user-form" data-bind="submit: submitUserInfo">
                     <div class="form-group">
                         <label for="firstNameInput">First Name</label>
-                        <input type="text" class="form-control" id="firstNameInput" placeholder="John">
+                        <input type="text" class="form-control" id="firstNameInput" placeholder="John" data-bind="value: firstName">
                     </div>
                     <div class="form-group">
                         <label for="lastNameInput">Last Name</label>
-                        <input type="text" class="form-control" id="lastNameInput" placeholder="Doe">
+                        <input type="text" class="form-control" id="lastNameInput" placeholder="Doe" data-bind="value: lastName">
                     </div>
                     <div class="form-group">
                         <label for="emailInput">Email</label>
-                        <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com">
+                        <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
                     </div>
-                    <button id="submitInfo" type="submit" class="btn btn-primary">Submit</button>
+                    <button id="submitInfo" type="submit" class="btn btn-primary" data-bind="click: submitUserInfo">Submit</button>
                 </form>
             </div>
 
