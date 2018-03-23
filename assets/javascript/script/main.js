@@ -22,11 +22,26 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.userVisible = ko.observable(false);
 
+        self.pickedJoin = ko.observable(false);
+        self.pickedCreate = ko.observable(true);
+
+
         self.searchTerm = ko.observable('chicken');
 
         self.zipCode = ko.observable('77077');
 
         self.zipInfo = ko.observable('');
+
+        self.eventChosen = ko.observable('');
+
+        self.firstName = ko.observable('');
+
+        self.lastName = ko.observable('');
+
+        self.email = ko.observable('');
+
+        self.usersForChosenEvent = ko.observableArray('');
+
 
         self.searchResult = ko.observableArray([]);
 
@@ -35,11 +50,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createEventList = ko.observableArray();
 
 
+
+
+
+
         // These observable keep track of what page is displaying
         self.landingVisible = ko.observable(true);
 
 
-        self.resultsVisible = ko.observable(true);
+        self.resultsVisible = ko.observable(false);
 
         self.createVisible = ko.observable(false);
 
@@ -87,8 +106,11 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 ko.utils.arrayPushAll(self.searchResult, secureApiRequest.responseObject.businesses);
 
                 ko.utils.arrayForEach(self.searchResult(), function (item) {
+
                     var db = firebase.database();
                     db.ref().child("events").orderByKey().equalTo(item.id).once("value", function (snapshot) {
+
+
 
                         if (snapshot.val()) {
                             var dbData = snapshot.val();
@@ -99,7 +121,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
                             self.currentEvents.push(activity);
-                            console.log(self.currentEvents());
+                            // console.log(self.currentEvents());
                         }
                         else {
                             //console.log("DoNotExists: " + item.id);
@@ -115,22 +137,44 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             });
-
+            self.landingVisible(false);
             self.resultsVisible(true);
 
         }
 
 
-        self.joinEvent = function () {
-            console.log("Joined Event");
+        self.joinEvent = function (event) {
+            console.log(JSON.stringify(event));
+
+            self.pickedJoin(true);
+            self.eventChosen(event.key);
+            self.usersForChosenEvent(event.users);
             self.resultsVisible(false);
             self.userVisible(true);
         }
 
         self.submitUserInfo = function () {
-            console.log("Submitted user Info");
-            self.userVisible(false);
-            self.resultsVisible(true);
+
+            if (self.pickedJoin()) {
+
+                var dbRef = firebase.database().ref("events/" + self.eventChosen() + "/users");
+
+                self.usersForChosenEvent.push({
+                    email: self.email(),
+                    firstName: self.firstName(),
+                    lastName: self.lastName(),
+                });
+
+                dbRef.set(self.usersForChosenEvent());
+
+                self.pickedJoin(false);
+                self.userVisible(false);
+                self.resultsVisible(true);
+            }
+            else if(self.pickedCreate())
+            {
+                self.pickedCreate(false);
+            }
         }
 
         self.navToCreate = function () {
