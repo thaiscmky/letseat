@@ -1,6 +1,6 @@
 var animation = {
     suggestionArr: [
-        // The first 5 items CAN'T be changed thanks
+        // The first 5 items CAN'T be changed
         'pizza',
         'rib-eye steak',
         'ice cream',
@@ -15,19 +15,16 @@ var animation = {
 
     loopSuggestions() {
         var firstIndex = animation.suggestionArr.shift();
-        animation.suggestionArr.push(firstIndex);
-        console.log(animation.suggestionArr);
+        animation.suggestionArr.push(firstIndex);        
         animation.drawSuggestions();
     },
 
     drawSuggestions() {
-        console.log('sdf');
-        console.log(animation.suggestionArr[0]);
         $("#suggestions-1").animate({ opacity: '0' }, 500);
-        $("#suggestions-2").animate({ top: "0em", opacity: '1' }, 1000);
-        $("#suggestions-3").animate({ top: "1em", opacity: '.75' }, 1000);
-        $("#suggestions-4").animate({ top: "2em", opacity: '.50' }, 1000);
-        $("#suggestions-5").animate({ top: "3em", opacity: '.25' }, 1000, function () {
+        $("#suggestions-2").animate({ top: "+0em", opacity: '1' }, 1000);
+        $("#suggestions-3").animate({ top: "+1em", opacity: '.75' }, 1000);
+        $("#suggestions-4").animate({ top: "+2em", opacity: '.50' }, 1000);
+        $("#suggestions-5").animate({ top: "+3em", opacity: '.25' }, 1000, function () {
             $("#suggestions-1").text(animation.suggestionArr[0] + '?');
             $("#suggestions-2").text(animation.suggestionArr[1] + '?');
             $("#suggestions-3").text(animation.suggestionArr[2] + '?');
@@ -39,8 +36,14 @@ var animation = {
     }
 }
 
-var suggestionLoop = setInterval(function() {
+var suggestionLoop = setInterval(function () {
     animation.loopSuggestions()
 }, 3000);
 
-$("#")
+$("#submitSearch").on("click", function () {
+    $("header").animate({opacity: '0', top: '-=100vh' }, 1000, function() {
+        $("header").css({display: 'none'});
+        clearInterval(suggestionLoop);
+        $("#main-content").removeAttr('style');
+    })
+})

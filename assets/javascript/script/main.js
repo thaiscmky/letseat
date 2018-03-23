@@ -198,19 +198,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             var searchTerm = self.searchTerm();
             var zipCode = self.zipCode();
             // When user clicks submit this is the code that runs...
-          
+
             // FYI this prevent default submit functionality because we're using KO.js                
 
             // Hi this is needs to eventually automatically detect if event are found near you or not
-            if (confirm('Found events near you?\nOk = Navigates to Results Display\nCancel = Navigates to Create Display')) {
-                // Navigates to results display
-                self.landingVisible(false);
-                self.resultsVisible(true);
-            } else {
-                // Navigates to create display
-                self.landingVisible(false);
-                self.createVisible(true);
-            }
+
+            // Navigates to results display
+            self.landingVisible(false);
+            self.resultsVisible(true);
+
         }
 
         self.joinEvent = function () {
@@ -229,7 +225,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.resultsVisible(false);
             self.createVisible(true);
         }
-        
+
         self.navToResult = function () {
             self.createVisible(false);
             self.resultsVisible(true);
