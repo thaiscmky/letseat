@@ -1,7 +1,7 @@
 define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
 
 
-    function Activity(id, categories, name, location, users, image_url) {
+    function Activity(id, categories, name, location, users, image_url, maxSeats) {
         var self = this;
         self.key = id;
         self.categories = categories;
@@ -10,6 +10,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         if (users) {
             self.users = Array.from(users);
 
+        }
+        if(maxSeats)
+        {
+            self.maxSeats = maxSeats;
         }
         self.image_url = image_url;
 
@@ -33,6 +37,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createKey = ko.observable('');
         self.createName = ko.observable('');
         self.createCategories = ko.observable('');
+        self.createMaxSeats = ko.observable(0);
 
 
 
@@ -127,7 +132,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                             var arr2 = Object.values(dbData);
                             var value = arr2[0];
-                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url);
+
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url, value.maxSeats);
 
 
                             self.currentEvents.push(activity);
@@ -154,17 +160,27 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
         self.joinEvent = function (event) {
-            console.log(JSON.stringify(event));
-
-            self.pickedJoin(true);
-            self.eventChosen(event.key);
-            self.usersForChosenEvent(event.users);
-            self.resultsVisible(false);
-            self.userVisible(true);
+            if(event.users.length>=event.maxSeats)
+            {
+                alert("EVENT FULL\n @The make this pretty");
+            }
+            else{
+                self.pickedJoin(true);
+                self.eventChosen(event.key);
+                self.usersForChosenEvent(event.users);
+                self.resultsVisible(false);
+                self.userVisible(true);
+            }
+            
         }
 
 
-        self.createEvent = function (event) {
+        self.createEvent = function (event, domEvent) {
+
+
+            var eventIndex = ko.contextFor(domEvent.target).$index();
+
+            self.createMaxSeats($("#"+eventIndex).val());
 
             self.createVisible(false);
             self.userVisible(true);
@@ -242,10 +258,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     eventName: self.createName(),
                     location: locationObject,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    users: self.usersForChosenEvent()
+                    users: self.usersForChosenEvent(),
+                    maxSeats: self.createMaxSeats()
 
                 })
 
+
+                self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
 
 
