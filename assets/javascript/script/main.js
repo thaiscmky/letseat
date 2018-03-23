@@ -198,6 +198,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             var searchTerm = self.searchTerm();
             var zipCode = self.zipCode();
             // When user clicks submit this is the code that runs...
+          
             // FYI this prevent default submit functionality because we're using KO.js                
 
             // Hi this is needs to eventually automatically detect if event are found near you or not
@@ -236,6 +237,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     }
 
     ko.applyBindings(new LetsEatViewModel);
+
 });
 
 

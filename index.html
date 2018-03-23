@@ -39,9 +39,10 @@
         </div>
     </header>
 
-    <section id="main-container" class="main-wrapper">
+    <section class="main-wrapper">
         <div id="main-content-header">So... What are you hungry for?</div>
         <div id="main-content">
+
 
             <!-- This is the HTML for Landing Display-->
             <div id="landing-display" class="container" data-bind="visible: landingVisible">
@@ -68,7 +69,7 @@
                             <img id="entry-img" class="img-fluid" src="http://via.placeholder.com/600x350" alt="entry-img">
                         </div>
                     </div>
-
+<!-- Commented out, broken. Please refer to issue #78 -->
                     <div id="suggestion-content" class="col 4">
                         <div class="row">
                             <div id="suggestion-header">
@@ -83,6 +84,7 @@
                 </div>
 
             </div>
+<!-- End of Commented out, broken. Please refer to issue #78 -->
 
             <!-- This is the HTML for Result Display -->
             <div id="result-display" class="container" data-bind="visible: resultsVisible" style="display: none;">
@@ -175,6 +177,7 @@
                         <div class="col-12"></div>
                         <button id="create-footer-text" class="col-12 btn" data-bind="click: navToResult"> Go back to browsing results</button>
                     </div>
+
             </div>
 
             <!-- This is the HTML for User Display -->
