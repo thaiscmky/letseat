@@ -1,14 +1,10 @@
 html {
     font-family: 'Montserrat', sans-serif;
-    background-color: #eee;
+    background-color: #eee;    
 }
 
 body {
     background-color: transparent;    
-}
-
-header {
-    margin: 1.618em 0;    
 }
 
 .main-wrapper {
@@ -16,64 +12,65 @@ header {
     margin: auto;
 }
 
-#banner {    
-    height: 150px; /* This is same height as #banner-image */
+/* Landing/Search CSS */
+header {
+    height: 100vh;
+    background-color: rgba(30, 30, 30, 0.3);
 }
 
-#banner-image {
-    margin-right: 10px;
+#landing-background {
+    position: fixed;
+    /* top: -100vh; */
+    background: url("../images/landing-bg.jpg") no-repeat center;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+    z-index: -1;
 }
 
-#banner-text-group {
-    height: inherit;    
+#landing-content {
+    position: relative;
+    top: -6.854em; /* Set this is negative font-size of #landing-header*/
 }
 
-#banner-text-main {    
-    height: 50%;
-    font-size: 4.236em;
-    line-height: calc(150px - 1em);    
+#landing-header, .landing-label {
+    text-align: center;
 }
 
-#banner-text-sub {    
-    font-size: 1.618em;
+#landing-container {
+    width: 100%;
+    height: 100%;    
 }
 
-#main-content-header {
-    font-size: 1.618em;
+#landing-header {
+    font-size: 6.854em;
+    color: #fff;
+    font-weight: 900;
+    /* text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; */   
 }
+
+#search-container {
+    background-color: rgba(30, 30, 30, 0.7);
+    font-size: 2em;
+    padding: 1em 1em 1em 1em;
+    color: #fff;
+}
+
+.form-sub {
+    margin: 5px 0;
+    font-size: .618em;
+}
+
+.term-sub {
+    
+}
+
+
+/* Displays CSS */
 
 #main-content {        
     border: 4px solid #444;
     background-color: #fff;
-}
-
-/* Landing/Search CSS */
-label {
-    margin-bottom: 8px;
-}
-
-#form-content {
-    margin-bottom: 16px;
-}
-
-#entry-img {
-    width: 100%;
-}
-
-#suggestion-header {
-    width: 100%;
-    text-align: center;
-    background-color: #CCC;
-    padding: .618em;
-    margin-bottom: 15px;
-}
-
-#suggestion-content {
-    border-left: 4px solid #444;    
-}
-
-#entry-content {
-    padding: 15px 15px 0 15px;
 }
 
 /* Results CSS */
