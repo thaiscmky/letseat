@@ -20,6 +20,7 @@ var animation = {
     },
 
     drawSuggestions() {
+        $(".suggestion").finish();
         $("#suggestions-1").animate({ opacity: '0' }, 500);
         $("#suggestions-2").animate({ top: "+0em", opacity: '1' }, 1000);
         $("#suggestions-3").animate({ top: "+1em", opacity: '.75' }, 1000);
