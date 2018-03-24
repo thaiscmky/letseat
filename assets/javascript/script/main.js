@@ -1,6 +1,5 @@
 define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
 
-
     function Activity(id, categories, name, location, users, image_url, maxSeats) {
         var self = this;
         self.key = id;
@@ -56,17 +55,11 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.usersForChosenEvent = ko.observableArray('');
 
-
         self.searchResult = ko.observableArray([]);
 
         self.currentEvents = ko.observableArray();
 
         self.createEventList = ko.observableArray();
-
-
-
-
-
 
         // These observable keep track of what page is displaying
         self.landingVisible = ko.observable(true);
@@ -75,8 +68,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.resultsVisible = ko.observable(false);
 
         self.createVisible = ko.observable(false);
-
-
 
 
         // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
@@ -286,18 +277,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     }
 
-
-
-
-    
-
     // The's landing page code
     $(document).ready(function () {
         ko.applyBindings(new LetsEatModel());
 
     });
-
-
-
 
 });
