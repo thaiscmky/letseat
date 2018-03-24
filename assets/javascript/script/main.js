@@ -148,6 +148,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
+    
 
 
         self.joinEvent = function (event) {
@@ -161,7 +162,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.resultsVisible(false);
                 self.userVisible(true);
             }
-
         }
 
 
