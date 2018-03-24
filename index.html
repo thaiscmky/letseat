@@ -134,21 +134,33 @@
                                 <!-- THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL! -->
                                 THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL!
                                 <div>This is a test to make sure we can call data from our results observable</div>
-                                <div data-bind="text: restaurantName"></div>
+                                <div data-bind="with: eventChosen">
 
-                                <div data-bind="text: restaurantPrice"></div>
-                                <div data-bind="text: restaurantRating"></div>
-                                <div data-bind="text: restaurantYelpURL"></div>
-                                <div data-bind="text: restaurantPhone"></div>
+                                        <div data-bind="text: $root.eventChosen().name"></div>
 
-                                <img data-bind="attr:{'src': restaurantIMGURL}" style="width:50px;">
-                                <p data-bind="text: restaurantAddress"></p>
-                                <div data-bind="text: restaurantCity"></div>
-                                <div data-bind="text: restaurantZip"></div>
-                                <div data-bind="text: restaurantCategories"></div>
+                                        <div data-bind="text: $root.eventChosen().price"></div>
+                                        <div data-bind="text: $root.eventChosen().rating"></div>
+                                        <div data-bind="text: $root.eventChosen().url"></div>
+                                        <div data-bind="text: $root.eventChosen().phoneNumber"></div>
+        
+                                        <img data-bind="attr:{'src': $root.eventChosen().image_url}" style="width:50px;">
+                                        
+                                        <p data-bind="text: $root.eventChosen().location.address1"></p>
+                                        <div data-bind="text: $root.eventChosen().location.city"></div>
+                                        <div data-bind="text: $root.eventChosen().location.zip_code"></div>
+        
+                                        <div data-bind="foreach: $root.eventChosen().categories">
+                                            <span data-bind="text: title, "></span>
+                                        </div>
+                                        <div data-bind="text: $root.eventChosen().maxSeats"></div>
+        
+
+                                </div>
+                                
+
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-warning-reverse hvr-fade" data-dismiss="modal" aria-label="close">Exit</button>
+                                <button type="button" class="btn btn-warning-reverse hvr-fade" data-dismiss="modal" aria-label="close" data-bind="click: deselectEvent">Exit</button>
                             </div>
                         </div>
                     </div>
