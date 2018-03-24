@@ -125,3 +125,7 @@ header {
 .card-list {
     padding: 10px 0 10px 10px;
 }
+
+.pre-scrollable{
+    max-height: 450px;
+}
