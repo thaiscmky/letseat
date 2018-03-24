@@ -63,6 +63,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createEventList = ko.observableArray();
 
+        self.currentYelpOffset = ko.observable(0);
+
 
 
 
@@ -95,12 +97,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         });
 
         //search
-        self.submitSearch = function () {
+        self.submitSearch = function (off) {
 
             var searchTerm = self.searchTerm();
             var zipCode = self.zipCode();
             self.searchResult.removeAll();
-            self.currentEvents.removeAll();
+            // self.currentEvents.removeAll();
 
 
             var apitoken = "O6n9AwTvAVvbc1aMOVvSmI_ATeiK6bEXa3Ad-nEfWVp0tuJPnG_yv01m8WwvcQ3Urd2B7Z25hxVCOF35wf_-C-Ub-zm57JG_EnQMn0vQj6LNBDfkj-xlcWHUSxKuWnYx";
@@ -111,7 +113,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 query: {
                     categories: searchTerm,
                     limit: 20, //number of results to return
-                    location: zipCode
+                    location: zipCode,
+                    offset: self.currentYelpOffset()
                 }
             };
 
@@ -179,7 +182,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             var eventIndex = ko.contextFor(domEvent.target).$index();
 
-            self.createMaxSeats($("#" + eventIndex).val());
+            self.createMaxSeats($("#seatInput" + eventIndex).val());
 
             self.createVisible(false);
             self.userVisible(true);
@@ -284,16 +287,55 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.resultsVisible(true);
         }
 
+        self.lastItemIsInView = function(containerView, containerType){
+
+            if(containerType==="eventResult"){
+                var elementIndex = self.currentEvents().length-1;
+
+            }
+            else if(containerType==="create"){
+                var elementIndex = self.createEventList().length-1;
+
+            }
+
+
+            var docViewTop = containerView.scrollTop();
+            var docViewBottom = docViewTop + containerView.height();
+            
+                var element = $("#"+containerType+elementIndex);
+
+             var elemTop = element.offset().top;
+            var elemBottom = elemTop + element.height();
+
+            if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)){
+                var tempOffset = self.currentYelpOffset();
+                tempOffset += 20;
+                self.currentYelpOffset(tempOffset);
+                self.submitSearch(self.currentYelpOffset())
+            }
+    }
+
     }
 
 
+    var leViewModel = new LetsEatModel();
+    $("#result-container").scroll(function(){
 
+        leViewModel.lastItemIsInView($("#result-container"), "eventResult");
+            
+    });
+
+    $("#create-container").scroll(function(){
+
+        leViewModel.lastItemIsInView($("#create-container"), "create");
+            
+    });
 
     
-
+    
     // The's landing page code
     $(document).ready(function () {
-        ko.applyBindings(new LetsEatModel());
+        ko.applyBindings(leViewModel);
 
     });
 
