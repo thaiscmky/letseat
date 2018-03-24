@@ -90,16 +90,79 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             var searchTerm = self.searchTerm();
             var zipCode = self.zipCode();
-            // When user clicks submit this is the code that runs...
+            self.searchResult.removeAll();
+            self.currentEvents.removeAll();
 
-            // FYI this prevent default submit functionality because we're using KO.js                
 
-            // Hi this is needs to eventually automatically detect if event are found near you or not
+            var apitoken = "O6n9AwTvAVvbc1aMOVvSmI_ATeiK6bEXa3Ad-nEfWVp0tuJPnG_yv01m8WwvcQ3Urd2B7Z25hxVCOF35wf_-C-Ub-zm57JG_EnQMn0vQj6LNBDfkj-xlcWHUSxKuWnYx";
 
-            // Navigates to results display
+            var args = {
+                url: 'https://api.yelp.com/v3/businesses/',
+                type: 'search?',
+                query: {
+                    categories: searchTerm,
+                    limit: 20, //number of results to return
+                    location: zipCode
+                }
+            };
+
+            $.when(secureApiRequest.fetchResponse(args, apitoken)).done(function () {
+                console.log(secureApiRequest.responseObject);
+                ko.utils.arrayPushAll(self.searchResult, secureApiRequest.responseObject.businesses);
+
+                ko.utils.arrayForEach(self.searchResult(), function (item) {
+
+                    var db = firebase.database();
+                    db.ref().child("events").orderByKey().equalTo(item.id).once("value", function (snapshot) {
+
+
+
+                        if (snapshot.val()) {
+                            var dbData = snapshot.val();
+
+                            var arr2 = Object.values(dbData);
+                            var value = arr2[0];
+
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url, value.maxSeats);
+
+
+                            self.currentEvents.push(activity);
+                            // console.log(self.currentEvents());
+                        }
+                        else {
+                            //console.log("DoNotExists: " + item.id);
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url);
+                            self.createEventList.push(activity);
+
+                        }
+
+                    })
+
+                }, self)
+
+
+
+            });
             self.landingVisible(false);
             self.resultsVisible(true);
+
         }
+
+    
+
+
+        self.joinEvent = function (event) {
+            if (event.users.length >= event.maxSeats) {
+                alert("EVENT FULL\n @The make this pretty");
+            }
+            else {
+                self.pickedJoin(true);
+                self.eventChosen(event.key);
+                self.usersForChosenEvent(event.users);
+                self.resultsVisible(false);
+                self.userVisible(true);
+            }
+        };
 
 
         self.createEvent = function (event, domEvent) {
@@ -116,7 +179,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             self.createKey(event.key);
-            self.createName(event.name)
+            self.createName(event.name);
             self.createCity(event.location.city);
             self.createZip(event.location.zip_code);
             var address = event.location.address1;
@@ -129,7 +192,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             self.createAddress(address);
-            var categoryString = ''
+            var categoryString = '';
             for (var i = 0; i < event.categories.length; i++) {
                 if (i === 0) {
                     categoryString = event.categories[i].title;
@@ -142,7 +205,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
 
-        }
+        };
 
         self.submitUserInfo = function () {
 
@@ -153,7 +216,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
-                    lastName: self.lastName(),
+                    lastName: self.lastName()
                 });
 
                 dbRef.set(self.usersForChosenEvent());
@@ -171,7 +234,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
-                    lastName: self.lastName(),
+                    lastName: self.lastName()
                 });
 
                 var locationObject = {
@@ -188,7 +251,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
-                })
+                });
 
 
                 self.createMaxSeats(0);
@@ -199,13 +262,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
-        }
+        };
 
         self.navToCreate = function () {
 
             self.resultsVisible(false);
             self.createVisible(true);
-        }
+        };
 
         self.navToResult = function () {
             self.createVisible(false);

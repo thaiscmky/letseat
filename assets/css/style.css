@@ -1,10 +1,11 @@
 html {
     font-family: 'Montserrat', sans-serif;
-    background-color: #eee;    
+    background: url("../images/main-bg.jpg") no-repeat center;
 }
 
 body {
-    background-color: transparent;    
+    background-color: transparent; 
+    overflow: hidden;   
 }
 
 .main-wrapper {
@@ -15,16 +16,15 @@ body {
 /* Landing/Search CSS */
 header {
     position: relative;
-    height: 100vh;
-    background-color: rgba(30, 30, 30, 0.3);
+    top: -20vh;
+    height: 100vh;    
 }
 
 #landing-background {
-    position: fixed;
-    /* top: -100vh; */
+    position: fixed;    
     background: url("../images/landing-bg.jpg") no-repeat center;
-    background-size: cover;
-    height: 100vh;
+    background-size: cover;    
+    height: 120vh;
     width: 100%;
     z-index: -1;
 }
@@ -40,8 +40,10 @@ header {
 }
 
 #landing-container {
+    position: relative;
+    top: 20vh;
     width: 100%;
-    height: 100%;    
+    height: 100%;
 }
 
 #landing-header {
@@ -54,7 +56,8 @@ header {
     background-color: rgba(30, 30, 30, 0.7);
     font-size: 2em;
     padding: 1em 1em 1em 1em;
-    color: #fff;
+    color: #fff;    
+    border-radius: 1rem;
 }
 
 .zip-sub, .search-sub {    
@@ -88,19 +91,35 @@ header {
 
 
 /* Displays CSS */
+#main-header {    
+    text-align: center;
+    font-size: 3.375em;
+    color: #fff;
+    font-weight: 900;
+}
 
-#main-content {        
+#main-content {                
     border: 4px solid #444;
     background-color: #fff;
 }
 
+#main-container {
+    /* position: relative;
+    top: -5.063em;     */
+    height: 100vh;
+}
+
+#create-container, #result-container {
+    padding-left: 15px;
+}
+
 /* Results CSS */
 
-#result-header{
+.display-header{
     font-size: 2.618em;
     padding: 10px 0px 10px 0px;
     border-bottom: solid 3px #444;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
 }
 
 .column {
@@ -128,4 +147,30 @@ header {
 
 .pre-scrollable{
     max-height: 450px;
+    overflow-x: hidden;
+}
+
+#result-footer-text, #create-footer-text {
+    border-radius: 0;
+}
+
+/* This is the custom Scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #666; 
 }

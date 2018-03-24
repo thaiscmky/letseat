@@ -15,7 +15,7 @@ var animation = {
 
     loopSuggestions() {
         var firstIndex = animation.suggestionArr.shift();
-        animation.suggestionArr.push(firstIndex);        
+        animation.suggestionArr.push(firstIndex);
         animation.drawSuggestions();
     },
 
@@ -34,6 +34,18 @@ var animation = {
             $(".suggestion").removeAttr('style');
         });
 
+    },
+
+    headerFly() {
+        $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 2000, 'easeInBack', function () {            
+            $("header").css({ display: 'none' });
+            clearInterval(suggestionLoop);
+        })
+        $("#main-content").removeAttr('style');
+    },
+
+    headerFade() {
+
     }
 }
 
@@ -42,9 +54,6 @@ var suggestionLoop = setInterval(function () {
 }, 3000);
 
 $("#submitSearch").on("click", function () {
-    $("header").animate({opacity: '0', top: '-=100vh' }, 1000, function() {
-        $("header").css({display: 'none'});
-        clearInterval(suggestionLoop);
-        $("#main-content").removeAttr('style');
-    })
+    animation.headerFly();
+    animation.headerFade();
 })
