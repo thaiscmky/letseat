@@ -15,4 +15,4 @@ requirejs.config({
     }
 });
 
-requirejs(["script/main", "script/tests", "script/ko-components-registration"]);
+requirejs(["script/main", "script/tests", "script/ko-components-registration", "script/animation"]);

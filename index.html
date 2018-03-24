@@ -36,69 +36,51 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script data-main="./assets/javascript/script" src="./assets/javascript/lib/require.js"></script>
-
 </head>
 
 <body>
     <!-- Header and Logo HTML -->
     <header>
-        <div class="main-wrapper">
-            <div id="page-header">
-                <div id="banner">
-                    <img id="banner-image" class="float-left" src="http://via.placeholder.com/150x150" alt="logo" />
-                    <div id="banner-text-group" class="float-left">
-                        <div id="banner-text-main">Let's Eat!</div>
-                        <div id="banner-text-sub">yummy</div>
+        <div id="landing-background"></div>
+        <div id="landing-container" class="container d-flex align-items-center">
+            <div class="main-wrapper">
+                <div id="landing-content">
+                    <div id="landing-header">Hungry?</div>
+                    <div id="search-container" class="container">
+                        <form id="form-content" data-bind="submit: submitSearch">
+                            <div class="row">
+                                <div class="col-6 landing-label">
+                                    <label for="zipCode">What is your Zip Code?</label>
+                                    <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
+                                </div>
+                                <div class="col-6 landing-label">
+                                    <label for="searchTerm">What are you craving?</label>
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-6 zip-sub" data-bind="text: zipInfo"></label>
+                                <label class="col-6 search-sub" style="white-space: nowrap">How about some&nbsp;
+                                    <label id="suggestions-1" class="suggestion">pizza?</label>
+                                    <label id="suggestions-2" class="suggestion">rib-eye steak?</label>
+                                    <label id="suggestions-3" class="suggestion">ice cream?</label>
+                                    <label id="suggestions-4" class="suggestion">fried chicken?</label>
+                                    <label id="suggestions-5" class="suggestion">texas bbq?</label>
+                                </label>
+                            </div>
+                            <button id="submitSearch" type="submit" class="btn btn-primary">Let's Eat!</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="main-container" class="main-wrapper">
-        <div id="main-content-header">So... What are you hungry for?</div>
-        <div id="main-content">
 
+
+    <section class="main-wrapper">
+        <div id="main-content" style="display: none;">
             <!-- This is the HTML for Landing Display-->
-            <div id="landing-display" class="container" data-bind="visible: landingVisible">
-                <div class="row">
-
-                    <div id="entry-content" class="col-8">
-                        <form id="form-content" data-bind="submit: submitSearch">
-                            <div class="form-row">
-                                <div class="form-group col-6">
-                                    <label for="searchTerm">Search Term</label>
-                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
-                                </div>
-                                <div class="form-group col-6">
-                                    <label for="zipCode">Zip Code:
-                                        <span data-bind="text: zipInfo"></span>
-                                    </label>
-                                    <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
-                                </div>
-                            </div>
-
-                            <button id="submitSearch" type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                        <div class="text-center">
-                            <img id="entry-img" class="img-fluid" src="http://via.placeholder.com/600x350" alt="entry-img">
-                        </div>
-                    </div>
-
-                    <div id="suggestion-content" class="col 4">
-                        <div class="row">
-                            <div id="suggestion-header">
-                                Suggestions
-                            </div>
-                        </div>
-
-                        <div id="suggestion-list">
-                            Lol where did the code for this go? RIP IN PEACE
-                        </div>
-                    </div>
-                </div>
-
-            </div>
 
             <!-- This is the HTML for Result Display -->
             <div id="result-display" class="container" data-bind="visible: resultsVisible" style="display: none;">
@@ -198,12 +180,6 @@
                     <div class="col-12"></div>
                     <button id="create-footer-text" class="col-12 btn" data-bind="click: navToResult"> Go back to browsing results</button>
                 </div>
-
-                <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
-                <div id="create-footer" class="row">
-                        <div class="col-12"></div>
-                        <button id="create-footer-text" class="col-12 btn" data-bind="click: navToResult"> Go back to browsing results</button>
-                    </div>
 
             </div>
 
