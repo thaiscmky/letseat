@@ -10,8 +10,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.users = Array.from(users);
 
         }
-        if(maxSeats)
-        {
+        if (maxSeats) {
             self.maxSeats = maxSeats;
         }
         self.image_url = image_url;
@@ -102,7 +101,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 type: 'search?',
                 query: {
                     categories: searchTerm,
-                    limit: 10, //number of results to return
+                    limit: 20, //number of results to return
                     location: zipCode
                 }
             };
@@ -151,19 +150,18 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     
 
+
         self.joinEvent = function (event) {
-            if(event.users.length>=event.maxSeats)
-            {
+            if (event.users.length >= event.maxSeats) {
                 alert("EVENT FULL\n @The make this pretty");
             }
-            else{
+            else {
                 self.pickedJoin(true);
                 self.eventChosen(event.key);
                 self.usersForChosenEvent(event.users);
                 self.resultsVisible(false);
                 self.userVisible(true);
             }
-            
         }
 
 
@@ -172,7 +170,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             var eventIndex = ko.contextFor(domEvent.target).$index();
 
-            self.createMaxSeats($("#"+eventIndex).val());
+            self.createMaxSeats($("#" + eventIndex).val());
 
             self.createVisible(false);
             self.userVisible(true);
@@ -206,7 +204,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.createCategories(categoryString);
 
 
-            
+
         }
 
         self.submitUserInfo = function () {
