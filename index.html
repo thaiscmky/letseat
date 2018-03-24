@@ -71,7 +71,7 @@
                                     <label id="suggestions-5" class="suggestion">texas bbq?</label>
                                 </label>
                             </div>
-                            <button id="submitSearch" type="submit" class="btn btn-warning">Let's Eat!</button>
+                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat!</button>
                         </form>
                     </div>
                 </div>
@@ -79,18 +79,16 @@
         </div>
     </header>
 
-    <section>
+    <section id="main-container" class="container d-flex align-items-center">
         <div class="main-wrapper">
             <div id="main-header">Let's Eat!</div>
             <div id="main-content" style="display: none;">
                 <!-- This is the HTML for Result Display -->
-                <div id="result-display" class="container" data-bind="visible: resultsVisible" style="display: none;">
-
-                    <div class="row">
+                <div id="result-display" class="" data-bind="visible: resultsVisible" style="display: none;">
+                    
                         <div class="display-header col-12">
                             <p class="text-center">Any of these activities interest you?</p>
-                        </div>
-                    </div>
+                        </div>                    
                     <div id="result-container" class="pre-scrollable">
                         <div class="row" data-bind="foreach: currentEvents">
                             <div class="col-4 column">
@@ -105,17 +103,17 @@
                                         </div>
                                     </div>
                                     <p class="join-max-seats-display" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
-                                    <button class="btn join-button" data-bind="click: $root.joinEvent">Join</button>
-                                    <button class="btn info-button" data-toggle="modal" data-target="#createModal">Info</button>
+                                    <button class="btn btn-warning-reverse hvr-fade join-button" data-bind="click: $root.joinEvent">Join</button>
+                                    <button class="btn btn-warning-reverse hvr-fade info-button" data-toggle="modal" data-target="#createModal">Info</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
-                    <div id="result-footer" class="row">
+                    <div id="result-footer" class="">
                         <div class="col-12"></div>
-                        <button id="result-footer-text" class="col-12 btn" data-bind="click: navToCreate"> None of these interest me... Create an Event</button>
+                        <button id="result-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToCreate"> None of these interest me... Create an Event</button>
                     </div>
 
                 </div>
@@ -137,18 +135,18 @@
                                 <div data-bind="results()["></div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn" data-dismiss="modal" aria-label="close">Exit</button>
+                                <button type="button" class="btn btn-warning-reverse hvr-fade" data-dismiss="modal" aria-label="close">Exit</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- This is the HTML for Create Display -->
-                <div id="create-display" class="container" data-bind="visible: createVisible" style="display: none;">
-
-                    <div class="display-header col-12">
-                        <p class="text-center">Any of these activities interest you?</p>
-                    </div>
+                <div id="create-display" data-bind="visible: createVisible" style="display: none;">
+                    
+                        <div class="display-header col-12">
+                            <p class="text-center">Create an event?</p>
+                        </div>
 
                     <div id="create-container" class="pre-scrollable">
                         <div class="row" data-bind="foreach: createEventList">
@@ -168,16 +166,16 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <butaton class="btn create-button" data-bind="click: $root.createEvent">Create</button>
+                                    <butaton class="btn btn-warning-reverse hvr-fade create-button" data-bind="click: $root.createEvent">Create</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
-                    <div id="create-footer" class="row">
+                    <div id="create-footer" class="">
                         <div class="col-12"></div>
-                        <button id="create-footer-text" class="col-12 btn" data-bind="click: navToResult"> Go back to browsing results</button>
+                        <button id="create-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToResult"> Go back to browsing results</button>
                     </div>
 
                 </div>
@@ -198,7 +196,7 @@
                             <label for="emailInput">Email</label>
                             <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
                         </div>
-                        <button id="submitInfo" type="submit" class="btn btn-primary" data-bind="click: submitUserInfo">Submit</button>
+                        <button id="submitInfo" type="submit" class="btn btn-warning-reverse hvr-fade btn-primary" data-bind="click: submitUserInfo">Submit</button>
                     </form>
                 </div>
 
