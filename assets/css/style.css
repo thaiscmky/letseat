@@ -93,7 +93,7 @@ header {
 /* Displays CSS */
 #main-header {    
     text-align: center;
-    font-size: 5.063em;
+    font-size: 3.375em;
     color: #fff;
     font-weight: 900;
 }
@@ -146,7 +146,7 @@ header {
 }
 
 .pre-scrollable{
-    max-height: 550px;
+    max-height: 450px;
     overflow-x: hidden;
 }
 
