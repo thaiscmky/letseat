@@ -1,6 +1,6 @@
 define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
 
-    function Activity(id, categories, name, location, users, image_url, maxSeats) {
+    function Activity(id, categories, name, location, users, image_url, maxSeats, url, price, rating, phoneNumber) {
         var self = this;
         self.key = id;
         self.categories = categories;
@@ -10,9 +10,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.users = Array.from(users);
 
         }
+
         if (maxSeats) {
             self.maxSeats = maxSeats;
+
         }
+        self.url = url;
+        self.price = price;
+        self.rating = rating;
+        self.phoneNumber = phoneNumber;
         self.image_url = image_url;
 
 
@@ -26,6 +32,59 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
+        
+
+        //modal info
+        self.restaurantName = ko.observable('');
+        self.restaurantPrice = ko.observable('');
+        self.restaurantRating = ko.observable('');
+        self.restaurantYelpURL = ko.observable('');
+        self.restaurantIMGURL = ko.observable('');
+        self.restaurantAddress = ko.observable('');
+        self.restaurantCity = ko.observable('');
+        self.restaurantZip = ko.observable('');
+        self.restaurantPhone = ko.observable('');
+        self.restaurantCategories = ko.observable('');
+
+        self.saveEventInfo = function(data){
+            self.restaurantName(data.name);
+            
+            self.restaurantPrice(data.price);
+            self.restaurantRating(data.rating);
+            self.restaurantYelpURL(data.url);
+
+            self.restaurantIMGURL(data.image_url);
+            
+            self.restaurantCity(data.location.city);
+            self.restaurantZip(data.location.zip_code);
+            self.restaurantPhone(data.phoneNumber);
+
+
+            var address = data.location.address1
+            if (data.location.address2.length > 0) {
+                address += ", " + data.location.address2;
+            }
+            if (data.location.address3.length > 0) {
+                address += ", " + data.location.address3;
+            }
+
+            self.restaurantAddress(address);           
+             var categoryString = ''
+            for (var i = 0; i < data.categories.length; i++) {
+                if (i === 0) {
+                    categoryString = data.categories[i].title;
+                }
+                else if((data.categories.length-1)===i){
+                    categoryString += data.categories[i].title;
+                }
+                 {
+                    categoryString += ", " + data.categories[i].title;
+                }
+            }
+            
+            self.restaurantCategories(categoryString);
+           
+        }
 
         //create event observables
         self.pickedCreate = ko.observable(false);
@@ -107,7 +166,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             };
 
             $.when(secureApiRequest.fetchResponse(args, apitoken)).done(function () {
-                console.log(secureApiRequest.responseObject);
+                // console.log(secureApiRequest.responseObject);
                 ko.utils.arrayPushAll(self.searchResult, secureApiRequest.responseObject.businesses);
 
                 ko.utils.arrayForEach(self.searchResult(), function (item) {
@@ -119,11 +178,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                         if (snapshot.val()) {
                             var dbData = snapshot.val();
-
                             var arr2 = Object.values(dbData);
                             var value = arr2[0];
-
-                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url, value.maxSeats);
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url, value.maxSeats, item.url, item.price, item.rating, item.display_phone);
 
 
                             self.currentEvents.push(activity);
@@ -131,7 +188,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         }
                         else {
                             //console.log("DoNotExists: " + item.id);
-                            var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url);
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url, undefined, item.url, item.price, item.rating, item.display_phone);
                             self.createEventList.push(activity);
 
                         }
@@ -148,7 +205,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
-    
+
 
 
         self.joinEvent = function (event) {
