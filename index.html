@@ -119,10 +119,13 @@
                                         <img class="card-image" data-bind="attr:{'src': image_url}">
                                         <div class="card-list col" data-bind="foreach: users">
                                             <p class="card-name" data-bind="text: ($index() + 1) + '. ' + firstName+' ' + lastName"></p>
+                                            
                                         </div>
+                                        
 
                                     </div>
                                 </div>
+                                <p class="join-max-seats-display" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
                                 <button class="btn join-button" data-bind="click: $root.joinEvent">Join</button>
                                 <button class="btn info-button" data-toggle="modal" data-target="#createModal">Info</button>
                             </div>

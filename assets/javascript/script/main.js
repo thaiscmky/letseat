@@ -149,6 +149,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
+    
 
         self.joinEvent = function (event) {
             if(event.users.length>=event.maxSeats)
