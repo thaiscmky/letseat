@@ -93,6 +93,12 @@
                             <div class="col-4 column">
                                 <div class="card">
                                     <p class="card-header" data-bind="text: name"></p>
+                                    <div data-bind="text: phoneNumber"></div>
+                                    <div data-bind="text: location.address1"></div>
+                                    <div data-bind="text: location.city"></div>
+                                    <div data-bind="text: location.zip_code"></div>
+                                    <div data-bind="text: price"></div>
+                                    <div data-bind="text: rating"></div>
                                     <div class="card-info container">
                                         <div class="row">
                                             <img class="card-image" data-bind="attr:{'src': image_url}">
@@ -103,7 +109,7 @@
                                     </div>
                                     <p class="join-max-seats-display" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
                                     <button class="btn btn-warning-reverse hvr-fade join-button" data-bind="click: $root.joinEvent">Join</button>
-                                    <button class="btn btn-warning-reverse hvr-fade info-button" data-toggle="modal" data-target="#createModal">Info</button>
+                                    <button class="btn btn-warning-reverse hvr-fade info-button" data-toggle="modal" data-target="#createModal" data-bind="click: $root.saveEventInfo">Info</button>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +128,9 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <div class="modal-title">Restaurant name goes here...</div>
+                                <div class="modal-title">Restaurant name goes here...
+                                    <p></p>
+                                </div>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -131,7 +139,18 @@
                                 <!-- THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL! -->
                                 THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL!
                                 <div>This is a test to make sure we can call data from our results observable</div>
-                                <div data-bind="results()["></div>
+                                <div data-bind="text: restaurantName"></div>
+
+                                <div data-bind="text: restaurantPrice"></div>
+                                <div data-bind="text: restaurantRating"></div>
+                                <div data-bind="text: restaurantYelpURL"></div>
+                                <div data-bind="text: restaurantPhone"></div>
+
+                                <img data-bind="attr:{'src': restaurantIMGURL}" style="width:50px;">
+                                <p data-bind="text: restaurantAddress"></p>
+                                <div data-bind="text: restaurantCity"></div>
+                                <div data-bind="text: restaurantZip"></div>
+                                <div data-bind="text: restaurantCategories"></div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-warning-reverse hvr-fade" data-dismiss="modal" aria-label="close">Exit</button>
@@ -152,6 +171,12 @@
                             <div class="col-4 column">
                                 <div class="card">
                                     <p class="card-header" data-bind="text: name"></p>
+                                    <div data-bind="text: phoneNumber"></div>
+                                    <div data-bind="text: location.address1"></div>
+                                    <div data-bind="text: location.city"></div>
+                                    <div data-bind="text: location.zip_code"></div>
+                                    <div data-bind="text: price"></div>
+                                    <div data-bind="text: rating"></div>
                                     <div class="card-info container">
                                         <div class="row">
                                             <img class="card-image" data-bind="attr:{'src': image_url}">
