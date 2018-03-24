@@ -22,7 +22,17 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.userVisible = ko.observable(false);
 
         self.pickedJoin = ko.observable(false);
-        self.pickedCreate = ko.observable(true);
+
+
+        //create event observables
+        self.pickedCreate = ko.observable(false);
+        self.createAddress = ko.observable('');
+        self.createCity = ko.observable('');
+        self.createZip = ko.observable('');
+        self.createKey = ko.observable('');
+        self.createName = ko.observable('');
+        self.createCategories = ko.observable('');
+
 
 
         self.searchTerm = ko.observable('chicken');
@@ -144,6 +154,44 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.userVisible(true);
         }
 
+
+        self.createEvent = function (event) {
+
+            self.createVisible(false);
+            self.userVisible(true);
+            self.pickedCreate(true);
+
+
+
+            self.createKey(event.key);
+            self.createName(event.name)
+            self.createCity(event.location.city);
+            self.createZip(event.location.zip_code);
+            var address = event.location.address1;
+
+            if (event.location.address2.length > 0) {
+                address += " ," + event.location.address2;
+            }
+            if (event.location.address3.length > 0) {
+                address += " ," + event.location.address3;
+            }
+
+            self.createAddress(address);
+            var categoryString = ''
+            for (var i = 0; i < event.categories.length; i++) {
+                if (i === 0) {
+                    categoryString = event.categories[i].title;
+                }
+                else {
+                    categoryString += ", " + event.categories[i].title;
+                }
+            }
+            self.createCategories(categoryString);
+
+
+            
+        }
+
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
@@ -158,17 +206,48 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 dbRef.set(self.usersForChosenEvent());
 
+                self.usersForChosenEvent.removeAll();
+
                 self.pickedJoin(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
-            else if(self.pickedCreate())
-            {
+            else if (self.pickedCreate()) {
+
+                var dbRef = firebase.database().ref("events");
+
+                self.usersForChosenEvent.push({
+                    email: self.email(),
+                    firstName: self.firstName(),
+                    lastName: self.lastName(),
+                });
+
+                var locationObject = {
+                    address: self.createAddress(),
+                    city: self.createCity(),
+                    zipCod: self.createZip()
+                };
+
+                dbRef.child(self.createKey()).set({
+                    categories: self.createCategories(),
+                    eventName: self.createName(),
+                    location: locationObject,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    users: self.usersForChosenEvent()
+
+                })
+
+                self.usersForChosenEvent.removeAll();
+
+
                 self.pickedCreate(false);
+                self.userVisible(false);
+                self.resultsVisible(true);
             }
         }
 
         self.navToCreate = function () {
+
             self.resultsVisible(false);
             self.createVisible(true);
         }
