@@ -106,7 +106,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createKey = ko.observable('');
         self.createName = ko.observable('');
         self.createCategories = ko.observable('');
-        self.createMaxSeats = ko.observable(0);
+        self.createMaxSeats = ko.observable();
 
 
 
@@ -140,12 +140,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createVisible = ko.observable(false);
 
+        self.zipInfo = ko.observable('');
 
         // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
         self.zipRequest = ko.computed(function () {
             // TODO: VALIDATOR: Below ajax call should only run when "self.zipInfo() === valid Zip Code
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
-            if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
+            if(self.zipCode() !== null || typeof self.zipCode() !== 'undefined'){
                 $.ajax({
                     url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
@@ -156,7 +157,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
         });
 
-        //search
+        function resetForm(){
+            $('#firstNameInput').val('');
+            $('#lastNameInput').val('');
+            $('#emailInput').val('');
+            $("#firstname-validation").val('');
+            $("#lastname-validation").val('');
+            $("#email-validation").val('');
+           
+        }
         self.submitSearch = function () {
 
             var searchTerm = self.searchTerm();
@@ -215,6 +224,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.landingVisible(false);
             self.resultsVisible(true);
 
+            // }
         }
 
 
@@ -231,7 +241,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.resultsVisible(false);
                 self.userVisible(true);
             }
-        }
+        };
 
 
         self.createEvent = function (event, domEvent) {
@@ -248,7 +258,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             self.createKey(event.key);
-            self.createName(event.name)
+            self.createName(event.name);
             self.createCity(event.location.city);
             self.createZip(event.location.zip_code);
             var address = event.location.address1;
@@ -261,7 +271,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             self.createAddress(address);
-            var categoryString = ''
+            var categoryString = '';
             for (var i = 0; i < event.categories.length; i++) {
                 if (i === 0) {
                     categoryString = event.categories[i].title;
@@ -271,24 +281,68 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 }
             }
             self.createCategories(categoryString);
-
-
-
         }
+        function validateJoinForm(){
+            var error = [];
+            let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            let nameRegEx = /^[a-zA-Z0-9\s._\-]+$/;
 
+            if(!nameRegEx.test($("#firstNameInput").val())){
+                error.push('firstname')
+            }
+            if(!nameRegEx.test($("#lastNameInput").val()))
+            {
+                error.push("lastname")
+            }
+            if(!emailRegEx.test($("#emailInput").val()))
+            {
+                error.push("email")
+            }
+            return error;
+        }
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
+                var emailExist = false;
 
-                var dbRef = firebase.database().ref("events/" + self.eventChosen().key + "/users");
+                var dbRef = firebase.database().ref("events/" + self.eventChosen() + "/users");
+                if ( validateJoinForm().length >0 ) {
+                    validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show(): $("#firstname-validation").hide();
+                    validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show(): $("#lastname-validation").hide();
+                    validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show(): $("#email-validation").hide();
+                    return;
+                 }
 
-                self.usersForChosenEvent.push({
-                    email: self.email(),
-                    firstName: self.firstName(),
-                    lastName: self.lastName(),
+                 let emailFound;
+                // DB Validation for duplicate users
+                dbRef.on("value", function (data) {
+                data.val().map(user => {
+                  
+                    if( $('#emailInput').val() === user.email){
+                        emailFound = true;
+                    }// user already registered
+
                 });
+                debugger;
+                if(emailFound){
+                    alert("This email is registered , please use anather");
+                    emailFound = false;
+                    return;
+                }
 
-                dbRef.set(self.usersForChosenEvent());
+                 });
+                if (!emailExist) {
+                    self.usersForChosenEvent.push({
+                        email: self.email(),
+                        firstName: self.firstName(),
+                        lastName: self.lastName(),
+                    });
+                }
+                else {
+                    console.log("user email exist")
+                }
+
+                dbRef.update(self.usersForChosenEvent());
 
                 self.usersForChosenEvent.removeAll();
 
@@ -303,7 +357,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
-                    lastName: self.lastName(),
+                    lastName: self.lastName()
                 });
 
                 var locationObject = {
@@ -311,16 +365,17 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     city: self.createCity(),
                     zipCod: self.createZip()
                 };
-
+                var day=new Date().toJSON().slice(0,10).replace(/-/g,'/');
                 dbRef.child(self.createKey()).set({
                     categories: self.createCategories(),
                     eventName: self.createName(),
                     location: locationObject,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    date: day,//new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
-                })
+                });
 
 
                 self.createMaxSeats(0);
@@ -331,22 +386,24 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
-        }
+          
+            resetForm();
+        };
 
         self.navToCreate = function () {
 
             self.resultsVisible(false);
             self.createVisible(true);
-        }
+        };
 
         self.navToResult = function () {
             self.createVisible(false);
             self.resultsVisible(true);
         }
 
+
     }
 
-    // The's landing page code
     $(document).ready(function () {
         ko.applyBindings(new LetsEatModel());
 
