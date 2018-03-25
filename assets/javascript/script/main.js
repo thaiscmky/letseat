@@ -32,7 +32,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
-        
+
 
         //modal info
         // self.restaurantName = ko.observable('');
@@ -47,25 +47,25 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         // self.restaurantCategories = ko.observable('');
         // self.restaurantSeats = ko.observable('');
 
-        self.deselectEvent = function(data){
+        self.deselectEvent = function (data) {
             self.eventChosen('');
 
         }
 
-        self.saveEventInfo = function(data){
+        self.saveEventInfo = function (data) {
 
 
             console.log(JSON.stringify(data));
 
             self.eventChosen(data);
             // self.restaurantName(data.name);
-            
+
             // self.restaurantPrice(data.price);
             // self.restaurantRating(data.rating);
             // self.restaurantYelpURL(data.url);
 
             // self.restaurantIMGURL(data.image_url);
-            
+
             // self.restaurantCity(data.location.city);
             // self.restaurantZip(data.location.zip_code);
             // self.restaurantPhone(data.phoneNumber);
@@ -93,9 +93,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             //         categoryString += ", " + data.categories[i].title;
             //     }
             // }
-            
+
             // self.restaurantCategories(categoryString);
-           
+
         }
 
         //create event observables
@@ -288,7 +288,39 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     lastName: self.lastName(),
                 });
 
+
+
+
                 dbRef.set(self.usersForChosenEvent());
+
+                var joinNotificationParams = {
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Let's Eat",
+                    message_html: "<h2>You have joined" + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                };
+
+                var creatorNotificationParams = {
+                    to_name: self.usersForChosenEvent()[0].firstName,
+                    to_email: self.usersForChosenEvent()[0].email,
+                    from_name: "Let's Eat",
+                    message_html: "<h2>" + self.firstName() + " "+  self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
+                };
+
+                emailjs.send('default_service', 'template_rvFNVmMs', joinNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
+                emailjs.send('default_service', 'template_rvFNVmMs', creatorNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
 
                 self.usersForChosenEvent.removeAll();
 
@@ -321,6 +353,20 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     maxSeats: self.createMaxSeats()
 
                 })
+
+                var createNotificationParams = {
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Let's Eat",
+                    message_html: "<h2>You created event : " + self.createKey() + "</h2>"
+                };
+
+                emailjs.send('default_service', 'template_rvFNVmMs', createNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
 
 
                 self.createMaxSeats(0);
