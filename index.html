@@ -184,6 +184,11 @@
                                         <span data-bind="text: title, "></span>
                                     </div>
                                     <div data-bind="text: $root.eventChosen().maxSeats"></div>
+                                    <div data-bind="foreach: $root.eventChosen().users">
+                                        <span data-bind="text: firstName "></span>
+                                        <span data-bind="text: lastName "></span>
+                                        <br>
+                                    </div>
 
 
                                 </div>
