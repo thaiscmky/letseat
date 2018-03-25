@@ -1,6 +1,6 @@
 define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
 
-    function Activity(id, categories, name, location, users, image_url, maxSeats) {
+    function Activity(id, categories, name, location, users, image_url, maxSeats, url, price, rating, phoneNumber) {
         var self = this;
         self.key = id;
         self.categories = categories;
@@ -10,9 +10,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.users = Array.from(users);
 
         }
+
         if (maxSeats) {
             self.maxSeats = maxSeats;
+
         }
+        self.url = url;
+        self.price = price;
+        self.rating = rating;
+        self.phoneNumber = phoneNumber;
         self.image_url = image_url;
 
 
@@ -26,6 +32,69 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
+        
+
+        //modal info
+        // self.restaurantName = ko.observable('');
+        // self.restaurantPrice = ko.observable('');
+        // self.restaurantRating = ko.observable('');
+        // self.restaurantYelpURL = ko.observable('');
+        // self.restaurantIMGURL = ko.observable('');
+        // self.restaurantAddress = ko.observable('');
+        // self.restaurantCity = ko.observable('');
+        // self.restaurantZip = ko.observable('');
+        // self.restaurantPhone = ko.observable('');
+        // self.restaurantCategories = ko.observable('');
+        // self.restaurantSeats = ko.observable('');
+
+        self.deselectEvent = function(data){
+            self.eventChosen('');
+
+        }
+
+        self.saveEventInfo = function(data){
+
+
+            self.eventChosen(data);
+            // self.restaurantName(data.name);
+            
+            // self.restaurantPrice(data.price);
+            // self.restaurantRating(data.rating);
+            // self.restaurantYelpURL(data.url);
+
+            // self.restaurantIMGURL(data.image_url);
+            
+            // self.restaurantCity(data.location.city);
+            // self.restaurantZip(data.location.zip_code);
+            // self.restaurantPhone(data.phoneNumber);
+            // self.restaurantSeats(data.maxSeats);
+
+
+            // var address = data.location.address1
+            // if (data.location.address2.length > 0) {
+            //     address += ", " + data.location.address2;
+            // }
+            // if (data.location.address3.length > 0) {
+            //     address += ", " + data.location.address3;
+            // }
+
+            // self.restaurantAddress(address);           
+            //  var categoryString = ''
+            // for (var i = 0; i < data.categories.length; i++) {
+            //     if (i === 0) {
+            //         categoryString = data.categories[i].title;
+            //     }
+            //     else if((data.categories.length-1)===i){
+            //         categoryString += data.categories[i].title;
+            //     }
+            //      {
+            //         categoryString += ", " + data.categories[i].title;
+            //     }
+            // }
+            
+            // self.restaurantCategories(categoryString);
+           
+        }
 
         //create event observables
         self.pickedCreate = ko.observable(false);
@@ -115,7 +184,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             };
 
             $.when(secureApiRequest.fetchResponse(args, apitoken)).done(function () {
-                console.log(secureApiRequest.responseObject);
+                // console.log(secureApiRequest.responseObject);
                 ko.utils.arrayPushAll(self.searchResult, secureApiRequest.responseObject.businesses);
 
                 ko.utils.arrayForEach(self.searchResult(), function (item) {
@@ -127,11 +196,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                         if (snapshot.val()) {
                             var dbData = snapshot.val();
-
                             var arr2 = Object.values(dbData);
                             var value = arr2[0];
-
-                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url, value.maxSeats);
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, value.users, item.image_url, value.maxSeats, item.url, item.price, item.rating, item.display_phone);
 
 
                             self.currentEvents.push(activity);
@@ -139,7 +206,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         }
                         else {
                             //console.log("DoNotExists: " + item.id);
-                            var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url);
+                            var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url, undefined, item.url, item.price, item.rating, item.display_phone);
                             self.createEventList.push(activity);
 
                         }
@@ -166,12 +233,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             else {
                 self.pickedJoin(true);
-                self.eventChosen(event.key);
+                self.eventChosen(event);
                 self.usersForChosenEvent(event.users);
                 self.resultsVisible(false);
                 self.userVisible(true);
             }
-        }
+        };
 
 
         self.createEvent = function (event, domEvent) {
@@ -188,7 +255,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             self.createKey(event.key);
-            self.createName(event.name)
+            self.createName(event.name);
             self.createCity(event.location.city);
             self.createZip(event.location.zip_code);
             var address = event.location.address1;
@@ -201,7 +268,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             self.createAddress(address);
-            var categoryString = ''
+            var categoryString = '';
             for (var i = 0; i < event.categories.length; i++) {
                 if (i === 0) {
                     categoryString = event.categories[i].title;
@@ -251,6 +318,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     if( $('#emailInput').val() === user.email){
                         emailFound = true;
                     }// user already registered
+
                 });
                 debugger;
                 if(emailFound){
@@ -258,19 +326,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     emailFound = false;
                     return;
                 }
-                     //var key=[];
-                     //key = Object.key(data.val());
-                       //  console.log(key);
-                //     // key.forEach(element => {
-                        
-                //     //     if (element.email === self.email()) {
-                //     //         console.log("user email exist")
-                //     //         emailExist = true;
-                //     //     }
 
-                //     // });
-
-                 })
+                 });
                 if (!emailExist) {
                     self.usersForChosenEvent.push({
                         email: self.email(),
@@ -297,7 +354,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
-                    lastName: self.lastName(),
+                    lastName: self.lastName()
                 });
 
                 var locationObject = {
@@ -315,7 +372,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
-                })
+                });
 
 
                 self.createMaxSeats(0);
@@ -326,14 +383,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
+          
             resetForm();
-        }
+        };
 
         self.navToCreate = function () {
 
             self.resultsVisible(false);
             self.createVisible(true);
-        }
+        };
 
         self.navToResult = function () {
             self.createVisible(false);
