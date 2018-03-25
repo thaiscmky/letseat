@@ -39,6 +39,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script data-main="./assets/javascript/script" src="./assets/javascript/lib/require.js"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+        crossorigin="anonymous"></script>
+
+
 </head>
 
 <body>
@@ -71,7 +78,7 @@
                                     <label id="suggestions-5" class="suggestion">texas bbq?</label>
                                 </label>
                             </div>
-                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat!</button>
+                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat! <i class="fas fa-utensils fa-lg"></i></button>
                         </form>
                     </div>
                 </div>
@@ -91,28 +98,46 @@
                     </div>
                     <div id="result-container" class="pre-scrollable">
                         <div class="row" data-bind="foreach: currentEvents">
-                            <div class="col-4 column">
+
+                            <!-- Html for Result Cards -->
+                            <div class="col-sm-12 col-md-6 col-lg-4 column">
                                 <div class="card">
                                     <p class="card-header" data-bind="text: name"></p>
-                                    <div data-bind="text: phoneNumber"></div>
-                                    <div data-bind="text: location.address1"></div>
-                                    <div data-bind="text: location.city"></div>
-                                    <div data-bind="text: location.zip_code"></div>
-                                    <div data-bind="text: price"></div>
-                                    <div data-bind="text: rating"></div>
-                                    <div class="card-info container">
-                                        <div class="row">
-                                            <img class="card-image" data-bind="attr:{'src': image_url}">
-                                            <div class="card-list col" data-bind="foreach: users">
-                                                <p class="card-name" data-bind="text: ($index() + 1) + '. ' + firstName+' ' + lastName"></p>
+                                    <img class="card-img-top" data-bind="attr:{'src': image_url}">
+                                    <div class="container">
+                                        <div class="row cir-group text-center">
+                                            <div class="col-4">
+                                                <button class="cir hvr-none text-center">
+                                                    <p data-bind="text: price"></p>
+                                                    <i class="fas fa-money-bill-alt fa-sm"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-4" data-toggle="modal" data-target="#createModal" data-bind="click: $root.saveEventInfo">
+                                                <button class="cir cir-mid hvr-fade text-center">
+                                                    <p>Info</p>
+                                                    <i class="fas fa-question fa-sm"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="cir hvr-none text-center">
+                                                    <p data-bind="text: rating"></p>
+                                                    <i class="fas fa-star fa-sm"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <p class="join-max-seats-display" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
-                                    <button class="btn btn-warning-reverse hvr-fade join-button" data-bind="click: $root.joinEvent">Join</button>
-                                    <button class="btn btn-warning-reverse hvr-fade info-button" data-toggle="modal" data-target="#createModal" data-bind="click: $root.saveEventInfo">Info</button>
+
+                                    <!-- <div data-bind="text: phoneNumber"></div> -->
+                                    <div class="address text-center" data-bind="text: location.address1"></div>
+                                    <div class="address text-center" data-bind="text: location.city + ', ' + location.zip_code"></div>
+                                    <!-- <div class="card-list col" data-bind="foreach: users">
+                                        <p class="card-name" data-bind="text: ($index() + 1) + '. ' + firstName+' ' + lastName"></p>
+                                    </div> -->
+                                    <p class="join-max-seats-display text-center" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
+                                    <button class="btn btn-warning-reverse hvr-fade col-12" data-bind="click: $root.joinEvent">Join</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -142,27 +167,27 @@
                                 <div>This is a test to make sure we can call data from our results observable</div>
                                 <div data-bind="with: eventChosen">
 
-                                        <div data-bind="text: $root.eventChosen().name"></div>
+                                    <div data-bind="text: $root.eventChosen().name"></div>
 
-                                        <div data-bind="text: $root.eventChosen().price"></div>
-                                        <div data-bind="text: $root.eventChosen().rating"></div>
-                                        <div data-bind="text: $root.eventChosen().url"></div>
-                                        <div data-bind="text: $root.eventChosen().phoneNumber"></div>
-        
-                                        <img data-bind="attr:{'src': $root.eventChosen().image_url}" style="width:50px;">
-                                        
-                                        <p data-bind="text: $root.eventChosen().location.address1"></p>
-                                        <div data-bind="text: $root.eventChosen().location.city"></div>
-                                        <div data-bind="text: $root.eventChosen().location.zip_code"></div>
-        
-                                        <div data-bind="foreach: $root.eventChosen().categories">
-                                            <span data-bind="text: title, "></span>
-                                        </div>
-                                        <div data-bind="text: $root.eventChosen().maxSeats"></div>
-        
+                                    <div data-bind="text: $root.eventChosen().price"></div>
+                                    <div data-bind="text: $root.eventChosen().rating"></div>
+                                    <div data-bind="text: $root.eventChosen().url"></div>
+                                    <div data-bind="text: $root.eventChosen().phoneNumber"></div>
+
+                                    <img data-bind="attr:{'src': $root.eventChosen().image_url}" style="width:50px;">
+
+                                    <p data-bind="text: $root.eventChosen().location.address1"></p>
+                                    <div data-bind="text: $root.eventChosen().location.city"></div>
+                                    <div data-bind="text: $root.eventChosen().location.zip_code"></div>
+
+                                    <div data-bind="foreach: $root.eventChosen().categories">
+                                        <span data-bind="text: title, "></span>
+                                    </div>
+                                    <div data-bind="text: $root.eventChosen().maxSeats"></div>
+
 
                                 </div>
-                                
+
 
                             </div>
                             <div class="modal-footer">
@@ -181,7 +206,7 @@
 
                     <div id="create-container" class="pre-scrollable">
                         <div class="row" data-bind="foreach: createEventList">
-                            <div class="col-4 column">
+                            <div class="col-sm-12 col-md-6 col-lg-4 column">
                                 <div class="card">
                                     <p class="card-header" data-bind="text: name"></p>
                                     <div data-bind="text: phoneNumber"></div>
