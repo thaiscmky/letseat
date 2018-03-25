@@ -12,57 +12,233 @@
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
 
+    <!-- Load hover.css -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/hover.css">
+
+    <!-- firebase config -->
+
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDQvxT4o1IGoIDsnXpBko6SnrPEI9NA1DU",
+            authDomain: "lets-eat-be2d8.firebaseapp.com",
+            databaseURL: "https://lets-eat-be2d8.firebaseio.com",
+            projectId: "lets-eat-be2d8",
+            storageBucket: "lets-eat-be2d8.appspot.com",
+            messagingSenderId: "844468448918"
+        };
+        firebase.initializeApp(config);
+    </script>
+
     <!-- Load Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script data-main="./assets/javascript/script" src="./assets/javascript/lib/require.js"></script>
-
 </head>
 
 <body>
+    <!-- This is the HTML for Land Display -->
     <header>
-        <div class="main-wrapper">
-            <div id="page-header">
-                <div id="banner">
-                    <img id="banner-image" class="float-left" src="http://via.placeholder.com/150x150" alt="logo" />
-                    <div id="banner-text-group" class="float-left">
-                        <div id="banner-text-main">Let's Eat!</div>
-                        <div id="banner-text-sub">yummy</div>
+        <div id="landing-background"></div>
+        <div id="landing-container" class="container d-flex align-items-center">
+            <div class="main-wrapper">
+                <div id="landing-content">
+                    <div id="landing-header">Hungry?</div>
+                    <div id="search-container" class="container">
+                        <form id="form-content" data-bind="submit: submitSearch">
+                            <div class="row">
+                                <div class="col-6 landing-label">
+                                    <label for="zipCode">What is your Zip Code?</label>
+                                    <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode" />
+                                    <label id="zip-validation" class="validation-label">Please Enter a Valid Zip Code</label>
+                                </div>
+                                <div class="col-6 landing-label">
+                                    <label for="searchTerm">What are you craving?</label>
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm" >
+                                    <label id="search-term-validation" class="validation-label">Please Enter a Valid Food Type</label>
+                                     
+                                </div>
+
+                                
+                            </div>
+                            <div class="row">
+                                <label class="col-6 zip-sub" data-bind="text: zipInfo"></label>
+                                <label class="col-6 search-sub" style="white-space: nowrap">How about some&nbsp;
+                                    <label id="suggestions-1" class="suggestion">pizza?</label>
+                                    <label id="suggestions-2" class="suggestion">rib-eye steak?</label>
+                                    <label id="suggestions-3" class="suggestion">ice cream?</label>
+                                    <label id="suggestions-4" class="suggestion">fried chicken?</label>
+                                    <label id="suggestions-5" class="suggestion">texas bbq?</label>
+                                </label>
+                            </div>
+                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat!</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+    <section id="main-container" class="container d-flex align-items-center">
+        <div class="main-wrapper">
+            <div id="main-header">Let's Eat!</div>
+            <div id="main-content" style="display: none;">
+                <!-- This is the HTML for Result Display -->
+                <div id="result-display" class="" data-bind="visible: resultsVisible" style="display: none;">
 
-    <section class="main-wrapper">
-        <div id="main-content-header">So... What are you hungry for?</div>
-        <div id="main-content">
-            <div class="row">
-                <div id="entry-content" class="col-8">
-                    <form id="form-content" data-bind="submit: submitSearch">
-                        <div class="form-row">
-                            <div class="form-group col-6">
-                                <label for="searchTerm">Search Term</label>
-                                <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
-                            </div>
-                            <div class="form-group col-6">
-                                <label for="zipCode">Zip Code:
-                                    <span data-bind="text: zipInfo"></span>
-                                </label>
-                                <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode">
+                    <div class="display-header col-12">
+                        <p class="text-center">Any of these activities interest you?</p>
+                    </div>
+                    <div id="result-container" class="pre-scrollable">
+                        <div class="row" data-bind="foreach: currentEvents">
+                            <div class="col-4 column">
+                                <div class="card">
+                                    <p class="card-header" data-bind="text: name"></p>
+                                    <div data-bind="text: phoneNumber"></div>
+                                    <div data-bind="text: location.address1"></div>
+                                    <div data-bind="text: location.city"></div>
+                                    <div data-bind="text: location.zip_code"></div>
+                                    <div data-bind="text: price"></div>
+                                    <div data-bind="text: rating"></div>
+                                    <div class="card-info container">
+                                        <div class="row">
+                                            <img class="card-image" data-bind="attr:{'src': image_url}">
+                                            <div class="card-list col" data-bind="foreach: users">
+                                                <p class="card-name" data-bind="text: ($index() + 1) + '. ' + firstName+' ' + lastName"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="join-max-seats-display" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
+                                    <button class="btn btn-warning-reverse hvr-fade join-button" data-bind="click: $root.joinEvent">Join</button>
+                                    <button class="btn btn-warning-reverse hvr-fade info-button" data-toggle="modal" data-target="#createModal" data-bind="click: $root.saveEventInfo">Info</button>
+                                </div>
                             </div>
                         </div>
-                        <button id="submitButton" type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                    <img id="entry-img" src="http://via.placeholder.com/600x350" alt="entry-img">
-                </div>
-                <div id="suggestion-content" class="col-4">
-                    <label id="suggestion-header" class="d-flex justify-content-center">Suggestions</label>
-                    <ul id="suggestion-list" class="list-group" data-bind="foreach: suggestions">
-                        <suggestion-widget params="value: name"></suggestion-widget>
-                    </ul>
+                    </div>
 
+                    <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
+                    <div id="result-footer" class="">
+                        <div class="col-12"></div>
+                        <button id="result-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToCreate"> None of these interest me... Create an Event</button>
+                    </div>
+
+                </div>
+
+                <!-- This is the HTML for the Modal that pops up when you click INFO in results-display -->
+                <div id="createModal" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">Restaurant name goes here...
+                                    <p></p>
+                                </div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL! -->
+                                THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL!
+                                <div>This is a test to make sure we can call data from our results observable</div>
+                                <div data-bind="with: eventChosen">
+
+                                        <div data-bind="text: $root.eventChosen().name"></div>
+
+                                        <div data-bind="text: $root.eventChosen().price"></div>
+                                        <div data-bind="text: $root.eventChosen().rating"></div>
+                                        <div data-bind="text: $root.eventChosen().url"></div>
+                                        <div data-bind="text: $root.eventChosen().phoneNumber"></div>
+        
+                                        <img data-bind="attr:{'src': $root.eventChosen().image_url}" style="width:50px;">
+                                        
+                                        <p data-bind="text: $root.eventChosen().location.address1"></p>
+                                        <div data-bind="text: $root.eventChosen().location.city"></div>
+                                        <div data-bind="text: $root.eventChosen().location.zip_code"></div>
+        
+                                        <div data-bind="foreach: $root.eventChosen().categories">
+                                            <span data-bind="text: title, "></span>
+                                        </div>
+                                        <div data-bind="text: $root.eventChosen().maxSeats"></div>
+        
+
+                                </div>
+                                
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning-reverse hvr-fade" data-dismiss="modal" aria-label="close" data-bind="click: deselectEvent">Exit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- This is the HTML for Create Display -->
+                <div id="create-display" data-bind="visible: createVisible" style="display: none;">
+
+                    <div class="display-header col-12">
+                        <p class="text-center">Create an event?</p>
+                    </div>
+
+                    <div id="create-container" class="pre-scrollable">
+                        <div class="row" data-bind="foreach: createEventList">
+                            <div class="col-4 column">
+                                <div class="card">
+                                    <p class="card-header" data-bind="text: name"></p>
+                                    <div data-bind="text: phoneNumber"></div>
+                                    <div data-bind="text: location.address1"></div>
+                                    <div data-bind="text: location.city"></div>
+                                    <div data-bind="text: location.zip_code"></div>
+                                    <div data-bind="text: price"></div>
+                                    <div data-bind="text: rating"></div>
+                                    <div class="card-info container">
+                                        <div class="row">
+                                            <img class="card-image" data-bind="attr:{'src': image_url}">
+                                            <form class="col d-flex align-items-center">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">Seats</div>
+                                                    </div>
+                                                    <input type="number" class="form-control" class="seat-input"  value ="5" data-bind="attr:{'id':$index()}">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning-reverse hvr-fade create-button" data-bind="click: $root.createEvent">Create</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
+                    <div id="create-footer" class="">
+                        <div class="col-12"></div>
+                        <button id="create-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToResult"> Go back to browsing results</button>
+                    </div>
+
+                </div>
+
+                <!-- This is the HTML for User Display -->
+                <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
+                    Please enter in your info *NOTE YEA THIS MESSAGE AIN'T FINAL CHANGE IT TO SOMETHING NICER SOUNDING*
+                    <form id="user-form">
+                        <div class="form-group">
+                            <label for="firstNameInput">First Name</label>
+                            <input type="text" class="form-control" id="firstNameInput" placeholder="John" data-bind="value: firstName">
+                            <label id="firstname-validation" class="join-validation-label">Please Enter a Valid First Name </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastNameInput">Last Name</label>
+                            <input type="text" class="form-control" id="lastNameInput" placeholder="Doe" data-bind="value: lastName">
+                            <label id="lastname-validation" class="join-validation-label">Please Enter a Valid Last Name </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="emailInput">Email</label>
+                            <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
+                            <label id="email-validation" class="join-validation-label">Please Enter a Valid Email </label>
+                        </div>
+                        <button id="submitInfo" type="submit" class="btn btn-warning-reverse hvr-fade btn-primary" data-bind="click: submitUserInfo">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
