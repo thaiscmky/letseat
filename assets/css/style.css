@@ -88,8 +88,6 @@ header {
     top: 4em;
     opacity: 0;
 }
-
-
 /* Displays CSS */
 #main-header {    
     text-align: center;
@@ -174,3 +172,25 @@ header {
 ::-webkit-scrollbar-thumb:hover {
     background: #666; 
 }
+
+/**
+ * Error Validation Style
+ */
+ .validation-label {
+     color:red;
+     font-size: 12px;
+     position: absolute;
+     left: 0;
+     padding: inherit;
+     display:none;
+     
+ }
+ .landing-label {
+    margin-bottom:2%;
+ }
+
+ .join-validation-label{
+    color:red;
+    font-size: 12px;
+    display:none;
+ }
