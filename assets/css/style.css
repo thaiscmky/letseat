@@ -1,6 +1,7 @@
 html {
     font-family: 'Montserrat', sans-serif;
     background: url("../images/main-bg.jpg") no-repeat center;
+    font-size: 1em;
 }
 
 body {
@@ -9,8 +10,7 @@ body {
     overflow: hidden;   
 }
 
-.main-wrapper {
-    width: 960px;
+.main-wrapper {    
     margin: auto;
 }
 
@@ -59,6 +59,7 @@ header {
     padding: 1em 1em 1em 1em;
     color: #fff;    
     border-radius: 1rem;
+    width: 960px;
 }
 
 .zip-sub, .search-sub {    
@@ -101,6 +102,16 @@ header {
 }
 
 /* Displays CSS */
+#back-to-search {
+    position: absolute;
+    margin: auto;
+    cursor: pointer;
+    background: none;
+    color: #fff;
+    font-weight: 900;
+    border: none;
+}
+
 #main-header {    
     text-align: center;
     font-size: 3.375em;
@@ -109,7 +120,8 @@ header {
 }
 
 #main-content {                
-    border: 4px solid #444;
+    /* border: 2px solid #444;    */
+    border-radius: 2rem; 
     background-color: #fff;
 }
 
@@ -121,6 +133,7 @@ header {
 
 #create-container, #result-container {
     padding-left: 15px;
+    padding-right: 5px;
 }
 
 /* Results CSS */
@@ -128,17 +141,24 @@ header {
 .display-header{
     font-size: 2.618em;
     padding: 10px 0px 10px 0px;
-    border-bottom: solid 3px #444;
-    /* margin-bottom: 15px; */
+    border-bottom: solid 3px #444;  
+    color: #fff;
+    background-color: #444444;  
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 .column {
     padding: 15px;
 }
 
+
+
 .card-header {
+    position: absolute;
+    width: 100%;
     padding: .618em;
-    background-color: #444;
+    background-color: rgba(68, 68, 68, 0.8);    
     color: #fff;
     text-align: center;
     font-weight: 900;
@@ -148,19 +168,20 @@ header {
 .card-img-top {
     border-radius: 0;
     object-fit: cover;
-    height: 206px;
+    height: 280px;
     width: 100%;
     border-bottom: 2px solid #444;
 }
 
 .cir {
-    background-color: #444;        
+    background-color: #444;     
     height: 3.375em;
     width: 3.375em;
     border-radius: 3.375em;
     border: 0px solid #fff;
     color: #fff;
     font-weight: 900;
+    cursor: pointer;
 }
 
 .cir-mid {
@@ -209,10 +230,24 @@ header {
     cursor: unset !important;
 }
 
+/* Modal CSS */
+.modal-header {
+    background: #444;
+    color: #fff;
+    font-weight: 900;
+}
+
+.modal-img {
+    object-fit: cover;
+    width: 100%;
+    height: 280px;
+}
+
+
 /* This is the custom Scrollbar */
 /* width */
 ::-webkit-scrollbar {
-    width: 15px;
+    width: 10px;
 }
 
 /* Track */
@@ -234,22 +269,54 @@ button:focus {outline:none;}
 /**
  * Error Validation Style
  */
- .validation-label {
-     color:red;
-     font-size: 12px;
-     position: absolute;
-     left: 0;
-     padding: inherit;
-     display:none;
-     
- }
- .landing-label {
-    margin-bottom:2%;
+ #landingErrMsg {
+    position: absolute;
+    width: calc(960px - 3.226em);
+    margin-top: .314em;
+    font-size: .618em;
+    color: #940707;
+    font-weight: 900;
+    opacity: 0;
  }
 
- .join-validation-label{
-    color:red;
-    font-size: 12px;
-    display:none;
- }
+ /* XL */
+@media (min-width: 1200px) {
+    .modal-dialog {
+        max-width: 960px;
+    }
+}
 
+/* LG */
+@media (min-width: 992px) {
+    .modal-dialog {
+        max-width: 800px;
+    }
+}
+
+/* MD */
+@media (min-width: 768px) {
+    .modal-dialog {
+        max-width: 650px;
+    }
+}
+
+/* SM */
+@media (min-width: 576px) {
+    .modal-dialog {
+        /* max-width: 450px; */
+    }
+    
+    html {
+        /* color: red; */
+    }
+}
+
+@media (min-width: 0px) {
+    .container {
+        padding: 0;
+    }
+
+    #search-container {
+        /* width: 100%; */
+    }
+}

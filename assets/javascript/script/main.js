@@ -425,7 +425,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         console.log('FAILED...', error);
                     });
 
-
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
 
