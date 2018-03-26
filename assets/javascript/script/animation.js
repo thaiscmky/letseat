@@ -3,13 +3,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     var animation = {
         suggestionArr: [
-            // The first 5 items CAN'T be changed
-            'pizza',
-            'rib-eye steak',
-            'ice cream',
-            'fried chicken',
-            'texas bbq',
-            'pasta',
+            // The first 5 items CAN'T be changed but feel free to add more items if you wish ^^
+            'pizza', // DONT CHANGE ME
+            'rib-eye steak', // DONT CHANGE ME
+            'ice cream', // DONT CHANGE ME
+            'fried chicken', // DONT CHANGE ME
+            'texas bbq', // DONT CHANGE ME
+            'pasta', // CHANGE ME AND BELOW IDGAF
             'hambugers',
             'cajun food',
             'korean bbq',
@@ -39,21 +39,30 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         },
 
-        headerFly() {
-            $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 200, 'easeInBack', function () {
-                $("header").css({ display: 'none' });
+        headerFlyOut() {
+            $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 2000, 'easeInBack', function () {                
                 clearInterval(suggestionLoop);
-            })
-            $("#main-content").removeAttr('style');
+            });
+            $("#main-content").removeAttr('style');            
+        },
+
+        headerFlyIn() {            
+            $("header").animate({ opacity: '0', top: '-100vh', display: 'inline' }, 0, function () {
+                $("header").animate({ opacity: '1', top: '-20vh', height: '100vh' }, 2000, 'easeOutBack', function () {
+                    suggestionLoop = setInterval(function () {
+                        animation.loopSuggestions()
+                    }, 3000);
+                    $("#main-content").css({ display: 'none' });
+                });
+            });
         },
 
         errorMessageLanding(errText) {
             $("#landingErrMsg").finish();
             $("#landingErrMsg").text(errText);
             $("#landingErrMsg").animate({ opacity: '1' }, 0, function () {
-                $("#landingErrMsg").animate({ opacity: '0'}, 2000, 'easeInExpo')
-            })
-
+                $("#landingErrMsg").animate({ opacity: '0' }, 2000, 'easeInExpo')
+            });
         }
     }
 
@@ -84,10 +93,11 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             else if (searchValidation().indexOf("search") >= 0) animation.errorMessageLanding("Please enter a search term");
             return;
         }
-        animation.headerFly();
-        animation.headerFade();
+        animation.headerFlyOut();
+    });
 
-
+    $("#back-to-search").on("click", function (e) {
+        animation.headerFlyIn();
     });
 
 });
