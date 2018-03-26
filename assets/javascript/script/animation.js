@@ -47,7 +47,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             $("#main-content").removeAttr('style');
         },
 
-        headerFade() {
+        errorMessageLanding(errText) {
+            $("#landingErrMsg").finish();
+            $("#landingErrMsg").text(errText);
+            $("#landingErrMsg").animate({ opacity: '1' }, 0, function () {
+                $("#landingErrMsg").animate({ opacity: '0'}, 2000, 'easeInExpo')
+            })
 
         }
     }
@@ -75,8 +80,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     $("#submitSearch").on("click", function (e) {
         console.log("Search Validation Result: Error in : ", searchValidation());
         if (searchValidation().length > 0) {
-            searchValidation().indexOf("zipcode") >= 0 ? $("#zip-validation").show() : $("#zip-validation").hide();
-            searchValidation().indexOf("search") >= 0 ? $("#search-term-validation").show() : $("#search-term-validation").hide();
+            if (searchValidation().indexOf("zipcode") >= 0) animation.errorMessageLanding("Invalid Zip Code");
+            else if (searchValidation().indexOf("search") >= 0) animation.errorMessageLanding("Please enter a search term");
             return;
         }
         animation.headerFly();

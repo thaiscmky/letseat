@@ -240,19 +240,13 @@ button:focus {outline:none;}
 /**
  * Error Validation Style
  */
- .validation-label {
-     color:red;
-     font-size: 12px;
-     position: absolute;
-     left: 0;
-     padding: inherit;
-     display:none;
-     
- }
-
- .join-validation-label{
-    color:red;
-    font-size: 1.618em;
-    display:none;
+ #landingErrMsg {
+    position: absolute;
+    width: calc(960px - 3.226em);
+    margin-top: .314em;
+    font-size: .618em;
+    color: #940707;
+    font-weight: 900;
+    opacity: 0;
  }
 

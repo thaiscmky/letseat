@@ -66,14 +66,13 @@
                             <div class="row">
                                 <div class="col-6 landing-label">
                                     <label for="zipCode">What is your Zip Code?</label>
-                                    <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode" />
-                                    <label id="zip-validation" class="validation-label">Please Enter a Valid Zip Code</label>
+                                    <input type="text" class="form-control" id="zipCode" data-bind="value: zipCode" />                                    
+                                    <!-- HI IF YOU'RE MERGING AND LOOKING FOR THE VALIDATION LABEL I HAVE MOVED THEM PLS DONT RE-ADD THEM OK -->
                                 </div>
                                 <div class="col-6 landing-label">
                                     <label for="searchTerm">What are you craving?</label>
-                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
-                                    <label id="search-term-validation" class="validation-label">Please Enter a Valid Food Type</label>
-
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">                                    
+                                    <!-- HI IF YOU'RE MERGING AND LOOKING FOR THE VALIDATION LABEL I HAVE MOVED THEM PLS DONT RE-ADD THEM OK -->
                                 </div>
 
 
@@ -91,6 +90,7 @@
                             <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat!
                                 <i class="fas fa-utensils fa-lg"></i>
                             </button>
+                            <div id="landingErrMsg"></div>
                         </form>
                     </div>
                 </div>
