@@ -31,6 +31,14 @@
         firebase.initializeApp(config);
     </script>
 
+    <!-- email.js -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init("user_1CYgjNICg11NMlUOCQ1YO");
+        })();
+    </script>
+
     <!-- Load Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
@@ -63,12 +71,12 @@
                                 </div>
                                 <div class="col-6 landing-label">
                                     <label for="searchTerm">What are you craving?</label>
-                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm" >
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
                                     <label id="search-term-validation" class="validation-label">Please Enter a Valid Food Type</label>
-                                     
+
                                 </div>
 
-                                
+
                             </div>
                             <div class="row">
                                 <label class="col-6 zip-sub" data-bind="text: zipInfo"></label>
@@ -80,7 +88,9 @@
                                     <label id="suggestions-5" class="suggestion">texas bbq?</label>
                                 </label>
                             </div>
-                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat! <i class="fas fa-utensils fa-lg"></i></button>
+                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat!
+                                <i class="fas fa-utensils fa-lg"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -229,7 +239,7 @@
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">Seats</div>
                                                     </div>
-                                                    <input type="number" class="form-control" class="seat-input"  value ="5" data-bind="attr:{'id':$index()}">
+                                                    <input type="number" class="form-control" class="seat-input" value="5" data-bind="attr:{'id':$index()}">
                                                 </div>
                                             </form>
                                         </div>
