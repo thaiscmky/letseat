@@ -9,8 +9,7 @@ body {
     overflow: hidden;   
 }
 
-.main-wrapper {
-    width: 960px;
+.main-wrapper {    
     margin: auto;
 }
 
@@ -59,6 +58,7 @@ header {
     padding: 1em 1em 1em 1em;
     color: #fff;    
     border-radius: 1rem;
+    width: 960px;
 }
 
 .zip-sub, .search-sub {    
@@ -109,7 +109,7 @@ header {
 }
 
 #main-content {                
-    border: 4px solid #444;
+    border: 4px solid #444;    
     background-color: #fff;
 }
 
@@ -121,6 +121,7 @@ header {
 
 #create-container, #result-container {
     padding-left: 15px;
+    padding-right: 5px;
 }
 
 /* Results CSS */
@@ -128,17 +129,22 @@ header {
 .display-header{
     font-size: 2.618em;
     padding: 10px 0px 10px 0px;
-    border-bottom: solid 3px #444;
-    /* margin-bottom: 15px; */
+    border-bottom: solid 3px #444;  
+    color: #fff;
+    background-color: #444444;  
 }
 
 .column {
     padding: 15px;
 }
 
+
+
 .card-header {
+    position: absolute;
+    width: 100%;
     padding: .618em;
-    background-color: #444;
+    background-color: rgba(68, 68, 68, 0.8);    
     color: #fff;
     text-align: center;
     font-weight: 900;
@@ -148,13 +154,13 @@ header {
 .card-img-top {
     border-radius: 0;
     object-fit: cover;
-    height: 206px;
+    height: 280px;
     width: 100%;
     border-bottom: 2px solid #444;
 }
 
 .cir {
-    background-color: #444;        
+    background-color: #444;     
     height: 3.375em;
     width: 3.375em;
     border-radius: 3.375em;
@@ -212,7 +218,7 @@ header {
 /* This is the custom Scrollbar */
 /* width */
 ::-webkit-scrollbar {
-    width: 15px;
+    width: 10px;
 }
 
 /* Track */
@@ -243,13 +249,10 @@ button:focus {outline:none;}
      display:none;
      
  }
- .landing-label {
-    margin-bottom:2%;
- }
 
  .join-validation-label{
     color:red;
-    font-size: 12px;
+    font-size: 1.618em;
     display:none;
  }
 

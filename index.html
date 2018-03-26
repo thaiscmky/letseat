@@ -63,12 +63,12 @@
                                 </div>
                                 <div class="col-6 landing-label">
                                     <label for="searchTerm">What are you craving?</label>
-                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm" >
+                                    <input type="text" class="form-control" id="searchTerm" data-bind="value: searchTerm">
                                     <label id="search-term-validation" class="validation-label">Please Enter a Valid Food Type</label>
-                                     
+
                                 </div>
 
-                                
+
                             </div>
                             <div class="row">
                                 <label class="col-6 zip-sub" data-bind="text: zipInfo"></label>
@@ -80,7 +80,9 @@
                                     <label id="suggestions-5" class="suggestion">texas bbq?</label>
                                 </label>
                             </div>
-                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat! <i class="fas fa-utensils fa-lg"></i></button>
+                            <button id="submitSearch" type="submit" class="btn btn-warning hvr-fade">Let's Eat!
+                                <i class="fas fa-utensils fa-lg"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -102,7 +104,7 @@
 
                             <!-- Html for Result Cards -->
                             <div class="col-sm-12 col-md-6 col-lg-4 column">
-                                <div class="card">
+                                <div class="card hvr-glow">
                                     <p class="card-header" data-bind="text: name"></p>
                                     <img class="card-img-top" data-bind="attr:{'src': image_url}">
                                     <div class="container">
@@ -213,29 +215,34 @@
                     <div id="create-container" class="pre-scrollable">
                         <div class="row" data-bind="foreach: createEventList">
                             <div class="col-sm-12 col-md-6 col-lg-4 column">
-                                <div class="card">
+
+                                <!-- This is HTML for cards in create-display -->
+                                <div class="card hvr-glow">
                                     <p class="card-header" data-bind="text: name"></p>
-                                    <div data-bind="text: phoneNumber"></div>
+                                    <img class="card-img-top" data-bind="attr:{'src': image_url}">
                                     <div data-bind="text: location.address1"></div>
-                                    <div data-bind="text: location.city"></div>
-                                    <div data-bind="text: location.zip_code"></div>
+                                    <div data-bind="text: location.city + ', ' + location.zip_code"></div>
+                                    <div data-bind="text: phoneNumber"></div>
                                     <div data-bind="text: price"></div>
+                                    <div data-bind="foreach: categories">
+                                        <span data-bind="text: title, "></span>
+                                    </div>
                                     <div data-bind="text: rating"></div>
                                     <div class="card-info container">
                                         <div class="row">
-                                            <img class="card-image" data-bind="attr:{'src': image_url}">
                                             <form class="col d-flex align-items-center">
                                                 <div class="input-group mb-2">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">Seats</div>
                                                     </div>
-                                                    <input type="number" class="form-control" class="seat-input"  value ="5" data-bind="attr:{'id':$index()}">
+                                                    <input type="number" class="form-control" class="seat-input" value="5" data-bind="attr:{'id':$index()}">
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                     <button class="btn btn-warning-reverse hvr-fade create-button" data-bind="click: $root.createEvent">Create</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
