@@ -55,6 +55,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.saveEventInfo = function(data){
 
 
+            console.log(JSON.stringify(data));
+
             self.eventChosen(data);
             // self.restaurantName(data.name);
             

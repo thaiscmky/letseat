@@ -89,6 +89,17 @@ header {
     top: 4em;
     opacity: 0;
 }
+
+
+#submitSearch {
+    font-weight: 900;
+}
+
+.btn-warning-reverse {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 /* Displays CSS */
 #main-header {    
     text-align: center;
@@ -126,31 +137,76 @@ header {
 }
 
 .card-header {
+    padding: .618em;
     background-color: #444;
     color: #fff;
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.2em;
 }
 
-.card button {
+.card-img-top {
     border-radius: 0;
+    object-fit: cover;
+    height: 206px;
+    width: 100%;
+    border-bottom: 2px solid #444;
 }
 
-.card-image {
-    height: 100px;
-    width: 100px;
-    padding: 0;
+.cir {
+    background-color: #444;        
+    height: 3.375em;
+    width: 3.375em;
+    border-radius: 3.375em;
+    border: 0px solid #fff;
+    color: #fff;
+    font-weight: 900;
 }
 
-.card-list {
-    padding: 10px 0 10px 10px;
+.cir-mid {
+    background-color: #FFC107;
+    border-color: #444;
+    color: #444;
+}
+
+.cir-group .col-4 {
+    position: relative;
+    padding: 0;    
+    top: calc(-3.375em / 2);
+    margin-bottom: calc(-3.375em / 2);
 }
 
 .pre-scrollable{
-    max-height: 450px;
+    max-height: 65vh;
     overflow-x: hidden;
 }
 
 #result-footer-text, #create-footer-text {
     border-radius: 0;
+}
+
+.join-max-seats-display {
+    background-color: #444;
+    color: white;
+    padding: .618em 0;
+}
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.no-pad {
+    padding-right:0;
+    padding-left:0;
+}
+
+.address {
+    padding: .296em;
+}
+
+.hvr-none {
+    cursor: unset !important;
 }
 
 /* This is the custom Scrollbar */
@@ -174,6 +230,7 @@ header {
     background: #666; 
 }
 
+button:focus {outline:none;}
 /**
  * Error Validation Style
  */
@@ -195,3 +252,4 @@ header {
     font-size: 12px;
     display:none;
  }
+
