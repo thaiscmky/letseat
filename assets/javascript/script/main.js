@@ -344,6 +344,35 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 dbRef.update(self.usersForChosenEvent());
 
+                var joinNotificationParams = {
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Let's Eat",
+                    message_html: "<h2>You have joined" + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                };
+
+                var creatorNotificationParams = {
+                    to_name: self.usersForChosenEvent()[0].firstName,
+                    to_email: self.usersForChosenEvent()[0].email,
+                    from_name: "Let's Eat",
+                    message_html: "<h2>" + self.firstName() + " "+  self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
+                };
+
+                emailjs.send('default_service', 'template_rvFNVmMs', joinNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
+                emailjs.send('default_service', 'template_rvFNVmMs', creatorNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
+
                 self.usersForChosenEvent.removeAll();
 
                 self.pickedJoin(false);
@@ -376,6 +405,22 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     maxSeats: self.createMaxSeats()
 
                 });
+
+
+                var createNotificationParams = {
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Let's Eat",
+                    message_html: "<h2>You created event : " + self.createKey() + "</h2>"
+                };
+
+                emailjs.send('default_service', 'template_rvFNVmMs', createNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
 
 
                 self.createMaxSeats(0);
