@@ -1,3 +1,6 @@
+
+define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
+
 var animation = {
     suggestionArr: [
         // The first 5 items CAN'T be changed
@@ -68,6 +71,8 @@ function searchValidation() {
      console.log('Error: ' + error);
      return error;
 }
+
+
 $("#submitSearch").on("click", function (e) {
     console.log("Search Validation Result: Error in : ", searchValidation());
      if ( searchValidation().length >0 ) {
@@ -79,4 +84,6 @@ $("#submitSearch").on("click", function (e) {
         animation.headerFade();
    
 
-})
+});
+
+});
