@@ -37,7 +37,7 @@ var animation = {
     },
 
     headerFly() {
-        $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 2000, 'easeInBack', function () {            
+        $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 2000, 'easeInBack', function () {
             $("header").css({ display: 'none' });
             clearInterval(suggestionLoop);
         })
@@ -53,7 +53,30 @@ var suggestionLoop = setInterval(function () {
     animation.loopSuggestions()
 }, 3000);
 
-$("#submitSearch").on("click", function () {
-    animation.headerFly();
-    animation.headerFade();
+
+function searchValidation() {
+
+     var error = [];
+     if(!/^[a-zA-Z0-9\s._\-]+$/.test($("#searchTerm").val())){
+        error.push('search')
+     }
+
+     if(!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($("#zipCode").val()))
+     {
+        error.push("zipcode")
+     }
+     console.log('Error: ' + error);
+     return error;
+}
+$("#submitSearch").on("click", function (e) {
+    console.log("Search Validation Result: Error in : ", searchValidation());
+     if ( searchValidation().length >0 ) {
+        searchValidation().indexOf("zipcode") >= 0 ? $("#zip-validation").show(): $("#zip-validation").hide();
+        searchValidation().indexOf("search") >= 0  ? $("#search-term-validation").show(): $("#search-term-validation").hide();
+        return;
+     }
+        animation.headerFly();
+        animation.headerFade();
+   
+
 })
