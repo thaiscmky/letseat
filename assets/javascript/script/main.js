@@ -215,7 +215,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.landingVisible(false);
             self.resultsVisible(true);
 
-        }
+        };
 
 
 
@@ -231,7 +231,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.resultsVisible(false);
                 self.userVisible(true);
             }
-        }
+        };
 
 
         self.createEvent = function (event, domEvent) {
@@ -248,7 +248,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             self.createKey(event.key);
-            self.createName(event.name)
+            self.createName(event.name);
             self.createCity(event.location.city);
             self.createZip(event.location.zip_code);
             var address = event.location.address1;
@@ -261,7 +261,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             self.createAddress(address);
-            var categoryString = ''
+            var categoryString = '';
             for (var i = 0; i < event.categories.length; i++) {
                 if (i === 0) {
                     categoryString = event.categories[i].title;
@@ -274,7 +274,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
 
-        }
+        };
 
         self.submitUserInfo = function () {
 
@@ -285,36 +285,37 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
-                    lastName: self.lastName(),
+                    lastName: self.lastName()
                 });
-
-
-
-
+                
                 dbRef.set(self.usersForChosenEvent());
 
                 var joinNotificationParams = {
+                    header_msg: 'You have joined an event',
+                    event_name: self.eventChosen().key,
                     to_name: self.firstName(),
                     to_email: self.email(),
-                    from_name: "Let's Eat",
-                    message_html: "<h2>You have joined" + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>You have joined " + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
                 };
 
                 var creatorNotificationParams = {
+                    header_msg: 'Someone has joined your event',
+                    event_name: self.eventChosen().key,
                     to_name: self.usersForChosenEvent()[0].firstName,
                     to_email: self.usersForChosenEvent()[0].email,
-                    from_name: "Let's Eat",
+                    from_name: "Yummy Inc.",
                     message_html: "<h2>" + self.firstName() + " "+  self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
                 };
 
-                emailjs.send('default_service', 'template_rvFNVmMs', joinNotificationParams)
+                emailjs.send('default_service', 'yummy_eats', joinNotificationParams)
                     .then(function (response) {
                         console.log('SUCCESS!', response.status, response.text);
                     }, function (error) {
                         console.log('FAILED...', error);
                     });
 
-                emailjs.send('default_service', 'template_rvFNVmMs', creatorNotificationParams)
+                emailjs.send('default_service', 'yummy_eats', creatorNotificationParams)
                     .then(function (response) {
                         console.log('SUCCESS!', response.status, response.text);
                     }, function (error) {
@@ -352,16 +353,16 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
-                })
+                });
 
                 var createNotificationParams = {
                     to_name: self.firstName(),
                     to_email: self.email(),
-                    from_name: "Let's Eat",
+                    from_name: "Yummy Inc.",
                     message_html: "<h2>You created event : " + self.createKey() + "</h2>"
                 };
 
-                emailjs.send('default_service', 'template_rvFNVmMs', createNotificationParams)
+                emailjs.send('default_service', 'yummy_eats', createNotificationParams)
                     .then(function (response) {
                         console.log('SUCCESS!', response.status, response.text);
                     }, function (error) {
@@ -377,13 +378,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
-        }
+        };
 
         self.navToCreate = function () {
 
             self.resultsVisible(false);
             self.createVisible(true);
-        }
+        };
 
         self.navToResult = function () {
             self.createVisible(false);
