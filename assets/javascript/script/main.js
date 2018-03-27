@@ -255,7 +255,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createEvent = function (event, domEvent) {
 
 
-            
+
             var eventIndex = ko.contextFor(domEvent.target).$index();
 
             self.createMaxSeats($("#" + eventIndex).val());
@@ -582,25 +582,25 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 //     }
 
 
-                    self.eventChatRef.on('child_added', function (snapshot) {
+                self.eventChatRef.on('child_added', function (snapshot) {
 
 
-                        // if (self.newChatSent()) {
-                            self.eventChat.push(snapshot.val());
-                            // self.newChatSent(false);
-                        // }
-                    })
+                    // if (self.newChatSent()) {
+                    self.eventChat.push(snapshot.val());
+                    // self.newChatSent(false);
+                    // }
+                })
 
-                    self.eventChatRef.on('value', function (snapshot) {
-                        var keys = Object.keys(snapshot.val());
+                self.eventChatRef.on('value', function (snapshot) {
+                    var keys = Object.keys(snapshot.val());
 
-                        if (keys.length > 30) {
+                    if (keys.length > 30) {
 
-                            eventChatRef.child(keys[0]).remove();
+                        eventChatRef.child(keys[0]).remove();
 
-                        };
+                    };
 
-                    })
+                })
 
                 // });
 
@@ -680,5 +680,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         ko.applyBindings(letsEatVM);
 
     });
+
+    var popUpErr = function (msg) {
+        console.log(msg);        
+    }
+
+    $('header').on('click', function() {
+        popUpErr('hello');
+    })
 
 });
