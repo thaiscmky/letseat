@@ -376,3 +376,15 @@ button:focus {outline:none;}
         /* width: 100%; */
     }
 }
+
+#error-container {
+    font-size: 1.618em;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    padding: .5em;
+    background-color: red;
+    opacity: 0;
+    margin: auto;
+    width: 100%;
+}

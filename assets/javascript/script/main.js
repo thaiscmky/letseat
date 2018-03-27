@@ -620,7 +620,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             if (localStorage.getItem("firstName") === null) {
-                alert("must enter user information to chat");
+                popUpErr("Didn't join event yet bruh");
             }
             else if (validUser) {
                 if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
@@ -686,5 +686,14 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         ko.applyBindings(letsEatVM);
 
     });
+    var popUpErr = function (msg) {
+        $("#error-container").finish();
+        $("#error-container").text(msg);
+        $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
+            $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
+                $("#error-container").removeAttr('style');
+            })
+        });
+    }
 
 });
