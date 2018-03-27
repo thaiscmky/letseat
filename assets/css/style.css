@@ -376,3 +376,9 @@ button:focus {outline:none;}
         /* width: 100%; */
     }
 }
+
+#error-container {
+    font-size: 3em;
+    color: white;
+    position: fixed;
+}

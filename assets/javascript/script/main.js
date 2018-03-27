@@ -686,7 +686,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     }
 
     $('header').on('click', function() {
-        popUpErr('hello');
+        popUpErr('sdf');
     })
 
 });
