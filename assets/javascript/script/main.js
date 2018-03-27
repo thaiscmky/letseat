@@ -464,6 +464,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 }
 
+
+                self.usersForChosenEvent.removeAll();
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
@@ -792,4 +794,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             })
         });
     }
+
+
+   
+
 });
