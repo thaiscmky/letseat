@@ -279,6 +279,24 @@ button:focus {outline:none;}
     opacity: 0;
  }
 
+ #chatSpace {
+    height: 150px;
+    width: 300px;
+    overflow: auto;
+    background-color: white;
+    border: solid 2px #000000;
+    text-align: left;
+}
+
+#chatMessage {
+    width: 150px;
+    color: black;
+}
+
+.userChat {
+    color: #ee7b3c;
+}
+
  /* XL */
 @media (min-width: 1200px) {
     .modal-dialog {
