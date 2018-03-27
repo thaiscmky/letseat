@@ -40,7 +40,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         },
 
         headerFlyOut() {
-            $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 200, 'easeInBack', function () {                
+            $("header").animate({ opacity: '0', top: '-=100vh', height: '0px' }, 2000, 'easeInBack', function () {                
                 clearInterval(suggestionLoop);
             });
             $("#main-content").removeAttr('style');            
@@ -48,7 +48,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         headerFlyIn() {            
             $("header").animate({ opacity: '0', top: '-100vh', display: 'inline' }, 0, function () {
-                $("header").animate({ opacity: '1', top: '-20vh', height: '100vh' }, 200, 'easeOutBack', function () {
+                $("header").animate({ opacity: '1', top: '-20vh', height: '100vh' }, 2000, 'easeOutBack', function () {
                     suggestionLoop = setInterval(function () {
                         animation.loopSuggestions()
                     }, 3000);
