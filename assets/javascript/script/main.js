@@ -1,5 +1,8 @@
 define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
 
+
+
+
     function Activity(id, categories, name, location, users, image_url, maxSeats, url, price, rating, phoneNumber) {
         var self = this;
         self.key = id;
@@ -234,7 +237,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.joinEvent = function (event) {
             if (event.users.length >= event.maxSeats) {
-                alert("EVENT FULL\n @The make this pretty");
+                popUpErr("Event Full", 2);
             }
             else if (localStorage.getItem('email') === null) {
                 self.pickedJoin(true);
@@ -291,7 +294,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             if (localStorage.getItem("email") === null) {
-                alert("local storage null");
                 self.createVisible(false);
                 self.userVisible(true);
                 self.pickedCreate(true);
@@ -364,9 +366,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         }// user already registered
 
                     });
-                    debugger;
                     if (emailFound) {
-                        alert("This email is registered , please use another");
+                        popUpErr("This email is registered , please use another", 2);
+                   
                         emailFound = false;
                         return;
                     }
@@ -383,7 +385,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     console.log("user email exist")
                 }
 
-                dbRef.update(self.usersForChosenEvent());
+                dbRef.update(self.usersForChosenEvent()).then(() => {
+                    popUpErr("You Joined the "+self.eventChosen().key+ " Event", 1);
+                  });
 
                 var joinNotificationParams = {
                     header_msg: 'You have joined an event',
@@ -416,6 +420,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     }, function (error) {
                         console.log('FAILED...', error);
                     });
+
+
+                
 
 
                 self.usersForChosenEvent.removeAll();
@@ -470,7 +477,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
-                });
+                }).then(() => {
+                    popUpErr("You Created the "+self.createKey()+ " Event", 1);
+                  });
+;
 
                 firebase.database().ref("events/" + self.createKey()).child("chat").push({
                     user: "Let's Eat: ",
@@ -492,21 +502,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         console.log('FAILED...', error);
                     });
 
+                
+
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
-
-
+                
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
 
-            if(self.pickedJoin){
-                self.joinSuccess();
-            }
-            else if(self.pickedCreate)
-            {
-                self.createSuccess();
-            }
             self.pickedJoin(false);
             self.pickedCreate(false);
 
@@ -515,13 +519,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         };
 
-        self.joinSuccess = function(){
-
-        }
-
-        self.createSuccess = function(){
-            
-        }
+    
 
         self.navToCreate = function () {
             self.resultsVisible(false);
@@ -662,12 +660,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
                 } else {
-                    alert("invalid chat message");
+                    popUpErr("Invalid Chat Message", 2);
                 }
 
             }
             else {
-                alert("you have not joined this event");
+                popUpErr("You must join the event to chat", 2);
             }
 
             self.chatMessage('');
@@ -702,8 +700,14 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         ko.applyBindings(letsEatVM);
 
     });
-    var popUpErr = function (msg) {
+
+    var popUpErr = function (msg, type) {
         $("#error-container").finish();
+        switch (type) {
+            case 1: $("#error-container").css({ 'background-color': '#078611' })
+                break;
+            case 2: $("#error-container").css({ 'background-color': '#940707' })
+        }        
         $("#error-container").text(msg);
         $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
             $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
@@ -711,5 +715,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             })
         });
     }
+
+   
 
 });
