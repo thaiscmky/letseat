@@ -667,7 +667,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             }
             else {
-                alert("you have not joined this event");
+                popUpErr("HELLO DOES THIS WORK? LOL");
             }
 
             self.chatMessage('');
