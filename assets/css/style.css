@@ -385,11 +385,13 @@ button:focus {outline:none;}
 #error-container {
     font-size: 1.618em;
     color: white;
-    position: fixed;
+    position: absolute;
     bottom: 0;
-    padding: .5em;
-    background-color: red;
+    padding: .5em;    
     opacity: 0;
     margin: auto;
     width: 100%;
+    text-align: center;    
+    z-index: 1050;
+    color: #078611
 }

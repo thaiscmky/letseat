@@ -681,8 +681,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     });
 
-    var popUpErr = function (msg) {
+    var popUpErr = function (msg, type) {
         $("#error-container").finish();
+        switch (type) {
+            case 1: $("#error-container").css({ 'background-color': '#078611' })
+                break;
+            case 2: $("#error-container").css({ 'background-color': '#940707' })
+        }        
         $("#error-container").text(msg);
         $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
             $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
@@ -692,7 +697,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     }
 
     $('header').on('click', function () {
-        popUpErr('sdf');
+        popUpErr('sdf', 1);
     })
 
 });
