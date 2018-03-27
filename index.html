@@ -54,6 +54,16 @@
 </head>
 
 <body>
+
+    <div class="container d-flex justify-content-center">
+        <div class="row d-flex justify-content-center">
+            <button id="change-info" class="hvr-bob" data-bind="click: navToSearch">
+                <p>
+                    Change User Info
+                </p>
+            </button>
+        </div>
+    </div>
     <!-- This is the HTML for Land Display -->
     <header>
         <div id="landing-background"></div>
@@ -206,16 +216,16 @@
                                             <div data-bind="with: $root.eventChat">
 
                                                 <div class='col-sm-8 chat' id='chatSpace' with="foreach: $root.eventChat">
-        
-                                                    <div class="chat-display" data-bind="foreach: $data" >
-                                                         
+
+                                                    <div class="chat-display" data-bind="foreach: $data">
+
                                                         <span data-bind="text:user+': '"></span>
-                                                        <span data-bind="text:text" ></span>
+                                                        <span data-bind="text:text"></span>
                                                         <br>
                                                     </div>
                                                 </div>
                                                 <div class='col-sm-4 chat'>
-        
+
                                                     <form>
                                                         <div class="form-group">
                                                             <label for="chatMessage">Type your message here</label>
@@ -223,10 +233,10 @@
                                                         </div>
                                                         <button type="submit" id='newChat' class="btn btn-primary" data-bind="click: $root.addNewChat">Send</button>
                                                     </form>
-        
+
                                                 </div>
-        
-        
+
+
                                             </div>
                                         </div>
                                     </div>
