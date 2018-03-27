@@ -314,16 +314,14 @@ button:focus {outline:none;}
  }
 
  #chatSpace {
-    height: 150px;
-    width: 300px;
+    height: 150px;    
     overflow: auto;
     background-color: white;
     border: solid 2px #000000;
     text-align: left;
 }
 
-#chatMessage {
-    width: 150px;
+#chatMessage {    
     color: black;
 }
 
@@ -393,5 +391,4 @@ button:focus {outline:none;}
     width: 100%;
     text-align: center;    
     z-index: 1050;
-    color: #078611
 }
