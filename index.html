@@ -54,16 +54,6 @@
 </head>
 
 <body>
-
-    <div class="container d-flex justify-content-center">
-        <div class="row d-flex justify-content-center">
-            <button id="change-info" class="hvr-bob">
-                <p>
-                    Change User Info
-                </p>
-            </button>
-        </div>
-    </div>
     <!-- This is the HTML for Land Display -->
     <header>
         <div id="landing-background"></div>
@@ -115,6 +105,15 @@
                 <p>
                     <i class="fas fa-caret-up fa-2x"></i>
                 </p>I want something else</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <button id="change-info" data-bind="click: clearLocalStorage">
+                <p>
+                    Change User Info
+                </p>
+            </button>
         </div>
     </div>
 
@@ -238,7 +237,6 @@
 
 
                                             </div>
-                                        </div>
                                     </div>
 
 
