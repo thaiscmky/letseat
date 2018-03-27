@@ -377,12 +377,19 @@ button:focus {outline:none;}
     }
 }
 
+.error-wrapper {
+    width: 100%;
+    margin: auto;
+}
+
 #error-container {
     font-size: 1.618em;
     color: white;
     position: fixed;
-    top: 90vh;
-    padding: 1em;
+    bottom: 0;
+    padding: .5em;
     background-color: red;
     opacity: 0;
+    margin: auto;
+    width: 100%;
 }

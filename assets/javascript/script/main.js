@@ -685,7 +685,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         $("#error-container").finish();
         $("#error-container").text(msg);
         $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
-            $("#error-container").animate({ opacity: '0' }, 2000, 'easeInQuint', function () {
+            $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
                 $("#error-container").removeAttr('style');
             })
         });
