@@ -31,78 +31,20 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         var self = this;
 
+
+        // These observable keep track of what page is displaying
+        self.landingVisible = ko.observable(true);
+        self.resultsVisible = ko.observable(false);
+        self.createVisible = ko.observable(false);
         self.userVisible = ko.observable(false);
 
-        self.pickedJoin = ko.observable(false);
 
+        //chat variables
         self.eventChatRef = '';
         self.eventChat = ko.observableArray([]);
         self.chatMessage = ko.observable('');
-        // self.newChatSent = ko.observable('');
-
-        //modal info
-        // self.restaurantName = ko.observable('');
-        // self.restaurantPrice = ko.observable('');
-        // self.restaurantRating = ko.observable('');
-        // self.restaurantYelpURL = ko.observable('');
-        // self.restaurantIMGURL = ko.observable('');
-        // self.restaurantAddress = ko.observable('');
-        // self.restaurantCity = ko.observable('');
-        // self.restaurantZip = ko.observable('');
-        // self.restaurantPhone = ko.observable('');
-        // self.restaurantCategories = ko.observable('');
-        // self.restaurantSeats = ko.observable('');
-
-        // self.deselectEvent = function (data) {
-        //     self.eventChosen('');
-
-        // }
-
-        self.saveEventInfo = function (data) {
 
 
-            console.log(JSON.stringify(data));
-
-            self.eventChosen(data);
-            // self.restaurantName(data.name);
-
-            // self.restaurantPrice(data.price);
-            // self.restaurantRating(data.rating);
-            // self.restaurantYelpURL(data.url);
-
-            // self.restaurantIMGURL(data.image_url);
-
-            // self.restaurantCity(data.location.city);
-            // self.restaurantZip(data.location.zip_code);
-            // self.restaurantPhone(data.phoneNumber);
-            // self.restaurantSeats(data.maxSeats);
-
-
-            // var address = data.location.address1
-            // if (data.location.address2.length > 0) {
-            //     address += ", " + data.location.address2;
-            // }
-            // if (data.location.address3.length > 0) {
-            //     address += ", " + data.location.address3;
-            // }
-
-            // self.restaurantAddress(address);           
-            //  var categoryString = ''
-            // for (var i = 0; i < data.categories.length; i++) {
-            //     if (i === 0) {
-            //         categoryString = data.categories[i].title;
-            //     }
-            //     else if((data.categories.length-1)===i){
-            //         categoryString += data.categories[i].title;
-            //     }
-            //      {
-            //         categoryString += ", " + data.categories[i].title;
-            //     }
-            // }
-
-            // self.restaurantCategories(categoryString);
-
-        }
 
         //create event observables
         self.pickedCreate = ko.observable(false);
@@ -117,9 +59,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
         self.searchTerm = ko.observable('chicken');
-
         self.zipCode = ko.observable('77077');
-
         self.zipInfo = ko.observable('');
 
         self.eventChosen = ko.observable('');
@@ -138,13 +78,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createEventList = ko.observableArray();
 
-        // These observable keep track of what page is displaying
-        self.landingVisible = ko.observable(true);
+        self.pickedJoin = ko.observable(false);
 
-
-        self.resultsVisible = ko.observable(false);
-
-        self.createVisible = ko.observable(false);
 
         self.zipInfo = ko.observable('');
 
@@ -172,6 +107,11 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             $("#email-validation").val('');
 
         }
+
+        //Queries yelp api and matches returned data with firebase data to display 
+        //existing events on the results page
+        //called when: a user searchs from the landing page, A user joins an event, 
+        //a user creates an event, the reload results button is clicked
         self.submitSearch = function () {
 
             var searchTerm = self.searchTerm();
@@ -194,7 +134,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             };
 
             $.when(secureApiRequest.fetchResponse(args, apitoken)).done(function () {
-                // console.log(secureApiRequest.responseObject);
                 ko.utils.arrayPushAll(self.searchResult, secureApiRequest.responseObject.businesses);
 
                 ko.utils.arrayForEach(self.searchResult(), function (item) {
@@ -212,10 +151,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
                             self.currentEvents.push(activity);
-                            // console.log(self.currentEvents());
                         }
                         else {
-                            //console.log("DoNotExists: " + item.id);
                             var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url, undefined, item.url, item.price, item.rating, item.display_phone);
                             self.createEventList.push(activity);
 
@@ -235,7 +172,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         };
 
-
+        //called when join button is clicked on the event results view, saves event info
         self.joinEvent = function (event) {
             if (event.users.length >= event.maxSeats) {
                 popUpErr("Event Full", 2);
@@ -256,6 +193,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         };
 
 
+        //called when create button is clicked on the creatable events view, saves event info
         self.createEvent = function (event, domEvent) {
 
             var eventIndex = ko.contextFor(domEvent.target).$index();
@@ -317,6 +255,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
+        //validation function
         function validateJoinForm() {
             var error = [];
             let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -334,6 +273,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             return error;
         }
+
+
+        //sets user info from local storage if available, otherwise uses user input. Joins event or Creates event based on pickedJoin/pickedCreate and sends email notifications on success
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
@@ -545,18 +487,20 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         };
 
 
-
+        //navigates to list of creatable events
         self.navToCreate = function () {
             self.resultsVisible(false);
             self.userVisible(false);
             self.createVisible(true);
         };
 
+        //navigate to existing events
         self.navToResult = function () {
             self.createVisible(false);
             self.resultsVisible(true);
         }
 
+        //navigate to landing page, re-initializing all variables
         self.navToSearch = function () {
 
             self.userVisible(false);
@@ -638,6 +582,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             $(".modal-price").html(newDiv);
         }
 
+
+
+        //saves event info on clicking the info button in the results view
+        //also sets up chat firebase event listeners
         self.saveEventInfo = function (data) {
 
 
@@ -661,24 +609,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 var keyArray;
 
 
-                // self.eventChatRef.once('value').then(function (snapshot) {
-
-                //     keyArray = Object.keys(snapshot.val());
-                //     var chatArray = Object.values(snapshot.val());
-
-                //     for (var i = 0; i < chatArray.length; i++) {
-                //         self.eventChat.push(chatArray[i]);
-
-                //     }
 
 
                 self.eventChatRef.on('child_added', function (snapshot) {
 
 
-                    // if (self.newChatSent()) {
                     self.eventChat.push(snapshot.val());
-                    // self.newChatSent(false);
-                    // }
+
                 })
 
                 self.eventChatRef.on('value', function (snapshot) {
@@ -692,13 +629,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 })
 
-                // });
 
 
 
             }
         }
 
+        //If user has joined event, sends valid chat message to event firebase
         self.addNewChat = function () {
 
             var validUser = false;
@@ -715,7 +652,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
 
 
-                    // self.newChatSent(true);
 
                     var chatRef = firebase.database().ref("events/" + self.eventChosen().key + "/chat");
 
@@ -725,7 +661,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     }, function (error) {
                         if (error) {
                             console.log(error);
-                            // self.newChatSent(false);
 
                         }
 
@@ -747,7 +682,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
-
+        //clears user info out of local storage
         self.clearLocalStorage = function () {
             localStorage.clear();
         }
@@ -756,7 +691,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     var letsEatVM = new LetsEatModel();
 
 
-
+    //resets chat variables and event info on closing modal
     $('#createModal').on('hidden.bs.modal', function () {
 
         if (letsEatVM.eventChatRef) {
@@ -767,30 +702,16 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         letsEatVM.chatMessage('');
         letsEatVM.eventChosen('');
 
-        // letsEatVM.newChatSent('');
 
     });
 
+    //applies viewmodel knockout binding to DOM
     $(document).ready(function () {
         ko.applyBindings(letsEatVM);
 
     });
 
-    var popUpErr = function (msg, type) {
-        $("#error-container").finish();
-        switch (type) {
-            case 1: $("#error-container").css({ 'background-color': '#078611' })
-                break;
-            case 2: $("#error-container").css({ 'background-color': '#940707' })
-        }
-        $("#error-container").text(msg);
-        $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
-            $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
-                $("#error-container").removeAttr('style');
-            })
-        });
-    }
-
+    //displays a notification using msg as text and type 1 for notification, type 2 for error 
     var popUpErr = function (msg, type) {
         $("#error-container").finish();
         switch (type) {
