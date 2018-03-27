@@ -178,6 +178,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             var zipCode = self.zipCode();
             self.searchResult.removeAll();
             self.currentEvents.removeAll();
+            self.createEventList.removeAll();
 
 
             var apitoken = "O6n9AwTvAVvbc1aMOVvSmI_ATeiK6bEXa3Ad-nEfWVp0tuJPnG_yv01m8WwvcQ3Urd2B7Z25hxVCOF35wf_-C-Ub-zm57JG_EnQMn0vQj6LNBDfkj-xlcWHUSxKuWnYx";
@@ -257,8 +258,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createEvent = function (event, domEvent) {
 
-
-
             var eventIndex = ko.contextFor(domEvent.target).$index();
 
             self.createMaxSeats($("#" + eventIndex).val());
@@ -271,14 +270,26 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.createName(event.name);
             self.createCity(event.location.city);
             self.createZip(event.location.zip_code);
-            var address = event.location.address1;
+            var address = "";
 
-            if (event.location.address2.length > 0) {
-                address += " ," + event.location.address2;
+            if (event.location.address1 != null) {
+                if (event.location.address1 > 0) {
+                    address += event.location.address1;
+                }
             }
-            if (event.location.address3.length > 0) {
-                address += " ," + event.location.address3;
+            if (event.location.address2 != null) {
+                if (event.location.address2.length > 0) {
+                    address += " ," + event.location.address2;
+                }
             }
+            if (event.location.address3 != null) {
+                if (event.location.address3.length > 0 && event.location.address3 != null) {
+                    address += " ," + event.location.address3;
+                }
+
+            }
+
+
 
             self.createAddress(address);
             var categoryString = '';
@@ -520,7 +531,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
 
-               
+
 
                 resetForm();
                 self.submitSearch();
@@ -786,7 +797,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             case 1: $("#error-container").css({ 'background-color': '#078611' })
                 break;
             case 2: $("#error-container").css({ 'background-color': '#940707' })
-        }        
+        }
         $("#error-container").text(msg);
         $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
             $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
@@ -796,6 +807,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     }
 
 
-   
+
 
 });
