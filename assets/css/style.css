@@ -11,6 +11,7 @@ body {
 }
 
 .main-wrapper {    
+    width: 100%;
     margin: auto;
 }
 
@@ -328,6 +329,10 @@ button:focus {outline:none;}
 
 .userChat {
     color: #ee7b3c;
+}
+
+#user-form {
+    padding: 1em;
 }
 
  /* XL */

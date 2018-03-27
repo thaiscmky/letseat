@@ -206,16 +206,16 @@
                                             <div data-bind="with: $root.eventChat">
 
                                                 <div class='col-sm-8 chat' id='chatSpace' with="foreach: $root.eventChat">
-        
-                                                    <div class="chat-display" data-bind="foreach: $data" >
-                                                         
+
+                                                    <div class="chat-display" data-bind="foreach: $data">
+
                                                         <span data-bind="text:user+': '"></span>
-                                                        <span data-bind="text:text" ></span>
+                                                        <span data-bind="text:text"></span>
                                                         <br>
                                                     </div>
                                                 </div>
                                                 <div class='col-sm-4 chat'>
-        
+
                                                     <form>
                                                         <div class="form-group">
                                                             <label for="chatMessage">Type your message here</label>
@@ -223,10 +223,10 @@
                                                         </div>
                                                         <button type="submit" id='newChat' class="btn btn-primary" data-bind="click: $root.addNewChat">Send</button>
                                                     </form>
-        
+
                                                 </div>
-        
-        
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -258,6 +258,7 @@
                         <div class="row" data-bind="foreach: createEventList">
                             <div class="col-sm-12 col-md-6 col-lg-4 column">
 
+
                                 <!-- This is HTML for cards in create-display -->
                                 <div class="card hvr-glow">
                                     <p class="card-header" data-bind="text: name"></p>
@@ -286,66 +287,70 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="create-info">                                        
+                                    <div class="create-info">
                                         <div class="text-center" data-bind="text: location.address1"></div>
                                         <div class="text-center" data-bind="text: location.city + ', ' + location.zip_code"></div>
                                         <div class="text-center" data-bind="text: phoneNumber"></div>
                                     </div>
                                     <div class="create-info">
-                                    <h2 class="text-center">Categories</h2>
-                                    <div class="text-center" data-bind="foreach: categories">
-                                        <span data-bind="text: title, "></span>
+                                        <h2 class="text-center">Categories</h2>
+                                        <div class="text-center" data-bind="foreach: categories">
+                                            <span data-bind="text: title, "></span>
+                                        </div>
                                     </div>
-                                </div>                                
-                                <div class="card-info">
-                                    <div class="">
+                                    <div class="card-info">
                                         <div class="">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">Seats</div>
+                                            <div class="">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">Seats</div>
+                                                    </div>
+                                                    <input type="number" class="form-control" class="seat-input" value="5" data-bind="attr:{'id':$index()}">
                                                 </div>
-                                                <input type="number" class="form-control" class="seat-input" value="5" data-bind="attr:{'id':$index()}">
                                             </div>
                                         </div>
                                     </div>
+                                    <button class="btn btn-warning-reverse hvr-fade col-12" data-bind="click: $root.createEvent">Create</button>
                                 </div>
-                                <button class="btn btn-warning-reverse hvr-fade col-12" data-bind="click: $root.createEvent">Create</button>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
+
+                    <div id="create-footer">
+                        <div class="col-12"></div>
+                        <button id="create-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToResult"> Go back to browsing results</button>
+                    </div>
+
                 </div>
 
-                <div id="create-footer">
-                    <div class="col-12"></div>
-                    <button id="create-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToResult"> Go back to browsing results</button>
+                <!-- This is the HTML for User Display -->
+                <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
+                    <div class="display-header col-12">
+                        <p class="text-center">Please enter your info</p>
+                    </div>
+                    <div class="container">
+                        <form id="user-form">
+                            <div class="form-group">
+                                <label for="firstNameInput">First Name</label>
+                                <input type="text" class="form-control" id="firstNameInput" placeholder="John" data-bind="value: firstName">
+                                <label id="firstname-validation" class="join-validation-label">Please Enter a Valid First Name </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastNameInput">Last Name</label>
+                                <input type="text" class="form-control" id="lastNameInput" placeholder="Doe" data-bind="value: lastName">
+                                <label id="lastname-validation" class="join-validation-label">Please Enter a Valid Last Name </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="emailInput">Email</label>
+                                <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
+                                <label id="email-validation" class="join-validation-label">Please Enter a Valid Email </label>
+                            </div>
+                            <button id="submitInfo" type="submit" class="btn hvr-fade btn-primary" data-bind="click: submitUserInfo">Submit</button>
+                        </form>
+                    </div>
                 </div>
-
             </div>
-
-            <!-- This is the HTML for User Display -->
-            <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
-                Please enter in your info *NOTE YEA THIS MESSAGE AIN'T FINAL CHANGE IT TO SOMETHING NICER SOUNDING*
-                <form id="user-form">
-                    <div class="form-group">
-                        <label for="firstNameInput">First Name</label>
-                        <input type="text" class="form-control" id="firstNameInput" placeholder="John" data-bind="value: firstName">
-                        <label id="firstname-validation" class="join-validation-label">Please Enter a Valid First Name </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastNameInput">Last Name</label>
-                        <input type="text" class="form-control" id="lastNameInput" placeholder="Doe" data-bind="value: lastName">
-                        <label id="lastname-validation" class="join-validation-label">Please Enter a Valid Last Name </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="emailInput">Email</label>
-                        <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
-                        <label id="email-validation" class="join-validation-label">Please Enter a Valid Email </label>
-                    </div>
-                    <button id="submitInfo" type="submit" class="btn btn-warning-reverse hvr-fade btn-primary" data-bind="click: submitUserInfo">Submit</button>
-                </form>
-            </div>
-        </div>
         </div>
     </section>
 </body>
