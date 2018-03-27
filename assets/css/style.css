@@ -49,7 +49,7 @@ header {
 }
 
 #landing-header {
-    font-size: 6.854em;
+    font-size: 4.236em;
     color: #fff;
     font-weight: 900;    
 }
@@ -347,6 +347,10 @@ button:focus {outline:none;}
     padding: 1em;
 }
 
+.landing-label {
+    font-size: .618em;
+}
+
  /* XL */
 @media (min-width: 1200px) {
     .modal-dialog {
@@ -374,16 +378,35 @@ button:focus {outline:none;}
     .display-header {
         font-size: 2.618em;
     }   
+
+    .landing-label {
+        font-size: 1.618em;
+    }
+
 }
 
 /* SM */
 @media (min-width: 576px) {
- 
+    .landing-label {
+        font-size: 1em;
+    }
+
+    #landing-header {
+        font-size: 6.854em;                  
+    }
 }
 
 @media (min-width: 0px) {
+    .landing-label {
+        /* font-size: 1.618em; */
+    }
+    
     .container {
         padding: 0;
+    }
+
+    #search-container {
+        width: 100vw;
     }
 }
 
