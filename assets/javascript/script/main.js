@@ -1,5 +1,8 @@
 define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bootstrap, cors, ko, kob) {
 
+
+
+
     function Activity(id, categories, name, location, users, image_url, maxSeats, url, price, rating, phoneNumber) {
         var self = this;
         self.key = id;
@@ -32,15 +35,74 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
-        self.deselectEvent = function(data){
-            self.eventChosen('');
+        self.eventChatRef = '';
+        self.eventChat = ko.observableArray([]);
+        self.chatMessage = ko.observable('');
+        // self.newChatSent = ko.observable('');
 
-        };
+        //modal info
+        // self.restaurantName = ko.observable('');
+        // self.restaurantPrice = ko.observable('');
+        // self.restaurantRating = ko.observable('');
+        // self.restaurantYelpURL = ko.observable('');
+        // self.restaurantIMGURL = ko.observable('');
+        // self.restaurantAddress = ko.observable('');
+        // self.restaurantCity = ko.observable('');
+        // self.restaurantZip = ko.observable('');
+        // self.restaurantPhone = ko.observable('');
+        // self.restaurantCategories = ko.observable('');
+        // self.restaurantSeats = ko.observable('');
 
-        self.saveEventInfo = function(data){
+        // self.deselectEvent = function (data) {
+        //     self.eventChosen('');
+
+        // }
+
+        self.saveEventInfo = function (data) {
+
+
+            console.log(JSON.stringify(data));
+
             self.eventChosen(data);
+            // self.restaurantName(data.name);
 
-        };
+            // self.restaurantPrice(data.price);
+            // self.restaurantRating(data.rating);
+            // self.restaurantYelpURL(data.url);
+
+            // self.restaurantIMGURL(data.image_url);
+
+            // self.restaurantCity(data.location.city);
+            // self.restaurantZip(data.location.zip_code);
+            // self.restaurantPhone(data.phoneNumber);
+            // self.restaurantSeats(data.maxSeats);
+
+
+            // var address = data.location.address1
+            // if (data.location.address2.length > 0) {
+            //     address += ", " + data.location.address2;
+            // }
+            // if (data.location.address3.length > 0) {
+            //     address += ", " + data.location.address3;
+            // }
+
+            // self.restaurantAddress(address);           
+            //  var categoryString = ''
+            // for (var i = 0; i < data.categories.length; i++) {
+            //     if (i === 0) {
+            //         categoryString = data.categories[i].title;
+            //     }
+            //     else if((data.categories.length-1)===i){
+            //         categoryString += data.categories[i].title;
+            //     }
+            //      {
+            //         categoryString += ", " + data.categories[i].title;
+            //     }
+            // }
+
+            // self.restaurantCategories(categoryString);
+
+        }
 
         //create event observables
         self.pickedCreate = ko.observable(false);
@@ -50,7 +112,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createKey = ko.observable('');
         self.createName = ko.observable('');
         self.createCategories = ko.observable('');
-        self.createMaxSeats = ko.observable(0);
+        self.createMaxSeats = ko.observable();
 
 
 
@@ -84,6 +146,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createVisible = ko.observable(false);
 
+        self.zipInfo = ko.observable('');
 
         // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
         self.zipRequest = ko.computed(function () {
@@ -91,7 +154,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
             if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
                 $.ajax({
-                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
                 }).done(function (res) {
                     var info = res.results[0].formatted_address;
@@ -100,7 +163,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
         });
 
-        //search
+        function resetForm() {
+            $('#firstNameInput').val('');
+            $('#lastNameInput').val('');
+            $('#emailInput').val('');
+            $("#firstname-validation").val('');
+            $("#lastname-validation").val('');
+            $("#email-validation").val('');
+
+        }
         self.submitSearch = function () {
 
             var searchTerm = self.searchTerm();
@@ -140,8 +211,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
                             self.currentEvents.push(activity);
+                            // console.log(self.currentEvents());
                         }
                         else {
+                            //console.log("DoNotExists: " + item.id);
                             var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url, undefined, item.url, item.price, item.rating, item.display_phone);
                             self.createEventList.push(activity);
 
@@ -154,24 +227,30 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             });
+            self.userVisible(false);
             self.landingVisible(false);
             self.resultsVisible(true);
+            self.createVisible(false);
 
-        }
-
-
+        };
 
 
         self.joinEvent = function (event) {
             if (event.users.length >= event.maxSeats) {
-                alert("EVENT FULL\n @The make this pretty");
+                popUpErr("Event Full", 2);
             }
-            else {
+            else if (localStorage.getItem('email') === null) {
                 self.pickedJoin(true);
                 self.eventChosen(event);
                 self.usersForChosenEvent(event.users);
                 self.resultsVisible(false);
                 self.userVisible(true);
+            }
+            else {
+                self.pickedJoin(true);
+                self.eventChosen(event);
+                self.usersForChosenEvent(event.users);
+                self.submitUserInfo();
             }
         };
 
@@ -179,13 +258,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createEvent = function (event, domEvent) {
 
 
+
             var eventIndex = ko.contextFor(domEvent.target).$index();
 
             self.createMaxSeats($("#" + eventIndex).val());
 
-            self.createVisible(false);
-            self.userVisible(true);
-            self.pickedCreate(true);
+
 
 
 
@@ -215,33 +293,179 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.createCategories(categoryString);
 
 
+            if (localStorage.getItem("email") === null) {
+                self.createVisible(false);
+                self.userVisible(true);
+                self.pickedCreate(true);
+            }
+            else {
+                self.pickedCreate(true);
+                self.submitUserInfo();
 
-        };
+            }
 
+        }
+
+        function validateJoinForm() {
+            var error = [];
+            let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            let nameRegEx = /^[a-zA-Z0-9\s._\-]+$/;
+
+
+            if (!nameRegEx.test($("#firstNameInput").val())) {
+                error.push('firstname')
+            }
+            if (!nameRegEx.test($("#lastNameInput").val())) {
+                error.push("lastname")
+            }
+            if (!emailRegEx.test($("#emailInput").val())) {
+                error.push("email")
+            }
+            return error;
+        }
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
 
-                var dbRef = firebase.database().ref("events/" + self.eventChosen().key + "/users");
 
-                self.usersForChosenEvent.push({
-                    email: self.email(),
-                    firstName: self.firstName(),
-                    lastName: self.lastName()
+                var dbRef = firebase.database().ref("events/" + self.eventChosen().key + "/users");
+                if (localStorage.getItem("email") != null) {
+                    self.firstName(localStorage.getItem('firstName'));
+                    self.lastName(localStorage.getItem('lastName'));
+                    self.email(localStorage.getItem('email'));
+
+
+                }
+                else {
+
+                    if (validateJoinForm().length > 0) {
+                        validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show() : $("#firstname-validation").hide();
+                        validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show() : $("#lastname-validation").hide();
+                        validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show() : $("#email-validation").hide();
+                        return;
+                    }
+
+                    localStorage.setItem("firstName", self.firstName());
+                    localStorage.setItem("lastName", self.lastName());
+                    localStorage.setItem("email", self.email());
+
+
+                }
+
+                var emailExist = false;
+
+
+                let emailFound;
+                // DB Validation for duplicate users
+                dbRef.once("value", function (data) {
+                    data.val().map(user => {
+
+                        if (self.email() === user.email) {
+                            emailFound = true;
+                        }// user already registered
+
+                    });
+                    if (emailFound) {
+                        popUpErr("This email is registered , please use another", 2);
+
+                        emailFound = false;
+                        return;
+                    }
+
+                    if (!emailExist) {
+                        self.usersForChosenEvent.push({
+                            email: self.email(),
+                            firstName: self.firstName(),
+                            lastName: self.lastName(),
+                        });
+                    }
+                    else {
+                        console.log("user email exist")
+                    }
+
+                    dbRef.update(self.usersForChosenEvent()).then(() => {
+                        popUpErr("You Joined the " + self.eventChosen().key + " Event", 1);
+                    });
+
+                    var joinNotificationParams = {
+                        header_msg: 'You have joined an event',
+                        event_name: self.eventChosen().key,
+                        to_name: self.firstName(),
+                        to_email: self.email(),
+                        from_name: "Yummy Inc.",
+                        message_html: "<h2>You have joined " + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                    };
+
+                    var creatorNotificationParams = {
+                        header_msg: 'Someone has joined your event',
+                        event_name: self.eventChosen().key,
+                        to_name: self.usersForChosenEvent()[0].firstName,
+                        to_email: self.usersForChosenEvent()[0].email,
+                        from_name: "Yummy Inc.",
+                        message_html: "<h2>" + self.firstName() + " " + self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
+                    };
+
+                    emailjs.send('default_service', 'yummy_eats', joinNotificationParams)
+                        .then(function (response) {
+                            console.log('SUCCESS!', response.status, response.text);
+                        }, function (error) {
+                            console.log('FAILED...', error);
+                        });
+
+                    emailjs.send('default_service', 'yummy_eats', creatorNotificationParams)
+                        .then(function (response) {
+                            console.log('SUCCESS!', response.status, response.text);
+                        }, function (error) {
+                            console.log('FAILED...', error);
+                        });
+
+
+
+
+
+                    self.usersForChosenEvent.removeAll();
+
+                    self.userVisible(false);
+                    self.resultsVisible(true);
+                    self.pickedCreate(false);
+
+                    resetForm();
+                    self.submitSearch();
+
+
+
                 });
 
-                dbRef.set(self.usersForChosenEvent());
 
-                self.usersForChosenEvent.removeAll();
-
-                self.pickedJoin(false);
-                self.userVisible(false);
-                self.resultsVisible(true);
             }
             else if (self.pickedCreate()) {
 
                 var dbRef = firebase.database().ref("events");
 
+                if (localStorage.getItem("email") != null) {
+                    self.firstName(localStorage.getItem('firstName'));
+                    self.lastName(localStorage.getItem('lastName'));
+                    self.email(localStorage.getItem('email'));
+
+                }
+                else {
+
+                    if (validateJoinForm().length > 0) {
+                        validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show() : $("#firstname-validation").hide();
+                        validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show() : $("#lastname-validation").hide();
+                        validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show() : $("#email-validation").hide();
+                        return;
+                    }
+
+                    localStorage.setItem("firstName", self.firstName());
+                    localStorage.setItem("lastName", self.lastName());
+                    localStorage.setItem("email", self.email());
+
+
+                }
+
+
+                self.usersForChosenEvent.removeAll();
                 self.usersForChosenEvent.push({
                     email: self.email(),
                     firstName: self.firstName(),
@@ -253,31 +477,67 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     city: self.createCity(),
                     zipCod: self.createZip()
                 };
-
+                var day = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
                 dbRef.child(self.createKey()).set({
                     categories: self.createCategories(),
                     eventName: self.createName(),
                     location: locationObject,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    date: day,//new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
+                }).then(() => {
+                    popUpErr("You Created the " + self.createKey() + " Event", 1);
                 });
+                ;
+
+                firebase.database().ref("events/" + self.createKey()).child("chat").push({
+                    user: "Let's Eat: ",
+                    text: "Welcome to " + self.createKey() + "'s chat"
+                })
+
+
+                var createNotificationParams = {
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>You created event : " + self.createKey() + "</h2>"
+                };
+
+                emailjs.send('default_service', 'yummy_eats', createNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
 
 
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
 
-
-                self.pickedCreate(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
+
+               
+
+                resetForm();
+                self.submitSearch();
             }
+
+            self.pickedJoin(false);
+            self.pickedCreate(false);
+
+
+
         };
 
-        self.navToCreate = function () {
 
+
+        self.navToCreate = function () {
             self.resultsVisible(false);
+            self.userVisible(false);
             self.createVisible(true);
         };
 
@@ -286,12 +546,256 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.resultsVisible(true);
         }
 
+        self.navToSearch = function () {
+
+            self.userVisible(false);
+
+            self.pickedJoin(false);
+
+            self.eventChatRef = '';
+            self.eventChat.removeAll();
+            self.chatMessage('');
+            self.pickedCreate(false);
+            self.createAddress('');
+            self.createCity('');
+            self.createZip('');
+            self.createKey('');
+            self.createName('');
+            self.createCategories('');
+            self.createMaxSeats('');
+
+
+
+            self.searchTerm('chicken');
+
+            self.zipCode('77077');
+
+            self.zipInfo('');
+
+            self.eventChosen('');
+
+            self.firstName('');
+
+            self.lastName('');
+
+            self.email('');
+
+            self.usersForChosenEvent('');
+
+            self.searchResult.removeAll();
+
+            self.currentEvents.removeAll();
+
+            self.createEventList.removeAll();
+
+            // These observable keep track of what page is displaying
+            self.landingVisible = ko.observable(true);
+
+
+            self.resultsVisible(false);
+
+            self.createVisible(false);
+
+            self.zipInfo('');
+            self.userVisible(false);
+            self.resultsVisible(false);
+            self.createVisible(false);
+        }
+
+        // self.drawRating = ko.observable(self.eventChosen().rating);
+
+        // Draws the stars in modal info view
+        self.drawRating = function () {
+            var rating = self.eventChosen().rating;
+            var newDiv = $("<div>").css({ 'color': '#FFC107' });
+            while (rating >= 1) {
+                rating--
+                newDiv.append('<i class="fas fa-star fa-sm"></i>');
+            }
+            if (rating === .5) newDiv.append('<i class="fas fa-star-half"></i>');
+            $(".modal-rating").html(newDiv);
+        }
+
+        // Draws price in modal info view
+        self.drawPrice = function () {
+            var price = self.eventChosen().price;
+            console.log(price);
+            var newDiv = $("<div>").css({ 'color': '#566904' });
+            for (var i = 0; i < price.length; i++) {
+                newDiv.append('<i class="fas fa-dollar-sign"></i>');
+            }
+            $(".modal-price").html(newDiv);
+        }
+
+        self.saveEventInfo = function (data) {
+
+
+
+            self.eventChosen(data);
+
+
+
+            if (localStorage.getItem('firstName') != null) {
+                var validUser = false;
+                for (var i = 0; i < self.eventChosen().users.length; i++) {
+                    if (self.eventChosen().users[i].email === localStorage.getItem('email')) {
+                        validUser = true;
+                    }
+                }
+            }
+
+            if (validUser) {
+
+                self.eventChatRef = firebase.database().ref("events/" + self.eventChosen().key + "/chat");
+                var keyArray;
+
+
+                // self.eventChatRef.once('value').then(function (snapshot) {
+
+                //     keyArray = Object.keys(snapshot.val());
+                //     var chatArray = Object.values(snapshot.val());
+
+                //     for (var i = 0; i < chatArray.length; i++) {
+                //         self.eventChat.push(chatArray[i]);
+
+                //     }
+
+
+                self.eventChatRef.on('child_added', function (snapshot) {
+
+
+                    // if (self.newChatSent()) {
+                    self.eventChat.push(snapshot.val());
+                    // self.newChatSent(false);
+                    // }
+                })
+
+                self.eventChatRef.on('value', function (snapshot) {
+                    var keys = Object.keys(snapshot.val());
+
+                    if (keys.length > 30) {
+
+                        eventChatRef.child(keys[0]).remove();
+
+                    };
+
+                })
+
+                // });
+
+
+
+            }
+        }
+
+        self.addNewChat = function () {
+
+            var validUser = false;
+            for (var i = 0; i < self.eventChosen().users.length; i++) {
+                if (self.eventChosen().users[i].email === localStorage.getItem('email')) {
+                    validUser = true;
+                }
+            }
+
+            if (localStorage.getItem("firstName") === null) {
+                popUpErr("Didn't join event yet bruh");
+            }
+            else if (validUser) {
+                if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
+
+
+                    // self.newChatSent(true);
+
+                    var chatRef = firebase.database().ref("events/" + self.eventChosen().key + "/chat");
+
+                    chatRef.push({
+                        user: localStorage.getItem('firstName') + " " + localStorage.getItem('lastName'),
+                        text: self.chatMessage()
+                    }, function (error) {
+                        if (error) {
+                            console.log(error);
+                            // self.newChatSent(false);
+
+                        }
+
+                    });
+
+
+
+
+                } else {
+                    popUpErr("Invalid Chat Message", 2);
+                }
+
+            }
+            else {
+                popUpErr("You must join the event to chat", 2);
+            }
+
+            self.chatMessage('');
+
+        }
+
+
+        self.clearLocalStorage = function () {
+            localStorage.clear();
+        }
     }
 
-    // The's landing page code
-    $(document).ready(function () {
-        ko.applyBindings(new LetsEatModel());
+    var letsEatVM = new LetsEatModel();
+
+
+
+    $('#createModal').on('hidden.bs.modal', function () {
+
+        if (letsEatVM.eventChatRef) {
+            letsEatVM.eventChatRef.off("value");
+            letsEatVM.eventChatRef.off("child_added");
+        }
+        letsEatVM.eventChat.removeAll();
+        letsEatVM.chatMessage('');
+        letsEatVM.eventChosen('');
+
+        // letsEatVM.newChatSent('');
 
     });
+
+    $(document).ready(function () {
+        ko.applyBindings(letsEatVM);
+
+    });
+
+    var popUpErr = function (msg, type) {
+        $("#error-container").finish();
+        switch (type) {
+            case 1: $("#error-container").css({ 'background-color': '#078611' })
+                break;
+            case 2: $("#error-container").css({ 'background-color': '#940707' })
+        }
+        $("#error-container").text(msg);
+        $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
+            $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
+                $("#error-container").removeAttr('style');
+            })
+        });
+    }
+
+    var popUpErr = function (msg, type) {
+        $("#error-container").finish();
+        switch (type) {
+            case 1: $("#error-container").css({ 'background-color': '#078611' })
+                break;
+            case 2: $("#error-container").css({ 'background-color': '#940707' })
+        }        
+        $("#error-container").text(msg);
+        $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
+            $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
+                $("#error-container").removeAttr('style');
+            })
+        });
+    }
+
+
+   
 
 });
