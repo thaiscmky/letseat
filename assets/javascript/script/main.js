@@ -35,7 +35,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.eventChatRef = '';
         self.eventChat = ko.observableArray([]);
         self.chatMessage = ko.observable('');
-        self.newChatSent = ko.observable('');
+        // self.newChatSent = ko.observable('');
 
         //modal info
         // self.restaurantName = ko.observable('');
@@ -571,24 +571,24 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 var keyArray;
 
 
-                self.eventChatRef.once('value').then(function (snapshot) {
+                // self.eventChatRef.once('value').then(function (snapshot) {
 
-                    keyArray = Object.keys(snapshot.val());
-                    var chatArray = Object.values(snapshot.val());
+                //     keyArray = Object.keys(snapshot.val());
+                //     var chatArray = Object.values(snapshot.val());
 
-                    for (var i = 0; i < chatArray.length; i++) {
-                        self.eventChat.push(chatArray[i]);
+                //     for (var i = 0; i < chatArray.length; i++) {
+                //         self.eventChat.push(chatArray[i]);
 
-                    }
+                //     }
 
 
                     self.eventChatRef.on('child_added', function (snapshot) {
 
 
-                        if (self.newChatSent()) {
+                        // if (self.newChatSent()) {
                             self.eventChat.push(snapshot.val());
-                            self.newChatSent(false);
-                        }
+                            // self.newChatSent(false);
+                        // }
                     })
 
                     self.eventChatRef.on('value', function (snapshot) {
@@ -602,7 +602,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                     })
 
-                });
+                // });
 
 
 
@@ -625,7 +625,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
 
 
-                    self.newChatSent(true);
+                    // self.newChatSent(true);
 
                     var chatRef = firebase.database().ref("events/" + self.eventChosen().key + "/chat");
 
@@ -635,7 +635,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     }, function (error) {
                         if (error) {
                             console.log(error);
-                            self.newChatSent(false);
+                            // self.newChatSent(false);
 
                         }
 
@@ -669,7 +669,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         }
         letsEatVM.eventChat.removeAll();
         letsEatVM.chatMessage('');
-        letsEatVM.newChatSent('');
+        // letsEatVM.newChatSent('');
 
     });
 
