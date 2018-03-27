@@ -47,15 +47,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         // self.restaurantCategories = ko.observable('');
         // self.restaurantSeats = ko.observable('');
 
-        self.deselectEvent = function (data) {
+        self.deselectEvent = function(data){
             self.eventChosen('');
 
         }
 
-        self.saveEventInfo = function (data) {
+        self.saveEventInfo = function(data){
 
-
-            console.log(JSON.stringify(data));
 
             self.eventChosen(data);
             // self.restaurantName(data.name);
@@ -80,7 +78,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             //     address += ", " + data.location.address3;
             // }
 
-            // self.restaurantAddress(address);           
+            // self.restaurantAddress(address);
             //  var categoryString = ''
             // for (var i = 0; i < data.categories.length; i++) {
             //     if (i === 0) {
@@ -106,7 +104,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createKey = ko.observable('');
         self.createName = ko.observable('');
         self.createCategories = ko.observable('');
-        self.createMaxSeats = ko.observable();
+        self.createMaxSeats = ko.observable(0);
 
 
 
@@ -140,13 +138,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createVisible = ko.observable(false);
 
-        self.zipInfo = ko.observable('');
 
         // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
         self.zipRequest = ko.computed(function () {
             // TODO: VALIDATOR: Below ajax call should only run when "self.zipInfo() === valid Zip Code
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
-            if(self.zipCode() !== null || typeof self.zipCode() !== 'undefined'){
+            if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
                 $.ajax({
                     url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
@@ -157,15 +154,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
         });
 
-        function resetForm(){
-            $('#firstNameInput').val('');
-            $('#lastNameInput').val('');
-            $('#emailInput').val('');
-            $("#firstname-validation").val('');
-            $("#lastname-validation").val('');
-            $("#email-validation").val('');
-           
-        }
+        //search
         self.submitSearch = function () {
 
             var searchTerm = self.searchTerm();
@@ -224,7 +213,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.landingVisible(false);
             self.resultsVisible(true);
 
-        };
+        }
+
+
 
 
         self.joinEvent = function (event) {
@@ -279,103 +270,23 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             self.createCategories(categoryString);
 
-        }
-        
-        function validateJoinForm(){
-            var error = [];
-            let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            let nameRegEx = /^[a-zA-Z0-9\s._\-]+$/;
 
 
-            if(!nameRegEx.test($("#firstNameInput").val())){
-                error.push('firstname')
-            }
-            if(!nameRegEx.test($("#lastNameInput").val()))
-            {
-                error.push("lastname")
-            }
-            if(!emailRegEx.test($("#emailInput").val()))
-            {
-                error.push("email")
-            }
-            return error;
-        }
+        };
+
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
-                var emailExist = false;
 
-                var dbRef = firebase.database().ref("events/" + self.eventChosen() + "/users");
-                if ( validateJoinForm().length >0 ) {
-                    validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show(): $("#firstname-validation").hide();
-                    validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show(): $("#lastname-validation").hide();
-                    validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show(): $("#email-validation").hide();
-                    return;
-                 }
+                var dbRef = firebase.database().ref("events/" + self.eventChosen().key + "/users");
 
-                 let emailFound;
-                // DB Validation for duplicate users
-                dbRef.on("value", function (data) {
-                data.val().map(user => {
-                  
-                    if( $('#emailInput').val() === user.email){
-                        emailFound = true;
-                    }// user already registered
-
+                self.usersForChosenEvent.push({
+                    email: self.email(),
+                    firstName: self.firstName(),
+                    lastName: self.lastName()
                 });
-                debugger;
-                if(emailFound){
-                    alert("This email is registered , please use another");
-                    emailFound = false;
-                    return;
-                }
 
-                 });
-                if (!emailExist) {
-                    self.usersForChosenEvent.push({
-                        email: self.email(),
-                        firstName: self.firstName(),
-                        lastName: self.lastName(),
-                    });
-                }
-                else {
-                    console.log("user email exist")
-                }
-
-                dbRef.update(self.usersForChosenEvent());
-
-                var joinNotificationParams = {
-                    header_msg: 'You have joined an event',
-                    event_name: self.eventChosen().key,
-                    to_name: self.firstName(),
-                    to_email: self.email(),
-                    from_name: "Yummy Inc.",
-                    message_html: "<h2>You have joined " + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
-                };
-
-                var creatorNotificationParams = {
-                    header_msg: 'Someone has joined your event',
-                    event_name: self.eventChosen().key,
-                    to_name: self.usersForChosenEvent()[0].firstName,
-                    to_email: self.usersForChosenEvent()[0].email,
-                    from_name: "Yummy Inc.",
-                    message_html: "<h2>" + self.firstName() + " "+  self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
-                };
-
-                emailjs.send('default_service', 'yummy_eats', joinNotificationParams)
-                    .then(function (response) {
-                        console.log('SUCCESS!', response.status, response.text);
-                    }, function (error) {
-                        console.log('FAILED...', error);
-                    });
-
-                emailjs.send('default_service', 'yummy_eats', creatorNotificationParams)
-                    .then(function (response) {
-                        console.log('SUCCESS!', response.status, response.text);
-                    }, function (error) {
-                        console.log('FAILED...', error);
-                    });
-
+                dbRef.set(self.usersForChosenEvent());
 
                 self.usersForChosenEvent.removeAll();
 
@@ -398,32 +309,17 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     city: self.createCity(),
                     zipCod: self.createZip()
                 };
-                var day=new Date().toJSON().slice(0,10).replace(/-/g,'/');
+
                 dbRef.child(self.createKey()).set({
                     categories: self.createCategories(),
                     eventName: self.createName(),
                     location: locationObject,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    date: day,//new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
                 });
 
-
-                var createNotificationParams = {
-                    to_name: self.firstName(),
-                    to_email: self.email(),
-                    from_name: "Yummy Inc.",
-                    message_html: "<h2>You created event : " + self.createKey() + "</h2>"
-                };
-
-                emailjs.send('default_service', 'yummy_eats', createNotificationParams)
-                    .then(function (response) {
-                        console.log('SUCCESS!', response.status, response.text);
-                    }, function (error) {
-                        console.log('FAILED...', error);
-                    });
 
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
@@ -433,9 +329,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
-          
-            resetForm();
-
         };
 
         self.navToCreate = function () {
@@ -449,9 +342,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.resultsVisible(true);
         }
 
-
     }
 
+    // The's landing page code
     $(document).ready(function () {
         ko.applyBindings(new LetsEatModel());
 
