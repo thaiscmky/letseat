@@ -106,7 +106,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
         });
 
-
         function resetForm() {
             $('#firstNameInput').val('');
             $('#lastNameInput').val('');
@@ -172,8 +171,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
             });
+            self.userVisible(false);
             self.landingVisible(false);
             self.resultsVisible(true);
+            self.createVisible(false);
 
         }
 
@@ -236,6 +237,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             self.createCategories(categoryString);
 
+        }
 
             if (localStorage.getItem("email") === null) {
                 alert("local storage null");
@@ -256,7 +258,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             let nameRegEx = /^[a-zA-Z0-9\s._\-]+$/;
 
-
             if (!nameRegEx.test($("#firstNameInput").val())) {
                 error.push('firstname')
             }
@@ -268,39 +269,19 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             return error;
         }
-      
-      
+
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
-
-                var dbRef = firebase.database().ref("events/" + self.eventChosen().key + "/users");
-                if (localStorage.getItem("email") != null) {
-                    self.firstName(localStorage.getItem('firstName'));
-                    self.lastName(localStorage.getItem('lastName'));
-                    self.email(localStorage.getItem('email'));
-
-
-                }
-                else {
-
-                    if (validateJoinForm().length > 0) {
-                        validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show() : $("#firstname-validation").hide();
-                        validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show() : $("#lastname-validation").hide();
-                        validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show() : $("#email-validation").hide();
-                        return;
-                    }
-
-                    localStorage.setItem("firstName", self.firstName());
-                    localStorage.setItem("lastName", self.lastName());
-                    localStorage.setItem("email", self.email());
-
-
-                }
-
                 var emailExist = false;
 
-
+                var dbRef = firebase.database().ref("events/" + self.eventChosen() + "/users");
+                if (validateJoinForm().length > 0) {
+                    validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show() : $("#firstname-validation").hide();
+                    validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show() : $("#lastname-validation").hide();
+                    validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show() : $("#email-validation").hide();
+                    return;
+                }
 
                 let emailFound;
                 // DB Validation for duplicate users
@@ -318,6 +299,45 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         emailFound = false;
                         return;
                     }
+
+                });
+                if (!emailExist) {
+                    self.usersForChosenEvent.push({
+                        email: self.email(),
+                        firstName: self.firstName(),
+                        lastName: self.lastName(),
+                    });
+                }
+                else {
+                    console.log("user email exist")
+                }
+
+                dbRef.update(self.usersForChosenEvent());
+
+                var joinNotificationParams = {
+                    header_msg: 'You have joined an event',
+                    event_name: self.eventChosen().key,
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>You have joined " + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                };
+
+                var creatorNotificationParams = {
+                    header_msg: 'Someone has joined your event',
+                    event_name: self.eventChosen().key,
+                    to_name: self.usersForChosenEvent()[0].firstName,
+                    to_email: self.usersForChosenEvent()[0].email,
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>" + self.firstName() + " " + self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
+                };
+
+                emailjs.send('default_service', 'yummy_eats', joinNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
 
                 });
                 if (!emailExist) {
@@ -430,14 +450,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.userVisible(false);
                 self.resultsVisible(true);
 
-
             resetForm();
 
         };
 
         self.navToCreate = function () {
-
             self.resultsVisible(false);
+            self.userVisible(false);
             self.createVisible(true);
         };
 
@@ -446,6 +465,36 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.resultsVisible(true);
         }
 
+        self.navToSearch = function () {
+            self.userVisible(false);
+            self.resultsVisible(false);
+            self.createVisible(false);
+        }
+
+        // self.drawRating = ko.observable(self.eventChosen().rating);
+
+        // Draws the stars in modal info view
+        self.drawRating = function () {
+            var rating = self.eventChosen().rating;
+            var newDiv = $("<div>").css({ 'color': '#FFC107' });
+            while (rating >= 1) {
+                rating--
+                newDiv.append('<i class="fas fa-star fa-sm"></i>');
+            }
+            if (rating === .5) newDiv.append('<i class="fas fa-star-half"></i>');
+            $(".modal-rating").html(newDiv);
+        }
+
+        // Draws price in modal info view
+        self.drawPrice = function () {
+            var price = self.eventChosen().price;
+            console.log(price);
+            var newDiv = $("<div>").css({ 'color': '#566904' });
+            for (var i = 0; i < price.length; i++) {
+                newDiv.append('<i class="fas fa-dollar-sign"></i>');
+            }
+            $(".modal-price").html(newDiv);
+        }
 
         self.saveEventInfo = function (data) {
 
