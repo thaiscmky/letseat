@@ -32,6 +32,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
+
         self.eventChatRef = '';
         self.eventChat = ko.observableArray([]);
         self.chatMessage = ko.observable('');
@@ -47,9 +48,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
 
-
-
-
         //create event observables
         self.pickedCreate = ko.observable(false);
         self.createAddress = ko.observable('');
@@ -58,7 +56,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         self.createKey = ko.observable('');
         self.createName = ko.observable('');
         self.createCategories = ko.observable('');
-        self.createMaxSeats = ko.observable();
+        self.createMaxSeats = ko.observable(0);
 
 
 
@@ -92,7 +90,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.createVisible = ko.observable(false);
 
-        self.zipInfo = ko.observable('');
 
         // Sends AJAX to google APIs and sets VM's zipInfo to relevant JSON data.
         self.zipRequest = ko.computed(function () {
@@ -100,7 +97,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
             if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
                 $.ajax({
-                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
                 }).done(function (res) {
                     var info = res.results[0].formatted_address;
@@ -108,6 +105,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 });
             }
         });
+
 
         function resetForm() {
             $('#firstNameInput').val('');
@@ -118,6 +116,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             $("#email-validation").val('');
 
         }
+
+        //search
+
         self.submitSearch = function () {
 
             var searchTerm = self.searchTerm();
@@ -157,10 +158,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
                             self.currentEvents.push(activity);
-                            // console.log(self.currentEvents());
                         }
                         else {
-                            //console.log("DoNotExists: " + item.id);
                             var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url, undefined, item.url, item.price, item.rating, item.display_phone);
                             self.createEventList.push(activity);
 
@@ -176,7 +175,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.landingVisible(false);
             self.resultsVisible(true);
 
-        };
+        }
+
+
 
 
         self.joinEvent = function (event) {
@@ -235,6 +236,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             self.createCategories(categoryString);
 
+
             if (localStorage.getItem("email") === null) {
                 alert("local storage null");
                 self.createVisible(false);
@@ -266,6 +268,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             return error;
         }
+      
+      
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
@@ -354,15 +358,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         console.log('FAILED...', error);
                     });
 
-                emailjs.send('default_service', 'yummy_eats', creatorNotificationParams)
-                    .then(function (response) {
-                        console.log('SUCCESS!', response.status, response.text);
-                    }, function (error) {
-                        console.log('FAILED...', error);
-                    });
 
 
-                self.usersForChosenEvent.removeAll();
+
 
                 self.pickedJoin(false);
                 self.userVisible(false);
@@ -405,13 +403,14 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                     city: self.createCity(),
                     zipCod: self.createZip()
                 };
+
                 var day = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+
                 dbRef.child(self.createKey()).set({
                     categories: self.createCategories(),
                     eventName: self.createName(),
                     location: locationObject,
                     timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    date: day,//new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                     users: self.usersForChosenEvent(),
                     maxSeats: self.createMaxSeats()
 
@@ -423,20 +422,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 })
 
 
-                var createNotificationParams = {
-                    to_name: self.firstName(),
-                    to_email: self.email(),
-                    from_name: "Yummy Inc.",
-                    message_html: "<h2>You created event : " + self.createKey() + "</h2>"
-                };
-
-                emailjs.send('default_service', 'yummy_eats', createNotificationParams)
-                    .then(function (response) {
-                        console.log('SUCCESS!', response.status, response.text);
-                    }, function (error) {
-                        console.log('FAILED...', error);
-                    });
-
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
 
@@ -444,7 +429,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.pickedCreate(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
-            }
+
 
             resetForm();
 
@@ -591,6 +576,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     });
 
+
+    }
+
+    // The's landing page code
 
     $(document).ready(function () {
         ko.applyBindings(letsEatVM);
