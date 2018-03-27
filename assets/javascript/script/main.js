@@ -89,7 +89,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
             if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
                 $.ajax({
-                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
                 }).done(function (res) {
                     var info = res.results[0].formatted_address;
@@ -646,7 +646,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             if (localStorage.getItem("firstName") === null) {
-                popUpErr("Didn't join event yet bruh");
+                popUpErr("You must join event to chat", 2);
             }
             else if (validUser) {
                 if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
