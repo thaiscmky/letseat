@@ -32,15 +32,21 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
-        self.deselectEvent = function(data){
+
+        self.eventChatRef = '';
+        self.eventChat = ko.observableArray([]);
+        self.chatMessage = ko.observable('');
+        self.newChatSent = ko.observable('');
+
+
+
+        self.deselectEvent = function (data) {
             self.eventChosen('');
 
-        };
+        }
 
-        self.saveEventInfo = function(data){
-            self.eventChosen(data);
 
-        };
+
 
         //create event observables
         self.pickedCreate = ko.observable(false);
@@ -110,6 +116,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
+        //search
+
         self.submitSearch = function () {
 
             var searchTerm = self.searchTerm();
@@ -177,12 +185,18 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             if (event.users.length >= event.maxSeats) {
                 alert("EVENT FULL\n @The make this pretty");
             }
-            else {
+            else if (localStorage.getItem('email') === null) {
                 self.pickedJoin(true);
                 self.eventChosen(event);
                 self.usersForChosenEvent(event.users);
                 self.resultsVisible(false);
                 self.userVisible(true);
+            }
+            else {
+                self.pickedJoin(true);
+                self.eventChosen(event);
+                self.usersForChosenEvent(event.users);
+                self.submitUserInfo();
             }
         };
 
@@ -194,9 +208,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             self.createMaxSeats($("#" + eventIndex).val());
 
-            self.createVisible(false);
-            self.userVisible(true);
-            self.pickedCreate(true);
+
 
 
 
@@ -227,11 +239,24 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         }
 
+            if (localStorage.getItem("email") === null) {
+                alert("local storage null");
+                self.createVisible(false);
+                self.userVisible(true);
+                self.pickedCreate(true);
+            }
+            else {
+                self.pickedCreate(true);
+                self.submitUserInfo();
+
+            }
+
+        }
+
         function validateJoinForm() {
             var error = [];
             let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             let nameRegEx = /^[a-zA-Z0-9\s._\-]+$/;
-
 
             if (!nameRegEx.test($("#firstNameInput").val())) {
                 error.push('firstname')
@@ -244,6 +269,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             return error;
         }
+
         self.submitUserInfo = function () {
 
             if (self.pickedJoin()) {
@@ -313,15 +339,48 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                         console.log('FAILED...', error);
                     });
 
-                self.usersForChosenEvent.push({
-                    email: self.email(),
-                    firstName: self.firstName(),
-                    lastName: self.lastName()
                 });
+                if (!emailExist) {
+                    self.usersForChosenEvent.push({
+                        email: self.email(),
+                        firstName: self.firstName(),
+                        lastName: self.lastName(),
+                    });
+                }
+                else {
+                    console.log("user email exist")
+                }
 
-                dbRef.set(self.usersForChosenEvent());
+                dbRef.update(self.usersForChosenEvent());
 
-                self.usersForChosenEvent.removeAll();
+                var joinNotificationParams = {
+                    header_msg: 'You have joined an event',
+                    event_name: self.eventChosen().key,
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>You have joined " + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                };
+
+                var creatorNotificationParams = {
+                    header_msg: 'Someone has joined your event',
+                    event_name: self.eventChosen().key,
+                    to_name: self.usersForChosenEvent()[0].firstName,
+                    to_email: self.usersForChosenEvent()[0].email,
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>" + self.firstName() + " " + self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
+                };
+
+                emailjs.send('default_service', 'yummy_eats', joinNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
+
+
+
 
                 self.pickedJoin(false);
                 self.userVisible(false);
@@ -330,6 +389,28 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             else if (self.pickedCreate()) {
 
                 var dbRef = firebase.database().ref("events");
+
+                if (localStorage.getItem("email") != null) {
+                    self.firstName(localStorage.getItem('firstName'));
+                    self.lastName(localStorage.getItem('lastName'));
+                    self.email(localStorage.getItem('email'));
+
+                }
+                else {
+
+                    if (validateJoinForm().length > 0) {
+                        validateJoinForm().indexOf("firstname") >= 0 ? $("#firstname-validation").show() : $("#firstname-validation").hide();
+                        validateJoinForm().indexOf("lastname") >= 0 ? $("#lastname-validation").show() : $("#lastname-validation").hide();
+                        validateJoinForm().indexOf("email") >= 0 ? $("#email-validation").show() : $("#email-validation").hide();
+                        return;
+                    }
+
+                    localStorage.setItem("firstName", self.firstName());
+                    localStorage.setItem("lastName", self.lastName());
+                    localStorage.setItem("email", self.email());
+
+
+                }
 
                 self.usersForChosenEvent.push({
                     email: self.email(),
@@ -344,6 +425,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 };
 
                 var day = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+
                 dbRef.child(self.createKey()).set({
                     categories: self.createCategories(),
                     eventName: self.createName(),
@@ -354,6 +436,11 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 });
 
+                firebase.database().ref("events/" + self.createKey()).child("chat").push({
+                    user: "Let's Eat: ",
+                    text: "Welcome to " + self.createKey() + "'s chat"
+                })
+
 
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
@@ -362,7 +449,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.pickedCreate(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
-            }
 
             resetForm();
 
@@ -409,11 +495,143 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
             $(".modal-price").html(newDiv);
         }
+
+        self.saveEventInfo = function (data) {
+
+
+
+            self.eventChosen(data);
+
+
+
+            if (localStorage.getItem('firstName') != null) {
+                var validUser = false;
+                for (var i = 0; i < self.eventChosen().users.length; i++) {
+                    if (self.eventChosen().users[i].email === localStorage.getItem('email')) {
+                        validUser = true;
+                    }
+                }
+            }
+
+            if (validUser) {
+
+                self.eventChatRef = firebase.database().ref("events/" + self.eventChosen().key + "/chat");
+                var keyArray;
+
+
+                self.eventChatRef.once('value').then(function (snapshot) {
+
+                    keyArray = Object.keys(snapshot.val());
+                    var chatArray = Object.values(snapshot.val());
+
+                    for (var i = 0; i < chatArray.length; i++) {
+                        self.eventChat.push(chatArray[i]);
+
+                    }
+
+
+                    self.eventChatRef.on('child_added', function (snapshot) {
+
+
+                        if (self.newChatSent()) {
+                            self.eventChat.push(snapshot.val());
+                            self.newChatSent(false);
+                        }
+                    })
+
+                    self.eventChatRef.on('value', function (snapshot) {
+                        var keys = Object.keys(snapshot.val());
+
+                        if (keys.length > 30) {
+
+                            eventChatRef.child(keys[0]).remove();
+
+                        };
+
+                    })
+
+                });
+
+
+
+            }
+        }
+
+
+        self.addNewChat = function () {
+
+            var validUser = false;
+            for (var i = 0; i < self.eventChosen().users.length; i++) {
+                if (self.eventChosen().users[i].email === localStorage.getItem('email')) {
+                    validUser = true;
+                }
+            }
+
+            if (localStorage.getItem("firstName") === null) {
+                alert("must enter user information to chat");
+            }
+            else if (validUser) {
+                if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
+
+
+                    self.newChatSent(true);
+
+                    var chatRef = firebase.database().ref("events/" + self.eventChosen().key + "/chat");
+
+                    chatRef.push({
+                        user: localStorage.getItem('firstName') + " " + localStorage.getItem('lastName'),
+                        text: self.chatMessage()
+                    }, function (error) {
+                        if (error) {
+                            console.log(error);
+                            self.newChatSent(false);
+
+                        }
+
+                    });
+
+
+
+
+                } else {
+                    alert("invalid chat message");
+                }
+
+            }
+            else {
+                alert("you have not joined this event");
+            }
+
+            self.chatMessage('');
+
+        }
+
+    }
+
+
+
+    var letsEatVM = new LetsEatModel();
+
+
+    $('#createModal').on('hidden.bs.modal', function () {
+
+        if (letsEatVM.eventChatRef) {
+            letsEatVM.eventChatRef.off("value");
+            letsEatVM.eventChatRef.off("child_added");
+        }
+        letsEatVM.eventChat.removeAll();
+        letsEatVM.chatMessage('');
+        letsEatVM.newChatSent('');
+
+    });
+
+
     }
 
     // The's landing page code
+
     $(document).ready(function () {
-        ko.applyBindings(new LetsEatModel());
+        ko.applyBindings(letsEatVM);
 
     });
 
