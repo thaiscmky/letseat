@@ -32,7 +32,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
-        
+
 
         //modal info
         // self.restaurantName = ko.observable('');
@@ -47,25 +47,25 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         // self.restaurantCategories = ko.observable('');
         // self.restaurantSeats = ko.observable('');
 
-        self.deselectEvent = function(data){
+        self.deselectEvent = function (data) {
             self.eventChosen('');
 
         }
 
-        self.saveEventInfo = function(data){
+        self.saveEventInfo = function (data) {
 
 
             console.log(JSON.stringify(data));
 
             self.eventChosen(data);
             // self.restaurantName(data.name);
-            
+
             // self.restaurantPrice(data.price);
             // self.restaurantRating(data.rating);
             // self.restaurantYelpURL(data.url);
 
             // self.restaurantIMGURL(data.image_url);
-            
+
             // self.restaurantCity(data.location.city);
             // self.restaurantZip(data.location.zip_code);
             // self.restaurantPhone(data.phoneNumber);
@@ -93,9 +93,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             //         categoryString += ", " + data.categories[i].title;
             //     }
             // }
-            
+
             // self.restaurantCategories(categoryString);
-           
+
         }
 
         //create event observables
@@ -224,10 +224,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             self.landingVisible(false);
             self.resultsVisible(true);
 
-            // }
-        }
-
-
+        };
 
 
         self.joinEvent = function (event) {
@@ -281,11 +278,14 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 }
             }
             self.createCategories(categoryString);
+
         }
+        
         function validateJoinForm(){
             var error = [];
             let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             let nameRegEx = /^[a-zA-Z0-9\s._\-]+$/;
+
 
             if(!nameRegEx.test($("#firstNameInput").val())){
                 error.push('firstname')
@@ -325,7 +325,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 });
                 debugger;
                 if(emailFound){
-                    alert("This email is registered , please use anather");
+                    alert("This email is registered , please use another");
                     emailFound = false;
                     return;
                 }
@@ -343,6 +343,39 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 }
 
                 dbRef.update(self.usersForChosenEvent());
+
+                var joinNotificationParams = {
+                    header_msg: 'You have joined an event',
+                    event_name: self.eventChosen().key,
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>You have joined " + self.usersForChosenEvent()[0].firstName + " " + self.usersForChosenEvent()[0].lastName + "'s event: " + self.eventChosen().key + "</h2>"
+                };
+
+                var creatorNotificationParams = {
+                    header_msg: 'Someone has joined your event',
+                    event_name: self.eventChosen().key,
+                    to_name: self.usersForChosenEvent()[0].firstName,
+                    to_email: self.usersForChosenEvent()[0].email,
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>" + self.firstName() + " "+  self.lastName() + " has joined your event: " + self.eventChosen().key + "</h2>"
+                };
+
+                emailjs.send('default_service', 'yummy_eats', joinNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
+                emailjs.send('default_service', 'yummy_eats', creatorNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
 
                 self.usersForChosenEvent.removeAll();
 
@@ -378,6 +411,20 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 });
 
 
+                var createNotificationParams = {
+                    to_name: self.firstName(),
+                    to_email: self.email(),
+                    from_name: "Yummy Inc.",
+                    message_html: "<h2>You created event : " + self.createKey() + "</h2>"
+                };
+
+                emailjs.send('default_service', 'yummy_eats', createNotificationParams)
+                    .then(function (response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function (error) {
+                        console.log('FAILED...', error);
+                    });
+
                 self.createMaxSeats(0);
                 self.usersForChosenEvent.removeAll();
 
@@ -388,6 +435,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
           
             resetForm();
+
         };
 
         self.navToCreate = function () {
