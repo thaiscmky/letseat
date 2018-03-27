@@ -420,7 +420,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 self.usersForChosenEvent.removeAll();
 
-                self.pickedJoin(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
@@ -497,14 +496,32 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.removeAll();
 
 
-                self.pickedCreate(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
 
+            if(self.pickedJoin){
+                self.joinSuccess();
+            }
+            else if(self.pickedCreate)
+            {
+                self.createSuccess();
+            }
+            self.pickedJoin(false);
+            self.pickedCreate(false);
+
             resetForm();
+            self.submitSearch();
 
         };
+
+        self.joinSuccess = function(){
+
+        }
+
+        self.createSuccess = function(){
+            
+        }
 
         self.navToCreate = function () {
             self.resultsVisible(false);
@@ -619,7 +636,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             if (localStorage.getItem("firstName") === null) {
-                alert("must enter user information to chat");
+                popUpErr("Didn't join event yet bruh");
             }
             else if (validUser) {
                 if (/^[a-zA-Z0-9,.!?\s\-_']*$/.test(self.chatMessage())) {
@@ -650,11 +667,16 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             }
             else {
-                alert("you have not joined this event");
+                popUpErr("HELLO DOES THIS WORK? LOL");
             }
 
             self.chatMessage('');
 
+        }
+
+
+        self.clearLocalStorage = function(){
+            localStorage.clear();
         }
     }
 
@@ -680,6 +702,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         ko.applyBindings(letsEatVM);
 
     });
+    var popUpErr = function (msg) {
+        $("#error-container").finish();
+        $("#error-container").text(msg);
+        $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
+            $("#error-container").animate({ opacity: '0' }, 3000, 'easeInQuint', function () {
+                $("#error-container").removeAttr('style');
+            })
+        });
+    }
 
     var popUpErr = function (msg, type) {
         $("#error-container").finish();
