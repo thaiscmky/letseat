@@ -681,10 +681,13 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     });
 
-    var popUpErr = function (msg) {
-        var newDiv = $("<div>");
-        newDiv.html(msg)
-        $("#error-container").append(newDiv);
+    var popUpErr = function (msg) {        
+        $("#error-container").finish();
+        $("#error-container").text(msg);
+        $("#error-container").animate({opacity: '1'}, 500, 'easeOutCirc', function() {
+            $("#error-container").removeAttr('style');            
+
+        });
     }
 
     $('header').on('click', function() {

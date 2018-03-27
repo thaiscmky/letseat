@@ -384,4 +384,5 @@ button:focus {outline:none;}
     top: 90vh;
     padding: 1em;
     background-color: red;
+    opacity: 0;
 }
