@@ -682,7 +682,9 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     });
 
     var popUpErr = function (msg) {
-        console.log(msg);        
+        var newDiv = $("<div>");
+        newDiv.html(msg)
+        $("#error-container").append(newDiv);
     }
 
     $('header').on('click', function() {

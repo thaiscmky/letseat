@@ -378,7 +378,10 @@ button:focus {outline:none;}
 }
 
 #error-container {
-    font-size: 3em;
+    font-size: 1.618em;
     color: white;
     position: fixed;
+    top: 90vh;
+    padding: 1em;
+    background-color: red;
 }
