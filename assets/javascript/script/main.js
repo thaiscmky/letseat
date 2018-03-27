@@ -681,16 +681,17 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
     });
 
-    var popUpErr = function (msg) {        
+    var popUpErr = function (msg) {
         $("#error-container").finish();
         $("#error-container").text(msg);
-        $("#error-container").animate({opacity: '1'}, 500, 'easeOutCirc', function() {
-            $("#error-container").removeAttr('style');            
-
+        $("#error-container").animate({ opacity: '1' }, 500, 'easeOutCirc', function () {
+            $("#error-container").animate({ opacity: '0' }, 2000, 'easeInQuint', function () {
+                $("#error-container").removeAttr('style');
+            })
         });
     }
 
-    $('header').on('click', function() {
+    $('header').on('click', function () {
         popUpErr('sdf');
     })
 
