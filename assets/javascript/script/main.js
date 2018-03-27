@@ -420,7 +420,6 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
                 self.usersForChosenEvent.removeAll();
 
-                self.pickedJoin(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
@@ -497,15 +496,32 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
                 self.usersForChosenEvent.removeAll();
 
 
-                self.pickedCreate(false);
                 self.userVisible(false);
                 self.resultsVisible(true);
             }
+
+            if(self.pickedJoin){
+                self.joinSuccess();
+            }
+            else if(self.pickedCreate)
+            {
+                self.createSuccess();
+            }
+            self.pickedJoin(false);
+            self.pickedCreate(false);
 
             resetForm();
             self.submitSearch();
 
         };
+
+        self.joinSuccess = function(){
+
+        }
+
+        self.createSuccess = function(){
+            
+        }
 
         self.navToCreate = function () {
             self.resultsVisible(false);
