@@ -32,69 +32,15 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
         self.pickedJoin = ko.observable(false);
 
-
-
-        //modal info
-        // self.restaurantName = ko.observable('');
-        // self.restaurantPrice = ko.observable('');
-        // self.restaurantRating = ko.observable('');
-        // self.restaurantYelpURL = ko.observable('');
-        // self.restaurantIMGURL = ko.observable('');
-        // self.restaurantAddress = ko.observable('');
-        // self.restaurantCity = ko.observable('');
-        // self.restaurantZip = ko.observable('');
-        // self.restaurantPhone = ko.observable('');
-        // self.restaurantCategories = ko.observable('');
-        // self.restaurantSeats = ko.observable('');
-
         self.deselectEvent = function(data){
             self.eventChosen('');
 
-        }
+        };
 
         self.saveEventInfo = function(data){
-
-
             self.eventChosen(data);
-            // self.restaurantName(data.name);
 
-            // self.restaurantPrice(data.price);
-            // self.restaurantRating(data.rating);
-            // self.restaurantYelpURL(data.url);
-
-            // self.restaurantIMGURL(data.image_url);
-
-            // self.restaurantCity(data.location.city);
-            // self.restaurantZip(data.location.zip_code);
-            // self.restaurantPhone(data.phoneNumber);
-            // self.restaurantSeats(data.maxSeats);
-
-
-            // var address = data.location.address1
-            // if (data.location.address2.length > 0) {
-            //     address += ", " + data.location.address2;
-            // }
-            // if (data.location.address3.length > 0) {
-            //     address += ", " + data.location.address3;
-            // }
-
-            // self.restaurantAddress(address);
-            //  var categoryString = ''
-            // for (var i = 0; i < data.categories.length; i++) {
-            //     if (i === 0) {
-            //         categoryString = data.categories[i].title;
-            //     }
-            //     else if((data.categories.length-1)===i){
-            //         categoryString += data.categories[i].title;
-            //     }
-            //      {
-            //         categoryString += ", " + data.categories[i].title;
-            //     }
-            // }
-
-            // self.restaurantCategories(categoryString);
-
-        }
+        };
 
         //create event observables
         self.pickedCreate = ko.observable(false);
@@ -145,7 +91,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
             if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
                 $.ajax({
-                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
                 }).done(function (res) {
                     var info = res.results[0].formatted_address;
@@ -194,10 +140,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
 
                             self.currentEvents.push(activity);
-                            // console.log(self.currentEvents());
                         }
                         else {
-                            //console.log("DoNotExists: " + item.id);
                             var activity = new Activity(item.id, item.categories, item.name, item.location, undefined, item.image_url, undefined, item.url, item.price, item.rating, item.display_phone);
                             self.createEventList.push(activity);
 

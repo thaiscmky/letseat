@@ -81,13 +81,12 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         if (!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($("#zipCode").val())) {
             error.push("zipcode")
         }
-        console.log('Error: ' + error);
+
         return error;
     }
 
 
     $("#submitSearch").on("click", function (e) {
-        console.log("Search Validation Result: Error in : ", searchValidation());
         if (searchValidation().length > 0) {
             if (searchValidation().indexOf("zipcode") >= 0) animation.errorMessageLanding("Invalid Zip Code");
             else if (searchValidation().indexOf("search") >= 0) animation.errorMessageLanding("Please enter a search term");
