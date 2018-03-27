@@ -272,6 +272,10 @@ h2 {
     font-weight: 900;    
 }
 
+.create-info {
+    padding: .5em;
+}
+
 
 /* This is the custom Scrollbar */
 /* width */
