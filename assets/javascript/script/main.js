@@ -50,10 +50,10 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         // self.restaurantCategories = ko.observable('');
         // self.restaurantSeats = ko.observable('');
 
-        self.deselectEvent = function (data) {
-            self.eventChosen('');
+        // self.deselectEvent = function (data) {
+        //     self.eventChosen('');
 
-        }
+        // }
 
         self.saveEventInfo = function (data) {
 
@@ -661,6 +661,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
     var letsEatVM = new LetsEatModel();
 
 
+
     $('#createModal').on('hidden.bs.modal', function () {
 
         if (letsEatVM.eventChatRef) {
@@ -669,6 +670,8 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         }
         letsEatVM.eventChat.removeAll();
         letsEatVM.chatMessage('');
+        letsEatVM.eventChosen('');
+
         // letsEatVM.newChatSent('');
 
     });
