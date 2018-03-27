@@ -450,12 +450,35 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
         }
 
         self.navToSearch = function () {
-            self.userVisible(false);            
+            self.userVisible(false);
             self.resultsVisible(false);
             self.createVisible(false);
         }
 
+        // self.drawRating = ko.observable(self.eventChosen().rating);
 
+        // Draws the stars in modal info view
+        self.drawRating = function () {
+            var rating = self.eventChosen().rating;
+            var newDiv = $("<div>").css({ 'color': '#FFC107' });
+            while (rating >= 1) {
+                rating--
+                newDiv.append('<i class="fas fa-star fa-sm"></i>');
+            }
+            if (rating === .5) newDiv.append('<i class="fas fa-star-half"></i>');
+            $(".modal-rating").html(newDiv);
+        }
+
+        // Draws price in modal info view
+        self.drawPrice = function () {
+            var price = self.eventChosen().price;
+            console.log(price);
+            var newDiv = $("<div>").css({ 'color': '#566904' });
+            for (var i = 0; i < price.length; i++) {
+                newDiv.append('<i class="fas fa-dollar-sign"></i>');
+            }
+            $(".modal-price").html(newDiv);
+        }
     }
 
     $(document).ready(function () {
