@@ -206,30 +206,29 @@
                                             </div>
 
                                         </div>
-                                    </div>                                                            
-                            </div>
-                            <div class="container">
-                                    <div class="row" style="padding: 1em;">
-                                        <div data-bind="with: $root.eventChat">
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div data-bind="with: $root.eventChat">
+                                        <div class='col-12 chat' id='chatSpace' with="foreach: $root.eventChat">
 
-                                            <div class='col-12 chat' id='chatSpace' with="foreach: $root.eventChat">
+                                            <div class="chat-display" data-bind="foreach: $data">
 
-                                                <div class="chat-display" data-bind="foreach: $data">
-
-                                                    <span data-bind="text:user+': '"></span>
-                                                    <span data-bind="text:text"></span>
-                                                    <br>
-                                                </div>
+                                                <span data-bind="text:user+': '"></span>
+                                                <span data-bind="text:text"></span>
+                                                <br>
                                             </div>
-                                            <div class='col-sm-4 chat'>
-
+                                        </div>
+                                        <div class='row'>
+                                            <div class='col-10 chat'>
                                                 <form>
-                                                    <div class="form-group">
-                                                        <label for="chatMessage">Type your message here</label>
-                                                        <input type="name" class="form-control" id="chatMessage" data-bind="value:$root.chatMessage">
+                                                    <div>
+                                                        <input type="text" class="form-control" id="chatMessage" data-bind="value:$root.chatMessage" placeholder="Enter chat message">
                                                     </div>
-                                                    <button type="submit" id='newChat' class="btn btn-primary" data-bind="click: $root.addNewChat">Send</button>
                                                 </form>
+                                            </div>
+                                            <div class='chat-btn col-2'>
+                                                <button type="submit" id='newChat' class="btn btn-primary" data-bind="click: $root.addNewChat">Send</button>
                                             </div>
                                         </div>
                                     </div>
