@@ -203,6 +203,31 @@
                                                     <p data-bind="text: ($index() + 1) + '. ' + firstName + ' ' + lastName"></p>
                                                 </div>
                                             </div>
+                                            <div data-bind="with: $root.eventChat">
+
+                                                <div class='col-sm-8 chat' id='chatSpace' with="foreach: $root.eventChat">
+        
+                                                    <div class="chat-display" data-bind="foreach: $data" >
+                                                         
+                                                        <span data-bind="text:user+': '"></span>
+                                                        <span data-bind="text:text" ></span>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class='col-sm-4 chat'>
+        
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="chatMessage">Type your message here</label>
+                                                            <input type="name" class="form-control" id="chatMessage" data-bind="value:$root.chatMessage">
+                                                        </div>
+                                                        <button type="submit" id='newChat' class="btn btn-primary" data-bind="click: $root.addNewChat">Send</button>
+                                                    </form>
+        
+                                                </div>
+        
+        
+                                            </div>
                                         </div>
                                     </div>
 
