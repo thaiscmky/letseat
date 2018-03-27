@@ -503,6 +503,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             }
 
             resetForm();
+            self.submitSearch();
 
         };
 
@@ -655,6 +656,11 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
 
             self.chatMessage('');
 
+        }
+
+
+        self.clearLocalStorage = function(){
+            localStorage.clear();
         }
     }
 
