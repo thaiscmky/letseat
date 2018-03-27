@@ -89,7 +89,7 @@ define(["jquery", "bootstrap", "corsanywhere", "ko", "koDebug"], function ($, bo
             // ELSE it should set self.zipInfo to something like "Zip Code not recognized"
             if (self.zipCode() !== null || typeof self.zipCode() !== 'undefined') {
                 $.ajax({
-                    url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
+                    url: "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.zipCode(),
                     method: "GET"
                 }).done(function (res) {
                     var info = res.results[0].formatted_address;
