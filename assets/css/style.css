@@ -234,13 +234,46 @@ header {
 .modal-header {
     background: #444;
     color: #fff;
-    font-weight: 900;
+    font-weight: 900;    
+    padding: .5em;
+}
+
+.modal-title {
+    text-align: center;
+    width: 100%;
+    font-size: 1.618em;
 }
 
 .modal-img {
     object-fit: cover;
     width: 100%;
     height: 280px;
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.modal-info {
+    padding: 0rem 1rem 0 0;
+}
+
+.modal-section {
+    padding: .5em 0;
+}
+
+.modal-footer {
+    background-color: #444;
+    padding: .5em;
+}
+
+h2 {
+    /* font-size: 1.618em; */
+    font-weight: 900;    
+}
+
+.create-info {
+    padding: .5em;
 }
 
 
@@ -278,6 +311,24 @@ button:focus {outline:none;}
     font-weight: 900;
     opacity: 0;
  }
+
+ #chatSpace {
+    height: 150px;
+    width: 300px;
+    overflow: auto;
+    background-color: white;
+    border: solid 2px #000000;
+    text-align: left;
+}
+
+#chatMessage {
+    width: 150px;
+    color: black;
+}
+
+.userChat {
+    color: #ee7b3c;
+}
 
  /* XL */
 @media (min-width: 1200px) {

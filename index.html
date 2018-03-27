@@ -33,11 +33,11 @@
 
     <!-- email.js -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init("user_an8Ow6SvDsNOLo2nnrJms");
-   })();
-</script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init("user_an8Ow6SvDsNOLo2nnrJms");
+        })();
+    </script>
 
     <!-- Load Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -101,7 +101,7 @@
     <!-- This is the HTML for the search again button -->
     <div class="container d-flex justify-content-center">
         <div class="row d-flex justify-content-center">
-            <button id="back-to-search" class="hvr-bob">
+            <button id="back-to-search" class="hvr-bob" data-bind="click: navToSearch">
                 <p>
                     <i class="fas fa-caret-up fa-2x"></i>
                 </p>I want something else</button>
@@ -148,14 +148,9 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- <div data-bind="text: phoneNumber"></div> -->
                                     <div class="address text-center" data-bind="text: location.address1"></div>
                                     <div class="address text-center" data-bind="text: location.city + ', ' + location.zip_code"></div>
-                                    <!-- <div class="card-list col" data-bind="foreach: users">
-                                        <p class="card-name" data-bind="text: ($index() + 1) + '. ' + firstName+' ' + lastName"></p>
-                                    </div> -->
-                                    <p class="join-max-seats-display text-center" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></p>
+                                    <div class="join-max-seats-display text-center" data-bind="text: 'Available Seats: '+users.length+'/'+$data.maxSeats"></div>
                                     <button class="btn btn-warning-reverse hvr-fade col-12" data-bind="click: $root.joinEvent">Join</button>
                                 </div>
                             </div>
@@ -163,8 +158,7 @@
                         </div>
                     </div>
 
-                    <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
-                    <div id="result-footer" class="">
+                    <div id="result-footer">
                         <div class="col-12"></div>
                         <button id="result-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToCreate"> None of these interest me... Create an Event</button>
                     </div>
@@ -177,9 +171,6 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="modal-title" data-bind="text: $root.eventChosen().name"></div>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                                    <i class="fas fa-times-circle"></i>
-                                </button>
                             </div>
                             <div class="modal-body">
                                 <!-- THIS IS WHERE THE HTML GOES FOR WHAT YOU WANT TO GO IN THE MODAL! -->
@@ -189,25 +180,53 @@
                                             <img class="modal-img" data-bind="attr:{'src': $root.eventChosen().image_url}">
                                         </div>
 
-                                        <div class="col-6">
-                                            <div data-bind="text: 'Price: ' + $root.eventChosen().price"></div>
-                                            <div data-bind="text: 'Rating: ' + $root.eventChosen().rating"></div>
-                                            <div data-bind="text: $root.eventChosen().url"></div>
-                                            <div data-bind="text: $root.eventChosen().phoneNumber"></div>
-
-
-                                            <p data-bind="text: $root.eventChosen().location.address1"></p>
-                                            <div data-bind="text: $root.eventChosen().location.city"></div>
-                                            <div data-bind="text: $root.eventChosen().location.zip_code"></div>
-
-                                            <div data-bind="foreach: $root.eventChosen().categories">
-                                                <span data-bind="text: title, "></span>
+                                        <div class="modal-info col-6">
+                                            <div class="modal-section">
+                                                <h2>Address:</h2>
+                                                <div data-bind="text: $root.eventChosen().location.address1"></div>
+                                                <div data-bind="text: $root.eventChosen().location.city + ', ' + $root.eventChosen().location.zip_code"></div>
+                                                <div data-bind="text: $root.eventChosen().phoneNumber"></div>
                                             </div>
-                                            <div data-bind="text: $root.eventChosen().maxSeats"></div>
-                                            <div data-bind="foreach: $root.eventChosen().users">
-                                                <span data-bind="text: firstName "></span>
-                                                <span data-bind="text: lastName "></span>
-                                                <br>
+
+                                            <div class='modal-section'>
+                                                <h2>Info:</h2>
+                                                <div data-bind="foreach: $root.eventChosen().categories">
+                                                    <span data-bind="text: title, "></span>
+                                                </div>
+                                                <div class='modal-rating' data-bind="click: $root.drawRating()"></div>
+                                                <div class='modal-price' data-bind="click: $root.drawPrice()"></div>
+                                            </div>
+
+                                            <div class='modal-section'>
+                                                <h2 data-bind="text: 'Seats (max: ' + $root.eventChosen().maxSeats + ')'"></h2>
+                                                <div data-bind="foreach: $root.eventChosen().users">
+                                                    <p data-bind="text: ($index() + 1) + '. ' + firstName + ' ' + lastName"></p>
+                                                </div>
+                                            </div>
+                                            <div data-bind="with: $root.eventChat">
+
+                                                <div class='col-sm-8 chat' id='chatSpace' with="foreach: $root.eventChat">
+        
+                                                    <div class="chat-display" data-bind="foreach: $data" >
+                                                         
+                                                        <span data-bind="text:user+': '"></span>
+                                                        <span data-bind="text:text" ></span>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                <div class='col-sm-4 chat'>
+        
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="chatMessage">Type your message here</label>
+                                                            <input type="name" class="form-control" id="chatMessage" data-bind="value:$root.chatMessage">
+                                                        </div>
+                                                        <button type="submit" id='newChat' class="btn btn-primary" data-bind="click: $root.addNewChat">Send</button>
+                                                    </form>
+        
+                                                </div>
+        
+        
                                             </div>
                                         </div>
                                     </div>
@@ -215,10 +234,14 @@
 
                                 </div>
 
-
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn hvr-fade" data-dismiss="modal" aria-label="close" data-bind="click: deselectEvent">Close</button>
+                                <a data-bind="attr: {href: $root.eventChosen().url}" target="_blank">
+                                    <button type="button" class="btn btn-warning hvr-fade">
+                                        Go to Yelp Page
+                                    </button>
+                                </a>
+                                <button type="button" class="btn btn-secondary hvr-fade" data-dismiss="modal" aria-label="close" data-bind="click: deselectEvent">Close</button>
                             </div>
                         </div>
                     </div>
@@ -239,64 +262,90 @@
                                 <div class="card hvr-glow">
                                     <p class="card-header" data-bind="text: name"></p>
                                     <img class="card-img-top" data-bind="attr:{'src': image_url}">
-                                    <div data-bind="text: location.address1"></div>
-                                    <div data-bind="text: location.city + ', ' + location.zip_code"></div>
-                                    <div data-bind="text: phoneNumber"></div>
-                                    <div data-bind="text: price"></div>
-                                    <div data-bind="foreach: categories">
-                                        <span data-bind="text: title, "></span>
-                                    </div>
-                                    <div data-bind="text: rating"></div>
-                                    <div class="card-info container">
-                                        <div class="row">
-                                            <form class="col d-flex align-items-center">
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">Seats</div>
-                                                    </div>
-                                                    <input type="number" class="form-control" class="seat-input" value="5" data-bind="attr:{'id':$index()}">
-                                                </div>
-                                            </form>
+                                    <div class="container">
+                                        <div class="row cir-group text-center">
+                                            <div class="col-4">
+                                                <button class="cir hvr-none text-center">
+                                                    <p data-bind="text: price"></p>
+                                                    <i class="fas fa-money-bill-alt fa-sm"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <a data-bind="attr: {href: url}" target="_blank">
+                                                    <button class="cir cir-mid hvr-fade text-center">
+                                                        <p>Yelp</p>
+                                                        <i class="fas fa-utensils fa-sm"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="cir hvr-none text-center">
+                                                    <p data-bind="text: rating"></p>
+                                                    <i class="fas fa-star fa-sm"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-warning-reverse hvr-fade create-button" data-bind="click: $root.createEvent">Create</button>
+                                    <div class="create-info">                                        
+                                        <div class="text-center" data-bind="text: location.address1"></div>
+                                        <div class="text-center" data-bind="text: location.city + ', ' + location.zip_code"></div>
+                                        <div class="text-center" data-bind="text: phoneNumber"></div>
+                                    </div>
+                                    <div class="create-info">
+                                    <h2 class="text-center">Categories</h2>
+                                    <div class="text-center" data-bind="foreach: categories">
+                                        <span data-bind="text: title, "></span>
+                                    </div>
+                                </div>                                
+                                <div class="card-info">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Seats</div>
+                                                </div>
+                                                <input type="number" class="form-control" class="seat-input" value="5" data-bind="attr:{'id':$index()}">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
+                                <button class="btn btn-warning-reverse hvr-fade col-12" data-bind="click: $root.createEvent">Create</button>
                             </div>
+
                         </div>
                     </div>
-
-                    <!-- TO DO MAKE THIS PRETTY AND FUNCTIONAL -->
-                    <div id="create-footer" class="">
-                        <div class="col-12"></div>
-                        <button id="create-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToResult"> Go back to browsing results</button>
-                    </div>
-
                 </div>
 
-                <!-- This is the HTML for User Display -->
-                <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
-                    Please enter in your info *NOTE YEA THIS MESSAGE AIN'T FINAL CHANGE IT TO SOMETHING NICER SOUNDING*
-                    <form id="user-form">
-                        <div class="form-group">
-                            <label for="firstNameInput">First Name</label>
-                            <input type="text" class="form-control" id="firstNameInput" placeholder="John" data-bind="value: firstName">
-                            <label id="firstname-validation" class="join-validation-label">Please Enter a Valid First Name </label>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastNameInput">Last Name</label>
-                            <input type="text" class="form-control" id="lastNameInput" placeholder="Doe" data-bind="value: lastName">
-                            <label id="lastname-validation" class="join-validation-label">Please Enter a Valid Last Name </label>
-                        </div>
-                        <div class="form-group">
-                            <label for="emailInput">Email</label>
-                            <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
-                            <label id="email-validation" class="join-validation-label">Please Enter a Valid Email </label>
-                        </div>
-                        <button id="submitInfo" type="submit" class="btn btn-warning-reverse hvr-fade btn-primary" data-bind="click: submitUserInfo">Submit</button>
-                    </form>
+                <div id="create-footer">
+                    <div class="col-12"></div>
+                    <button id="create-footer-text" class="col-12 btn btn-warning hvr-fade" data-bind="click: navToResult"> Go back to browsing results</button>
                 </div>
+
             </div>
+
+            <!-- This is the HTML for User Display -->
+            <div id="user-display" class="container" data-bind="visible: userVisible" style="display: none;">
+                Please enter in your info *NOTE YEA THIS MESSAGE AIN'T FINAL CHANGE IT TO SOMETHING NICER SOUNDING*
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="firstNameInput">First Name</label>
+                        <input type="text" class="form-control" id="firstNameInput" placeholder="John" data-bind="value: firstName">
+                        <label id="firstname-validation" class="join-validation-label">Please Enter a Valid First Name </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastNameInput">Last Name</label>
+                        <input type="text" class="form-control" id="lastNameInput" placeholder="Doe" data-bind="value: lastName">
+                        <label id="lastname-validation" class="join-validation-label">Please Enter a Valid Last Name </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailInput">Email</label>
+                        <input type="email" class="form-control" id="emailInput" placeholder="John@Doe.com" data-bind="value: email">
+                        <label id="email-validation" class="join-validation-label">Please Enter a Valid Email </label>
+                    </div>
+                    <button id="submitInfo" type="submit" class="btn btn-warning-reverse hvr-fade btn-primary" data-bind="click: submitUserInfo">Submit</button>
+                </form>
+            </div>
+        </div>
         </div>
     </section>
 </body>
