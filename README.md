@@ -1,5 +1,7 @@
 # Let's Eat
 
+Preview this project at: [https://thaiscmky.github.io/letseat/](https://thaiscmky.github.io/letseat/)
+
 ## Project Description
 
 An application for people who don't want to eat alone and would like to make friends with people with similar tastebuds around their area
